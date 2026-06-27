@@ -129,6 +129,22 @@
     border-radius:7px; font-size:8.7pt; color:var(--muted); line-height:1.5;
   }
 
+  /* ---------- Info box (전환측정 참고) ---------- */
+  .infobox{ border:1px solid var(--accent); border-radius:9px; overflow:hidden; background:#f2f8fc; }
+  .ib-head{ background:var(--accent); color:#fff; font-family:'NanumSquare',sans-serif; font-weight:800;
+    font-size:10.3pt; padding:7px 14px; }
+  .ib-head .tag{ font-size:8.4pt; font-weight:700; opacity:.85; letter-spacing:1px; margin-right:6px; }
+  .ib-body{ padding:11px 14px 12px; }
+  .ib-cols{ display:flex; gap:16px; }
+  .ib-col{ flex:1; font-size:9pt; line-height:1.5; }
+  .ib-label{ display:block; font-family:'NanumSquare',sans-serif; font-weight:800; color:var(--accent);
+    font-size:8.8pt; margin-bottom:3px; }
+  .ib-dim{ color:var(--muted); }
+  .ib-steps{ margin-top:11px; padding-top:10px; border-top:1px dashed #c2d8e6; font-size:9pt; }
+  .step{ display:inline-block; background:#fff; border:1px solid #cfe0ec; border-radius:11px;
+    padding:2px 9px; margin:4px 5px 0 0; font-size:8.5pt; color:var(--navy2); }
+  .ib-foot{ margin-top:10px; font-size:8.2pt; color:var(--muted); line-height:1.45; }
+
   /* ---------- Part divider (schedule) ---------- */
   .part-break{ page-break-before:always; }
   .part-banner{
@@ -207,6 +223,30 @@
       <tr><td class="k">모바일 속도</td><td>이미지 92장에 지연로딩(lazy) 미적용</td><td>모바일 로딩 지연 → 첫 화면 이탈률 증가 우려</td></tr>
     </tbody>
   </table>
+</div>
+
+<!-- 참고 박스: 전환 측정 -->
+<div class="section avoid-break">
+  <div class="infobox">
+    <div class="ib-head"><span class="tag">참고</span>전환 측정, 어떻게 하나요?</div>
+    <div class="ib-body">
+      <div class="ib-cols">
+        <div class="ib-col">
+          <span class="ib-label">무엇을 측정하나</span>
+          빠른상담 제출·전화 탭·카카오 상담·예약 같은 <b>환자 행동</b>을 집계해, 어떤 유입 경로·광고가 실제 상담으로 이어졌는지 확인합니다. <span class="ib-dim">(현재는 방문 수만 카운트)</span>
+        </div>
+        <div class="ib-col">
+          <span class="ib-label">비용 — 도구는 무료</span>
+          GA4·구글 태그매니저·메타/카카오 픽셀·서치콘솔은 <b>모두 무료</b>입니다. 비용은 ① 설치 대행 시 세팅 인건비, ② 광고 운영 시 광고비(측정과 별개)에만 발생 — <b>‘전환측정=유료’가 아닙니다.</b>
+        </div>
+      </div>
+      <div class="ib-steps">
+        <span class="ib-label">설치 순서</span>
+        <span class="step">① 전환 정의</span><span class="step">② GA4 측정ID 발급 (무료)</span><span class="step">③ 사이트에 코드 삽입</span><span class="step">④ 버튼을 핵심 이벤트로 설정</span><span class="step">⑤ (광고 시) 픽셀 연동</span><span class="step">⑥ 개인정보 동의 링크 수정</span>
+      </div>
+      <div class="ib-foot">※ ③ 코드 삽입은 소스·CMS 권한이 필요해 <b>병원/개발사 작업</b>으로 분리되며, ⑥ 동의 링크 수정은 상담정보 수집에 따른 <b>법적 필수</b> 항목입니다.</div>
+    </div>
+  </div>
 </div>
 
 <!-- 3. 후퇴 -->
