@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>무이성형외과 홈페이지 개편 점검 보고서 및 AI 검색 최적화 4주 일정표</title>
+<style>
+  @page { size: A4; margin: 0; }
+
+  :root{
+    --navy:#15314f;
+    --navy2:#1f4a73;
+    --accent:#2c6e9b;
+    --line:#dce3ea;
+    --soft:#f5f8fb;
+    --soft2:#eef3f8;
+    --ink:#23303b;
+    --muted:#5d6b78;
+    --good:#1f8a4c;
+    --good-bg:#eaf6ee;
+    --warn:#b06f12;
+    --warn-bg:#fbf2e2;
+    --bad:#bb3b34;
+    --bad-bg:#fbecea;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'NanumBarunGothic','NanumGothic',sans-serif;
+    color:var(--ink);
+    font-size:10.2pt;
+    line-height:1.55;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  h1,h2,h3,.brand,.doc-title,th,.kicker,.badge,.callout-tag,.part-label{
+    font-family:'NanumSquare','NanumBarunGothic',sans-serif;
+  }
+
+  /* ---------- Cover / header band ---------- */
+  .cover{
+    background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+    color:#fff;
+    border-radius:10px;
+    padding:26px 28px 24px;
+    margin-bottom:20px;
+  }
+  .cover .brand{
+    font-size:10pt; letter-spacing:2px; color:#bcd4e8; font-weight:700;
+    text-transform:uppercase; margin-bottom:10px;
+  }
+  .cover .doc-title{
+    font-size:23pt; font-weight:800; line-height:1.25; margin:0 0 12px;
+  }
+  .cover .sub{
+    font-size:10.5pt; color:#d7e6f3; line-height:1.5; border-top:1px solid rgba(255,255,255,.22);
+    padding-top:12px; margin-top:4px;
+  }
+  .cover .meta{ font-size:9.5pt; color:#a9c6df; margin-top:8px; }
+
+  /* ---------- Section headings ---------- */
+  .section{ margin-top:13px; page-break-inside:avoid; break-inside:avoid; }
+  h2.sec{
+    font-size:13.5pt; color:var(--navy); font-weight:800;
+    margin:0 0 8px; padding:0 0 6px;
+    border-bottom:2px solid var(--navy);
+    display:flex; align-items:baseline; gap:9px;
+  }
+  h2.sec .num{
+    display:inline-block; min-width:26px; height:26px; line-height:26px; text-align:center;
+    background:var(--navy); color:#fff; border-radius:6px; font-size:11pt; font-weight:800;
+    padding:0 4px;
+  }
+  .lead{ color:var(--muted); font-size:9.8pt; margin:0 0 9px; line-height:1.5; }
+
+  /* ---------- Tables ---------- */
+  table{ width:100%; border-collapse:collapse; margin:3px 0 2px; }
+  th{
+    background:var(--navy); color:#fff; font-weight:700; font-size:8.9pt;
+    text-align:left; padding:6px 9px; border:1px solid var(--navy);
+    vertical-align:middle;
+  }
+  td{
+    border:1px solid var(--line); padding:5px 9px; font-size:9pt; vertical-align:top;
+    line-height:1.42;
+  }
+  thead{ display:table-header-group; }
+  tr{ page-break-inside:avoid; break-inside:avoid; }
+  tbody tr:nth-child(even) td{ background:var(--soft); }
+  td.k{ font-weight:700; color:var(--navy2); background:var(--soft2)!important; white-space:nowrap; }
+  td.center{ text-align:center; }
+
+  /* status pills */
+  .pill{ display:inline-block; padding:1px 9px; border-radius:11px; font-size:8.6pt; font-weight:700; font-family:'NanumSquare',sans-serif; }
+  .pill.good{ background:var(--good-bg); color:var(--good); }
+  .pill.warn{ background:var(--warn-bg); color:var(--warn); }
+  .pill.bad{ background:var(--bad-bg); color:var(--bad); }
+  .pill.rank{ background:var(--navy); color:#fff; min-width:20px; text-align:center; padding:1px 7px; }
+
+  /* ---------- Summary callouts (section 0) ---------- */
+  .summary-box{
+    border:1px solid var(--line); border-radius:9px; padding:13px 16px; background:#fff;
+    margin-bottom:12px;
+  }
+  .summary-box .head{ font-size:10.4pt; font-weight:700; color:var(--ink); line-height:1.55; }
+  .callouts{ display:flex; flex-direction:column; gap:8px; margin-top:11px; }
+  .callout{ border-radius:8px; padding:9px 13px; border-left:5px solid; font-size:9.5pt; line-height:1.5; }
+  .callout .callout-tag{ font-weight:800; font-size:9.6pt; margin-right:7px; }
+  .callout.good{ background:var(--good-bg); border-color:var(--good); }
+  .callout.good .callout-tag{ color:var(--good); }
+  .callout.warn{ background:var(--warn-bg); border-color:var(--warn); }
+  .callout.warn .callout-tag{ color:var(--warn); }
+  .callout.bad{ background:var(--bad-bg); border-color:var(--bad); }
+  .callout.bad .callout-tag{ color:var(--bad); }
+
+  /* ---------- Bullet list (section 3) ---------- */
+  ul.clean{ margin:6px 0 0; padding:0; list-style:none; }
+  ul.clean li{
+    position:relative; padding:9px 13px 9px 16px; margin-bottom:8px;
+    background:var(--bad-bg); border-left:4px solid var(--bad); border-radius:6px;
+    font-size:9.6pt; line-height:1.55;
+  }
+  ul.clean li b{ color:var(--bad); }
+
+  /* ---------- Closing ---------- */
+  .closing p{ margin:0 0 8px; font-size:10pt; line-height:1.6; }
+  .note{
+    margin-top:10px; padding:10px 14px; background:var(--soft); border:1px solid var(--line);
+    border-radius:7px; font-size:8.7pt; color:var(--muted); line-height:1.5;
+  }
+
+  /* ---------- Part divider (schedule) ---------- */
+  .part-break{ page-break-before:always; }
+  .part-banner{
+    background:linear-gradient(135deg,#13405f 0%,#256a93 100%);
+    color:#fff; border-radius:10px; padding:22px 26px; margin:6px 0 18px;
+  }
+  .part-banner .part-label{ font-size:9pt; letter-spacing:2px; color:#bcd9ee; font-weight:700; text-transform:uppercase; }
+  .part-banner h1{ font-size:19pt; font-weight:800; margin:8px 0 9px; }
+  .part-banner .scope{ font-size:9.6pt; color:#dcebf8; color:#d6e8f5; line-height:1.5; border-top:1px solid rgba(255,255,255,.22); padding-top:10px; }
+
+  .sched-table td{ font-size:8.7pt; padding:7px 8px; }
+  .sched-table th{ font-size:8.8pt; padding:7px 8px; text-align:center; }
+  .sched-table td.wk{ font-weight:800; color:var(--navy); text-align:center; white-space:nowrap; background:var(--soft2)!important; }
+  .sched-table td.stg{ text-align:center; font-weight:700; color:var(--navy2); white-space:nowrap; }
+  .stage-tag{ display:block; font-weight:800; color:var(--navy); margin-bottom:2px; }
+
+  .basis{
+    border:1px solid var(--accent); background:var(--soft); border-radius:8px;
+    padding:13px 16px; font-size:9.5pt; line-height:1.6; color:var(--ink);
+    border-left:5px solid var(--accent);
+  }
+  .avoid-break{ page-break-inside:avoid; }
+</style>
+</head>
+<body>
+
+<!-- ============== PART 1: 점검 보고서 ============== -->
+<div class="cover">
+  <div class="brand">MOOI PLASTIC SURGERY · HOMEPAGE REVIEW</div>
+  <div class="doc-title">무이성형외과 홈페이지 개편 점검 보고서</div>
+  <div class="sub">이전 버전 → 수정본 · 마케팅 전문가 관점의 Before / After 분석</div>
+  <div class="meta">작성일 : 2026년 6월 25일</div>
+</div>
+
+<!-- 0. 총평 -->
+<div class="section avoid-break">
+  <h2 class="sec"><span class="num">0</span> 총평 — 한 장으로 보기</h2>
+  <div class="summary-box">
+    <div class="head">수정본은 ‘보여지는 경험’은 분명히 좋아졌습니다. 다만 환자를 ‘데려오고(발견)’ 전환을 ‘측정’하는 마케팅 엔진이 아직 비어 있어, 좋아진 콘텐츠가 성과로 연결되지 못할 위험이 있습니다.</div>
+    <div class="callouts">
+      <div class="callout good"><span class="callout-tag">좋아진 점</span>이미지 18→92장, 유튜브 숏폼 노출 3배+, 시그니처 시술(안면윤곽·코·쌍꺼풀) 부각 → 신뢰·체류·브랜드 인상 개선</div>
+      <div class="callout warn"><span class="callout-tag">보완 필요</span>전환 측정 0, CTA 정리·동의링크 수정, 의료진 신뢰정보 미노출, 검색·AI 발견 토대 미반영</div>
+      <div class="callout bad"><span class="callout-tag">후퇴</span>분석도구(에이스카운터) 제거, 이미지 설명 태그 미흡</div>
+    </div>
+  </div>
+</div>
+
+<!-- 1. 좋아진 점 -->
+<div class="section">
+  <h2 class="sec"><span class="num">1</span> 잘 반영되어 좋아진 점</h2>
+  <p class="lead">환자가 ‘보는 화면’의 완성도와 진료 강점 전달력이 분명히 향상됐습니다. 실측 수치 기준입니다.</p>
+  <table>
+    <thead><tr><th style="width:22%">좋아진 항목</th><th style="width:33%">이전 → 수정본</th><th>마케팅 효과</th></tr></thead>
+    <tbody>
+      <tr><td class="k">비주얼 강화</td><td>이미지 18장 → 92장</td><td>첫인상·신뢰감 향상, 시술 결과의 시각적 전달력 강화</td></tr>
+      <tr><td class="k">영상(유튜브 숏폼)</td><td>노출 약 3배+ (관련 요소 25 → 85)</td><td>체류시간 증가, 원장님·병원에 대한 친근감과 전문성 전달</td></tr>
+      <tr><td class="k">시그니처 시술 부각</td><td>안면윤곽 5→14, 코성형 21→33, ‘시그니처’ 섹션 신설</td><td>병원의 진료 강점이 명확해져 타깃 환자 설득력 향상</td></tr>
+      <tr><td class="k">섹션 구조화</td><td>대표 소제목(H2) 0개 → 2개</td><td>페이지가 ‘읽히는 구조’로 부분 개선(추가 정비 여지 있음)</td></tr>
+      <tr><td class="k">상담 동선 유지</td><td>전화 노출 4→6, 빠른상담·예약·카카오·후기·안전시스템 유지</td><td>즉시 상담 진입점 확대, 기존 전환 동선은 보존</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 2. 보완 필요 -->
+<div class="section">
+  <h2 class="sec"><span class="num">2</span> 마케팅 관점 보완 필요 <span style="font-size:10pt;color:var(--bad);font-weight:800;">(핵심)</span></h2>
+  <p class="lead">‘보여주기’는 좋아졌지만, 마케팅의 핵심인 ‘데려오기(발견)’와 ‘측정’은 비어 있습니다.</p>
+  <table>
+    <thead><tr><th style="width:21%">보완 항목</th><th style="width:37%">현재 상태</th><th>마케팅 영향</th></tr></thead>
+    <tbody>
+      <tr><td class="k">전환 측정 <span class="pill bad">최우선</span></td><td>구글·메타·카카오 측정 태그 0 (방문 카운터만)</td><td>어떤 광고·콘텐츠가 상담으로 이어지는지 모름 → 광고비 깜깜이, 재방문 환자 리타게팅 불가</td></tr>
+      <tr><td class="k">CTA 정리</td><td>빠른상담·예약·온라인상담·카카오·전화가 동시에 경쟁, 기본 행동 불명확 + 개인정보 동의 링크 깨짐</td><td>전환율 저하 + 개인정보 수집 관련 신뢰·법적 리스크</td></tr>
+      <tr><td class="k">의료진 신뢰정보</td><td>전문의·전담 마취과 전문의 등 강점이 홈에 드러나지 않음(서브페이지에만 있음)</td><td>성형 의사결정의 핵심 신뢰 자산 미활용 → 전환 기회 손실</td></tr>
+      <tr><td class="k">검색·AI 발견</td><td>구조화 데이터·고유 페이지 설명·대표 제목 미정비</td><td>신규 환자가 검색·AI로 병원을 ‘발견’하는 단계가 약함</td></tr>
+      <tr><td class="k">다국어(해외환자)</td><td>7개 언어가 검색에 사실상 미노출(구글 번역 위젯 방식)</td><td>해외환자 유입 자산이 잠겨 있음</td></tr>
+      <tr><td class="k">모바일 속도</td><td>이미지 92장에 지연로딩(lazy) 미적용</td><td>모바일 로딩 지연 → 첫 화면 이탈률 증가 우려</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 3. 후퇴 -->
+<div class="section avoid-break">
+  <h2 class="sec"><span class="num">3</span> 오히려 후퇴한 점 <span style="font-size:10pt;color:var(--muted);font-weight:700;">(회귀)</span></h2>
+  <ul class="clean">
+    <li><b>분석 도구(에이스카운터) 제거</b> — 이전 버전에 있던 방문 분석마저 수정본에서 빠져 측정이 더 악화됨.</li>
+    <li><b>이미지 설명(alt) 미흡</b> — 92장 중 4개뿐. 이미지가 5배 늘었지만 설명 태그는 그대로여서 이미지검색 노출·접근성 손해.</li>
+  </ul>
+</div>
+
+<!-- 4. Before/After -->
+<div class="section avoid-break">
+  <h2 class="sec"><span class="num">4</span> Before / After 종합 비교표</h2>
+  <table>
+    <thead><tr><th style="width:28%">지표</th><th class="center" style="width:24%">이전</th><th class="center" style="width:24%">수정본</th><th class="center">평가</th></tr></thead>
+    <tbody>
+      <tr><td class="k">비주얼/이미지</td><td class="center">18장</td><td class="center">92장</td><td class="center"><span class="pill good">개선</span></td></tr>
+      <tr><td class="k">영상(유튜브) 노출</td><td class="center">적음</td><td class="center">3배+</td><td class="center"><span class="pill good">개선</span></td></tr>
+      <tr><td class="k">시그니처 시술 부각</td><td class="center">약함</td><td class="center">강화</td><td class="center"><span class="pill good">개선</span></td></tr>
+      <tr><td class="k">전환 측정 도구</td><td class="center">에이스카운터</td><td class="center">없음</td><td class="center"><span class="pill bad">후퇴</span></td></tr>
+      <tr><td class="k">이미지 설명(alt)</td><td class="center">4개</td><td class="center">4개 (92장 중)</td><td class="center"><span class="pill warn">미흡</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 5. 우선순위 -->
+<div class="section avoid-break">
+  <h2 class="sec"><span class="num">5</span> 보완 우선순위 <span style="font-size:10pt;color:var(--muted);font-weight:700;">(마케팅 액션)</span></h2>
+  <table>
+    <thead><tr><th class="center" style="width:8%">순위</th><th style="width:46%">마케팅 액션</th><th>기대 효과</th></tr></thead>
+    <tbody>
+      <tr><td class="center"><span class="pill rank">1</span></td><td>전환 측정 설치(GA4 등) + 깨진 개인정보 동의 링크 수정</td><td>광고·콘텐츠 효과 측정·리타게팅, 의사결정 근거 확보</td></tr>
+      <tr><td class="center"><span class="pill rank">2</span></td><td>의료진 신뢰 블록을 홈에 노출(전문의·전담 마취과 전문의)</td><td>신뢰도 상승 → 상담 전환율 향상</td></tr>
+      <tr><td class="center"><span class="pill rank">3</span></td><td>구조화 데이터·고유 메타·이미지 alt·지연로딩 정비</td><td>검색·AI 발견, 모바일 이탈 개선</td></tr>
+      <tr><td class="center"><span class="pill rank">4</span></td><td>다국어 검색 노출 정비(외국인환자 유치기관 등록 확인 후)</td><td>해외환자 유입 기반 확보</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 6. 맺음말 -->
+<div class="section avoid-break closing">
+  <h2 class="sec"><span class="num">6</span> 맺음말</h2>
+  <p>수정본의 방향인 <b>보여주는 경험 강화</b>는 긍정적입니다. 비주얼·영상·시그니처 시술이 좋아져 ‘들어온 환자’를 설득하는 힘은 분명히 강해진 것으로 보입니다.</p>
+  <p>다음 과제는 <b>‘좋아진 콘텐츠를 성과로 연결’하는 마케팅 엔진</b> — 즉 측정·발견·전환을 채우는 일입니다.</p>
+  <div class="note">※ 본 보고서는 이전 버전과 수정본의 실제 코드·노출 상태를 직접 측정·비교한 결과에 기반합니다. (이미지·영상·시술 노출 수치, 측정 태그, 구조화 데이터, 타이틀 등 실측)</div>
+</div>
+
+
+<!-- ============== PART 2: 실행 일정표 ============== -->
+<div class="part-break"></div>
+<div class="part-banner">
+  <div class="part-label">IMPLEMENTATION PLAN</div>
+  <h1>무이성형외과 AI 검색 최적화 4주 일정표</h1>
+  <div class="scope">범위 : 홈페이지 직접 수정이 아닌, 점검 · 구조 설계 · 개선 파일 제작 · 개발사 전달 패키지 제공</div>
+</div>
+
+<!-- 일정 1. 요약 -->
+<div class="section avoid-break">
+  <h2 class="sec"><span class="num">1</span> 일정 요약</h2>
+  <table class="sched-table">
+    <thead><tr><th style="width:13%">총 기간</th><th style="width:29%">1~2주차</th><th style="width:29%">3~4주차</th><th>분리 항목</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="wk">4주</td>
+        <td><span class="stage-tag">0~2단계</span>현황 점검 및 구조 설계</td>
+        <td><span class="stage-tag">3~5단계</span>파일·코드 작성 및 전달 가이드</td>
+        <td>업로드, 소스 수정, CMS 반영, 계정 설치는 병원/개발사 수행</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 일정 2. 주차별 -->
+<div class="section">
+  <h2 class="sec"><span class="num">2</span> 주차별 일정</h2>
+  <table class="sched-table">
+    <thead><tr>
+      <th style="width:7%">기간</th><th style="width:8%">단계</th><th style="width:16%">핵심 목표</th>
+      <th style="width:25%">프로젝트팀 수행</th><th style="width:22%">병원/개발사 협조 필요</th><th>주요 산출물</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td class="wk">1주차</td><td class="stg">0~1단계</td>
+        <td>초기 방향 확정 및 홈페이지 외부 점검</td>
+        <td>초기 미팅, 우선 시술·국내/해외 키워드 정리, 코성형-황숭오 원장 연결 방향 확인, robots.txt·sitemap·메타·스키마·내부링크·텍스트 구조 점검</td>
+        <td>원장님 진료 방향, 우선 시술, 강조 의료진, 사용 가능 표현 확인. 관리자/서버/소스 접근은 병원 또는 개발사 권한 필요</td>
+        <td>초기 미팅 정리본, 핵심 키워드 정리표, 홈페이지 AI 검색 대응 현황 점검표</td>
+      </tr>
+      <tr>
+        <td class="wk">2주차</td><td class="stg">2단계</td>
+        <td>AI 검색 대응 구조 설계</td>
+        <td>병원 엔티티 구조 정리, 의료진-시술 연결 구조 설계, 국내/영문 키워드 매핑, 우선 반영 페이지 선정, 내부링크 방향 설계</td>
+        <td>병원 측 우선순위와 표현 방향 최종 확인</td>
+        <td>AI 검색 대응 구조 설계서, 엔티티 계층표, 키워드-페이지 매핑표</td>
+      </tr>
+      <tr>
+        <td class="wk">3주차</td><td class="stg">3단계</td>
+        <td>개선 파일 및 코드 초안 작성</td>
+        <td>robots.txt 개선안, llms.txt, ai.txt, 커스텀 스키마 JSON-LD 초안, 주요 페이지 메타 개선안 작성</td>
+        <td>파일 업로드, 페이지 코드 삽입, CMS 수정은 개발사 수행 필요</td>
+        <td>robots.txt 개선안, llms.txt, ai.txt, 스키마 코드 초안, 메타 개선표</td>
+      </tr>
+      <tr>
+        <td class="wk">4주차</td><td class="stg">4~5단계</td>
+        <td>개발사 전달 패키지 및 최종본 전달</td>
+        <td>파일 위치, 코드 삽입 위치, 반영 우선순위, 확인 방법 정리. 원장님/병원 피드백 반영 및 최종 파일 패키지 정리</td>
+        <td>개발사에서 실제 서버 업로드 및 페이지 반영 진행. 반영 완료 후 공개 URL 전달</td>
+        <td>개발사 전달 가이드, 반영 우선순위표, 반영 체크리스트, 최종 납품본, 반영 후 검수 체크리스트</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 일정 3. 수행 범위 -->
+<div class="section avoid-break">
+  <h2 class="sec"><span class="num">3</span> 수행 범위 구분</h2>
+  <table class="sched-table">
+    <thead><tr><th style="width:24%">구분</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td class="k">프로젝트팀 수행 가능</td><td>홈페이지 외부 점검, robots.txt 개선안 작성, llms.txt 작성, ai.txt 작성, 커스텀 스키마 코드 초안 작성, 메타 개선표 작성, 내부링크 구조 제안, 개발사 전달 가이드 작성</td></tr>
+      <tr><td class="k">병원/개발사 협조 필요</td><td>서버 루트 파일 업로드, 홈페이지 소스 수정, CMS 반영, title/meta/OG/canonical 실제 수정, 스키마 코드 삽입, 내부링크 실제 삽입, GA4/Search Console 신규 설치 또는 권한 공유</td></tr>
+      <tr><td class="k">별도 확장 가능 항목</td><td>시술별 신규 콘텐츠 제작, 영문 GEO 페이지 제작, 영상 콘텐츠 운영, AI 검색 언급 모니터링, 월간 리포트 및 성과 분석</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 일정 4. 기준 -->
+<div class="section avoid-break">
+  <h2 class="sec"><span class="num">4</span> 일정 기준</h2>
+  <div class="basis">4주 일정은 <b>점검·구조 설계·개선 파일·개발사 전달 가이드 납품</b> 기준입니다. 실제 업로드, 소스 수정, CMS 반영, 계정 설치는 병원/개발사 권한 작업으로 분리합니다.</div>
+</div>
+
+</body>
+</html>
