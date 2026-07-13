@@ -622,10 +622,10 @@ const QUESTIONS = [
   },
   {
     scene: "운명의 드랍",
-    text: "드디어 최상급 에픽이 떴다! 나의 다음 행동은?",
+    text: "드디어 태초 서약이 떴다! 나의 다음 행동은?",
     opts: [
       { t: "모험단·커뮤니티에 바로 스샷 인증! 축하받아야 진짜 완성", axis: "E" },
-      { t: "장비창을 열고 혼자 조용히, 아주 흐뭇하게 감상한다", axis: "I" }
+      { t: "서약 인벤토리를 열고 혼자 조용히, 아주 흐뭇하게 감상한다", axis: "I" }
     ]
   },
   {
@@ -818,12 +818,17 @@ function renderResult(type, isPreview) {
   $("r-pop").textContent = r.pop;
   $("r-tags").innerHTML = r.tags.map(t => "<span>" + t + "</span>").join("");
 
-  /* 일러스트: images/{type}.png → .jpg → 엠블럼 폴백 */
+  /* 일러스트: images/{type}.png → .jpg → .webp → 엠블럼 폴백 */
   const img = $("r-img");
   const emblem = $("r-emblem");
   img.style.display = "none";
   emblem.style.display = "flex";
-  const candidates = ["images/" + type.toLowerCase() + ".png", "images/" + type.toLowerCase() + ".jpg"];
+  img.alt = r.name + " " + r.jin + " 진각성 일러스트";
+  const candidates = [
+    "images/" + type.toLowerCase() + ".png",
+    "images/" + type.toLowerCase() + ".jpg",
+    "images/" + type.toLowerCase() + ".webp"
+  ];
   let ci = 0;
   img.onerror = () => {
     ci++;
