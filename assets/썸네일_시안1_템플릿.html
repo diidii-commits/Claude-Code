@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1280px; height:720px; overflow:hidden; }
+  body {
+    font-family:"Noto Sans CJK KR","Noto Sans KR",sans-serif;
+    background:
+      radial-gradient(1100px 700px at 78% 40%, #232c40 0%, #161c2b 55%, #0e1220 100%);
+    position:relative; color:#fff;
+  }
+  /* 블루프린트 그리드 */
+  .grid {
+    position:absolute; inset:0; opacity:.55;
+    background-image:
+      linear-gradient(rgba(120,150,200,.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(120,150,200,.07) 1px, transparent 1px);
+    background-size:64px 64px;
+  }
+  .vignette { position:absolute; inset:0;
+    background:radial-gradient(1400px 900px at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%); }
+
+  /* ── 우측: 실루엣(비포 사진 자리) ────────────────── */
+  .face-zone { position:absolute; right:28px; top:26px; width:660px; height:668px; }
+  .face-zone svg { width:100%; height:100%; display:block; }
+
+  /* 스캔 라인(밝은 1줄) */
+  .scanline {
+    position:absolute; left:70px; right:60px; top:172px; height:3px;
+    background:linear-gradient(90deg, transparent, #9fd8ff 18%, #eaf7ff 50%, #9fd8ff 82%, transparent);
+    box-shadow:0 0 18px 4px rgba(140,200,255,.55);
+    border-radius:2px;
+  }
+  .scan-thin { position:absolute; left:110px; right:100px; height:1px; background:rgba(190,220,255,.16); }
+
+  /* 이마 과노출 태그 */
+  .tag-x {
+    position:absolute; right:14px; top:138px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .xmark { font-size:64px; font-weight:900; color:#ff4d4d; line-height:1;
+    text-shadow:0 0 22px rgba(255,60,60,.6); font-family:"Noto Sans CJK KR"; }
+  .tag-box {
+    border:3px solid #ff4d4d; background:rgba(35,8,8,.82); color:#ffd9d9;
+    font-size:34px; font-weight:900; padding:10px 20px; border-radius:8px;
+    letter-spacing:1px; box-shadow:0 6px 24px rgba(0,0,0,.5);
+  }
+
+  /* ── 좌측: 메인 카피 ────────────────── */
+  .eyebrow {
+    position:absolute; left:56px; top:52px;
+    font-size:26px; font-weight:700; letter-spacing:6px; color:#8fb4e8;
+    border-left:5px solid #8fb4e8; padding-left:14px;
+  }
+  .copy { position:absolute; left:52px; top:100px; line-height:1.12;
+    text-shadow:0 6px 30px rgba(0,0,0,.85); }
+  .copy .l1 { font-size:96px; font-weight:900; color:#fff; letter-spacing:-2px; }
+  .copy .l2 { font-size:122px; font-weight:900; color:#ffd54a; letter-spacing:-3px;
+    text-shadow:0 6px 0 rgba(0,0,0,.35), 0 10px 40px rgba(0,0,0,.9); }
+
+  /* ── 좌측: 크라프트지 견적서 ────────────────── */
+  .quote {
+    position:absolute; left:58px; top:348px; width:392px;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,.025) 0 2px, transparent 2px 4px),
+      linear-gradient(160deg, #e3c493 0%, #d8b783 55%, #cdaa72 100%);
+    border-radius:8px; padding:26px 30px 30px;
+    color:#3a2c18; transform:rotate(-3deg);
+    box-shadow:0 24px 50px rgba(0,0,0,.65), inset 0 0 0 2px rgba(120,90,40,.25);
+  }
+  .quote .qhead { display:flex; align-items:baseline; justify-content:space-between;
+    border-bottom:3px solid #7a5c2e; padding-bottom:12px; }
+  .quote .qtitle { font-size:40px; font-weight:900; letter-spacing:2px; }
+  .quote .qno { font-size:18px; font-weight:700; color:#7a5c2e; }
+  .quote ul { list-style:none; margin-top:16px; }
+  .quote li { font-size:29px; font-weight:800; padding:9px 0;
+    border-bottom:2px dotted rgba(122,92,46,.45); display:flex; gap:12px; align-items:center; }
+  .quote li .box { width:26px; height:26px; border:3px solid #5a4420; border-radius:4px; flex:none; }
+  .stamp {
+    position:absolute; right:-16px; bottom:6px; width:136px; height:136px;
+    border:7px solid rgba(192,57,43,.92); border-radius:50%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:rgba(192,57,43,.95); font-weight:900; font-size:33px; line-height:1.15;
+    transform:rotate(-14deg); background:rgba(255,245,235,.12);
+    box-shadow:0 8px 24px rgba(0,0,0,.35);
+  }
+  .stamp small { font-size:14px; font-weight:800; letter-spacing:3px; margin-top:2px; }
+
+  /* ── 우하단 워드마크 ────────────────── */
+  .brand {
+    position:absolute; right:34px; bottom:28px;
+    display:flex; align-items:center; gap:12px;
+    background:rgba(10,14,24,.72); border:2px solid rgba(255,255,255,.35);
+    border-radius:40px; padding:10px 26px 10px 20px;
+    font-size:30px; font-weight:900; letter-spacing:1px;
+    box-shadow:0 8px 24px rgba(0,0,0,.5);
+  }
+  .brand .scissor { font-size:32px; }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+
+  <!-- 우측 실루엣 (실제 제작 시 이 레이어를 비포 사진으로 교체) -->
+  <div class="face-zone">
+    <svg viewBox="0 0 520 640">
+      <defs>
+        <linearGradient id="bodyfill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2b3550"/><stop offset="1" stop-color="#1d2436"/>
+        </linearGradient>
+        <linearGradient id="hairfill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#161b29"/><stop offset="1" stop-color="#232b40"/>
+        </linearGradient>
+        <pattern id="hatch" width="14" height="14" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="0" y2="14" stroke="rgba(150,180,230,.10)" stroke-width="2"/>
+        </pattern>
+      </defs>
+
+      <!-- 어깨 -->
+      <path d="M40,640 C55,492 150,428 260,422 C370,428 465,492 480,640 Z"
+            fill="url(#bodyfill)" stroke="rgba(150,180,230,.35)" stroke-width="2.5"/>
+      <path d="M40,640 C55,492 150,428 260,422 C370,428 465,492 480,640 Z" fill="url(#hatch)"/>
+      <!-- 목 -->
+      <path d="M222,332 L222,430 L298,430 L298,332 Z" fill="url(#bodyfill)" stroke="rgba(150,180,230,.3)" stroke-width="2"/>
+      <!-- 귀 -->
+      <ellipse cx="148" cy="228" rx="16" ry="30" fill="url(#bodyfill)" stroke="rgba(150,180,230,.35)" stroke-width="2"/>
+      <ellipse cx="372" cy="228" rx="16" ry="30" fill="url(#bodyfill)" stroke="rgba(150,180,230,.35)" stroke-width="2"/>
+      <!-- 얼굴 -->
+      <path d="M260,64 C186,64 148,128 148,212 C148,298 192,364 260,364 C328,364 372,298 372,212 C372,128 334,64 260,64 Z"
+            fill="url(#bodyfill)" stroke="rgba(150,180,230,.4)" stroke-width="2.5"/>
+      <path d="M260,64 C186,64 148,128 148,212 C148,298 192,364 260,364 C328,364 372,298 372,212 C372,128 334,64 260,64 Z"
+            fill="url(#hatch)"/>
+      <!-- 포마드 헤어(이마 노출형 캡) -->
+      <path d="M149,196 C146,110 196,56 260,56 C324,56 374,110 371,196
+               C358,144 332,126 300,119 C272,113 236,114 210,123 C182,133 158,156 149,196 Z"
+            fill="url(#hairfill)" stroke="rgba(150,180,230,.4)" stroke-width="2.5"/>
+      <!-- 슬릭백 빗결 -->
+      <path d="M210,74 C240,66 290,66 318,76" stroke="rgba(170,200,245,.25)" stroke-width="3" fill="none"/>
+      <path d="M192,90 C232,78 296,78 332,92" stroke="rgba(170,200,245,.2)" stroke-width="3" fill="none"/>
+      <path d="M178,110 C226,94 300,94 346,112" stroke="rgba(170,200,245,.15)" stroke-width="3" fill="none"/>
+      <!-- 계측 십자 마커 -->
+      <g stroke="rgba(190,220,255,.6)" stroke-width="2.5">
+        <path d="M148,212 h-20 M138,202 v20"/> <path d="M372,212 h20 M382,202 v20"/>
+        <path d="M260,364 v22 M250,375 h20"/>
+      </g>
+      <!-- 이마 계측 점선 -->
+      <line x1="120" y1="140" x2="400" y2="140" stroke="rgba(255,110,110,.55)" stroke-width="2" stroke-dasharray="10 8"/>
+      <line x1="120" y1="196" x2="400" y2="196" stroke="rgba(255,110,110,.55)" stroke-width="2" stroke-dasharray="10 8"/>
+      <!-- 사진 교체 안내 (제작용 가이드) -->
+      <text x="260" y="252" text-anchor="middle" fill="rgba(200,220,255,.4)"
+            font-size="19" font-weight="700" letter-spacing="3">비포 사진 삽입 영역</text>
+      <text x="260" y="280" text-anchor="middle" fill="rgba(200,220,255,.28)"
+            font-size="14" font-weight="500" letter-spacing="2">FACE PLACEHOLDER</text>
+    </svg>
+
+    <!-- 스캔 라인들 -->
+    <div class="scan-thin" style="top:120px"></div>
+    <div class="scan-thin" style="top:160px"></div>
+    <div class="scan-thin" style="top:260px"></div>
+    <div class="scan-thin" style="top:310px"></div>
+    <div class="scanline"></div>
+
+    <!-- ✗ 이마 과노출 -->
+    <div class="tag-x">
+      <div class="xmark">✕</div>
+      <div class="tag-box">이마 과노출</div>
+    </div>
+  </div>
+
+  <!-- 좌상단 카피 -->
+  <div class="eyebrow">깍새 정밀 진단 REPORT</div>
+  <div class="copy">
+    <div class="l1">이 머리,</div>
+    <div class="l2">아깝습니다</div>
+  </div>
+
+  <!-- 견적서 -->
+  <div class="quote">
+    <div class="qhead">
+      <div class="qtitle">깍새 견적서</div>
+      <div class="qno">No. 001</div>
+    </div>
+    <ul>
+      <li><span class="box"></span>이마 커버</li>
+      <li><span class="box"></span>옆라인 · 귀 노출</li>
+      <li><span class="box"></span>리프펌 웨이브</li>
+    </ul>
+    <div class="stamp">깍새<br>견적<small>APPROVED</small></div>
+  </div>
+
+  <!-- 워드마크 -->
+  <div class="brand"><span class="scissor">✂️</span>머리하는 깍새</div>
+
+  <div class="vignette"></div>
+</body>
+</html>
