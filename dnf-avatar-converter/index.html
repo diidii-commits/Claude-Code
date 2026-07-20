@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>던파 도트 캐릭터 변환기</title>
+<style>
+  :root {
+    --bg: #1a1a1f;
+    --panel: #24242c;
+    --panel2: #2c2c36;
+    --border: #3a3a46;
+    --accent: #e8544a;
+    --accent2: #f0a030;
+    --text: #e8e8ec;
+    --muted: #9a9aa6;
+    --dnf-gray: #808080;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Pretendard", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, #2a1a1a 0%, #1a1a2a 100%);
+    border-bottom: 2px solid var(--accent);
+    padding: 24px 20px;
+    text-align: center;
+  }
+  header h1 { font-size: 1.5rem; letter-spacing: 1px; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--muted); margin-top: 6px; font-size: 0.9rem; }
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .panel h2 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: var(--accent2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .step-num {
+    background: var(--accent);
+    color: #fff;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+  /* upload */
+  .dropzone {
+    border: 2px dashed var(--border);
+    border-radius: 10px;
+    padding: 28px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    color: var(--muted);
+  }
+  .dropzone:hover, .dropzone.dragover {
+    border-color: var(--accent);
+    background: rgba(232, 84, 74, 0.06);
+  }
+  .dropzone img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 6px;
+    display: block;
+    margin: 0 auto 10px;
+  }
+  /* form */
+  label { display: block; font-size: 0.82rem; color: var(--muted); margin: 12px 0 4px; }
+  select, input[type=password], input[type=text], textarea {
+    width: 100%;
+    background: var(--panel2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 10px;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+  textarea { min-height: 180px; resize: vertical; font-size: 0.78rem; line-height: 1.5; }
+  select:focus, input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  .row { display: flex; gap: 10px; }
+  .row > * { flex: 1; }
+  button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: filter .15s;
+  }
+  button:hover { filter: brightness(1.12); }
+  button:disabled { background: #55555f; cursor: not-allowed; filter: none; }
+  button.secondary {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 500;
+  }
+  .btn-full { width: 100%; margin-top: 14px; }
+  .hint { font-size: 0.75rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+  .hint a { color: var(--accent2); }
+  /* result */
+  .result-box {
+    background: var(--dnf-gray);
+    border-radius: 8px;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .result-box img {
+    max-width: 100%;
+    max-height: 520px;
+    image-rendering: pixelated;
+  }
+  .result-placeholder { color: #5a5a5a; font-size: 0.9rem; text-align: center; padding: 20px; }
+  .spinner {
+    width: 42px; height: 42px;
+    border: 4px solid rgba(255,255,255,0.25);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .status { margin-top: 10px; font-size: 0.85rem; min-height: 1.2em; }
+  .status.error { color: #ff7b72; white-space: pre-wrap; }
+  .status.ok { color: #7bd88f; }
+  .result-actions { display: flex; gap: 10px; margin-top: 12px; }
+  .result-actions button { flex: 1; }
+  details { margin-top: 12px; }
+  summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; user-select: none; }
+  .full-col { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚔️ 던전앤파이터 <span>도트 캐릭터</span> 변환기</h1>
+  <p>사진을 업로드하면 던파 플레이어 아바타 화풍의 도트 캐릭터로 변환합니다</p>
+</header>
+
+<main>
+  <!-- 좌측: 입력 -->
+  <section class="panel">
+    <h2><span class="step-num">1</span> 사진 업로드</h2>
+    <div class="dropzone" id="dropzone">
+      <div id="dropzoneInner">📷 클릭하거나 사진을 드래그하세요<br><small>(전신 사진 권장 · JPG / PNG / WebP)</small></div>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" hidden>
+
+    <h2 style="margin-top:20px;"><span class="step-num">2</span> API 설정</h2>
+    <div class="row">
+      <div>
+        <label>이미지 생성 모델</label>
+        <select id="provider">
+          <option value="gemini">Google Gemini (나노바나나) — 추천</option>
+          <option value="openai">OpenAI gpt-image-1</option>
+        </select>
+      </div>
+    </div>
+    <label>API 키</label>
+    <input type="password" id="apiKey" placeholder="API 키를 입력하세요 (브라우저에만 저장됩니다)">
+    <p class="hint" id="keyHint"></p>
+
+    <details>
+      <summary>🎨 변환 프롬프트 보기 / 수정</summary>
+      <textarea id="promptText" spellcheck="false"></textarea>
+      <button class="secondary btn-full" id="copyPrompt">📋 프롬프트 복사 (ChatGPT·Gemini 웹에서 직접 사용)</button>
+    </details>
+
+    <button class="btn-full" id="generateBtn" disabled>✨ 던파 도트로 변환하기</button>
+    <div class="status" id="status"></div>
+  </section>
+
+  <!-- 우측: 결과 -->
+  <section class="panel">
+    <h2><span class="step-num">3</span> 변환 결과</h2>
+    <div class="result-box" id="resultBox">
+      <div class="result-placeholder" id="resultPlaceholder">변환된 던파 도트 캐릭터가<br>여기에 표시됩니다</div>
+    </div>
+    <div class="result-actions" id="resultActions" style="display:none;">
+      <button id="downloadBtn">⬇️ PNG 저장</button>
+      <button class="secondary" id="retryBtn">🔄 다시 생성</button>
+    </div>
+  </section>
+
+  <section class="panel full-col">
+    <h2>ℹ️ 사용 방법</h2>
+    <p class="hint">
+      ① 변환할 인물/캐릭터의 <b>전신 사진</b>을 업로드합니다. ② 사용할 이미지 생성 API의 키를 입력합니다
+      (Gemini 키는 <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a>,
+      OpenAI 키는 <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI Platform</a>에서 무료/유료 발급).
+      ③ [변환하기]를 누르면 던전앤파이터 아바타 스프라이트 화풍(6.5~7등신 사실 비례, 수작업 도트, 셀 셰이딩, 회색 배경)으로 재해석된 캐릭터가 생성됩니다.<br>
+      API 키가 없다면 <b>[프롬프트 복사]</b> 버튼으로 프롬프트를 복사한 뒤, ChatGPT나 Gemini 웹사이트에 사진과 함께 붙여넣어도 동일한 결과를 얻을 수 있습니다.
+      API 키는 서버로 전송되지 않고 사용자의 브라우저(localStorage)에만 저장됩니다.
+    </p>
+  </section>
+</main>
+
+<script>
+/* ===================== 던파 화풍 변환 프롬프트 ===================== */
+const DNF_PROMPT = `당신은 실사 인물, 애니메이션, 게임, 만화 캐릭터를 던전앤파이터(Dungeon & Fighter, DNF) 플레이어 아바타 스프라이트로 변환하는 전문 픽셀 아트 디렉터다.
+
+[작업]
+1. 첨부된 이미지 속 인물(또는 캐릭터)의 대표 외형 특징을 분석한다.
+* 헤어스타일 / 머리색 / 눈 색상
+* 대표 의상 / 액세서리 / 무기 / 상징 요소 / 대표 색상
+* 체형 (근육질 / 슬림 / 표준)
+2. 위 특징을 유지하면서 던전앤파이터 플레이어 캐릭터 아바타 구조로 재해석한다.
+3. 결과물은 일반 픽셀아트가 아니라 실제 던전앤파이터 게임 클라이언트에서 추출한 플레이어 캐릭터 스프라이트를 확대한 것처럼 보여야 한다. 2000년대 한국 벨트스크롤 액션 MMORPG(네오플 제작)의 수작업 도트 감성이 핵심이다.
+
+────────────────────
+[DNF PLAYER FRAME SPEC]
+메이플스토리 같은 SD/치비 비율이 아니라 사실적인 인체 비례의 도트 캐릭터다.
+
+비율 (가장 중요)
+* 6.5~7.5등신의 사실적 성인 인체 비례
+* 머리: 전체 높이의 13~15% / 몸통: 약 35% / 다리: 약 50% (길고 곧게)
+* SD / 치비 / 2등신 절대 금지
+* 남성: 넓은 어깨와 뚜렷한 근육 실루엣, 여성: 잘록한 허리의 늘씬한 장신 실루엣
+
+시점
+* 벨트스크롤 액션 게임의 마을 대기 시점
+* 정면에서 아주 살짝 비스듬한 각도 (10~20도)
+* 눈높이 카메라, 원근 왜곡 없는 평면적 2D 스프라이트
+
+얼굴
+* 스프라이트 크기에 맞는 최소한의 도트 표현
+* 눈은 2~4픽셀의 작고 날카로운 형태, 애니메이션풍 진한 눈매
+* 코는 1~2픽셀 음영으로만 암시, 입은 거의 생략
+* 얼굴 디테일보다 전체 실루엣과 헤어가 인상을 결정
+
+헤어
+* 캐릭터 정체성의 핵심
+* 애니메이션풍의 뾰족하고 결이 굵은 머리카락 덩어리, 명확한 실루엣
+* 큰 덩어리 단위 셰이딩 + 상단 하이라이트, 한올한올 표현 금지
+
+신체 / 포즈
+* 자연스러운 직립 대기 자세 (Idle Standing / Town Pose), 양발 지면 접지
+* 점프 금지, 전투 포즈 금지, 과장된 액션 금지
+
+장비 레이어 (던파 아바타 슬롯): 머리 / 모자 / 얼굴 / 상의 / 하의 / 신발 / 허리 / 피부 / 무기
+* 원본에 무기가 있으면 손에 들거나 등에 멘다
+* 장비와 헤어가 캐릭터 개성을 결정해야 함
+
+────────────────────
+[PIXEL RENDERING SPEC]
+금지: 고해상도 픽셀아트, Ultra Detailed Pixel Art, HD Pixel Art, Fine-Grained Pixel Art, 부드러운 그라데이션
+
+목표: 세로 약 120~160px 게임 스프라이트를 계단현상이 보이게 확대한 느낌
+* Low-resolution Korean MMORPG sprite (Dungeon Fighter Online style)
+* Enlarged in-game sprite, grid-aligned chunky pixel structure
+* Hand-pixeled look (2000s Neople dot art)
+* Dark 1px outline (검은색~짙은 갈색, 부분적 선택적 아웃라인)
+* Limited color palette (재질당 3~5톤), cel-shading flat pixel clusters
+* 광원 좌상단 고정, 강한 명암 대비, 피부는 따뜻한 톤 + 진한 갈색 음영
+* Minimal dithering / No smooth gradients / No airbrush / No anti-aliasing
+
+────────────────────
+[출력 조건]
+Canvas 1080x1080 정사각형 / 배경은 순수 단색 회색 #808080 (던파 아바타 시트 배경)
+캐릭터 1명만, 전신(머리끝~발끝), 중앙 배치, 캔버스 높이의 약 80%
+잘림 금지 / 추가 인물·펫·배경·바닥·텍스트·로고·워터마크·UI 금지 (옅은 타원 그림자 1개만 허용)
+
+────────────────────
+[절대 금지]
+MapleStory Style (치비/SD 비율 — 가장 흔한 실패 원인), Chibi Proportions, 2-Head Proportions, Big Head Small Body, Pokemon Style, Terraria Style, Stardew Valley Style, Metal Slug Style, Octopath Traveler Style, JRPG Battle Sprite, Western Cartoon, Disney Style, Realistic, Semi Realistic, 3D Render, Illustration, Concept Art, Splash Art, Anime Illustration, Digital Painting, Cinematic Lighting, Ultra Detailed Sprite, High Definition Pixel Art, Smooth Gradient Shading, Airbrush Shading, Soft Glow Effects
+
+────────────────────
+Create the person or character shown in the uploaded image as a true Dungeon & Fighter (DNF / Dungeon Fighter Online) player avatar sprite.
+The result must look like an actual DNF player character sprite ripped from the game client and enlarged — realistic 7-head-tall proportions, hand-pixeled Neople dot art, dark outlines, cel-shaded pixel clusters — converted from the uploaded subject, not a generic pixel-art character and absolutely NOT a chibi/MapleStory-style character.`;
+
+/* ===================== 상태 ===================== */
+const $ = id => document.getElementById(id);
+let uploadedImage = null; // { base64, mimeType, dataUrl }
+let resultDataUrl = null;
+
+$('promptText').value = DNF_PROMPT;
+
+/* ===================== 업로드 ===================== */
+const dropzone = $('dropzone');
+dropzone.addEventListener('click', () => $('fileInput').click());
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropzone.classList.remove('dragover');
+  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+$('fileInput').addEventListener('change', e => {
+  if (e.target.files[0]) handleFile(e.target.files[0]);
+});
+
+function handleFile(file) {
+  if (!file.type.startsWith('image/')) { setStatus('이미지 파일만 업로드할 수 있습니다.', 'error'); return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const dataUrl = reader.result;
+    uploadedImage = {
+      dataUrl,
+      mimeType: file.type,
+      base64: dataUrl.split(',')[1],
+      file
+    };
+    $('dropzoneInner').innerHTML = '';
+    const img = document.createElement('img');
+    img.src = dataUrl;
+    $('dropzoneInner').appendChild(img);
+    const p = document.createElement('small');
+    p.textContent = '다른 사진으로 바꾸려면 클릭';
+    $('dropzoneInner').appendChild(p);
+    updateGenerateBtn();
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ===================== API 키 저장 ===================== */
+const KEY_STORE = 'dnf-converter-keys';
+function loadKeys() { try { return JSON.parse(localStorage.getItem(KEY_STORE)) || {}; } catch { return {}; } }
+function saveKey(provider, key) {
+  const keys = loadKeys();
+  keys[provider] = key;
+  localStorage.setItem(KEY_STORE, JSON.stringify(keys));
+}
+function refreshKeyField() {
+  const p = $('provider').value;
+  $('apiKey').value = loadKeys()[p] || '';
+  $('keyHint').innerHTML = p === 'gemini'
+    ? '🔑 <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a>에서 무료 발급 · 모델: gemini-2.5-flash-image'
+    : '🔑 <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI Platform</a>에서 발급 · 모델: gpt-image-1 (Organization 인증 필요)';
+  updateGenerateBtn();
+}
+$('provider').addEventListener('change', refreshKeyField);
+$('apiKey').addEventListener('input', () => {
+  saveKey($('provider').value, $('apiKey').value.trim());
+  updateGenerateBtn();
+});
+refreshKeyField();
+
+function updateGenerateBtn() {
+  $('generateBtn').disabled = !(uploadedImage && $('apiKey').value.trim());
+}
+
+/* ===================== 프롬프트 복사 ===================== */
+$('copyPrompt').addEventListener('click', async () => {
+  await navigator.clipboard.writeText($('promptText').value);
+  setStatus('프롬프트가 복사되었습니다. ChatGPT/Gemini에 사진과 함께 붙여넣으세요.', 'ok');
+});
+
+/* ===================== 생성 ===================== */
+$('generateBtn').addEventListener('click', generate);
+$('retryBtn').addEventListener('click', generate);
+
+async function generate() {
+  const provider = $('provider').value;
+  const apiKey = $('apiKey').value.trim();
+  const prompt = $('promptText').value;
+  if (!uploadedImage || !apiKey) return;
+
+  $('generateBtn').disabled = true;
+  $('resultActions').style.display = 'none';
+  $('resultBox').innerHTML = '<div class="spinner"></div>';
+  setStatus('던파 도트 캐릭터를 생성하는 중… (10~40초 소요)', '');
+
+  try {
+    const dataUrl = provider === 'gemini'
+      ? await generateGemini(apiKey, prompt)
+      : await generateOpenAI(apiKey, prompt);
+    resultDataUrl = dataUrl;
+    $('resultBox').innerHTML = '';
+    const img = document.createElement('img');
+    img.src = dataUrl;
+    $('resultBox').appendChild(img);
+    $('resultActions').style.display = 'flex';
+    setStatus('변환 완료! 마음에 들지 않으면 [다시 생성]을 눌러보세요.', 'ok');
+  } catch (err) {
+    $('resultBox').innerHTML = '<div class="result-placeholder">생성 실패 😢</div>';
+    setStatus('오류: ' + err.message, 'error');
+  } finally {
+    $('generateBtn').disabled = false;
+    updateGenerateBtn();
+  }
+}
+
+/* --- Google Gemini (이미지 편집/생성) --- */
+async function generateGemini(apiKey, prompt) {
+  const model = 'gemini-2.5-flash-image';
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          parts: [
+            { text: prompt },
+            { inline_data: { mime_type: uploadedImage.mimeType, data: uploadedImage.base64 } }
+          ]
+        }],
+        generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
+      })
+    }
+  );
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.error?.message || `HTTP ${res.status}`);
+  const parts = json.candidates?.[0]?.content?.parts || [];
+  const imgPart = parts.find(p => p.inlineData || p.inline_data);
+  if (!imgPart) {
+    const textPart = parts.find(p => p.text);
+    throw new Error('이미지가 반환되지 않았습니다. ' + (textPart ? textPart.text.slice(0, 200) : '다시 시도해 주세요.'));
+  }
+  const d = imgPart.inlineData || imgPart.inline_data;
+  return `data:${d.mimeType || d.mime_type || 'image/png'};base64,${d.data}`;
+}
+
+/* --- OpenAI gpt-image-1 (images/edits) --- */
+async function generateOpenAI(apiKey, prompt) {
+  const form = new FormData();
+  form.append('model', 'gpt-image-1');
+  form.append('image', uploadedImage.file);
+  form.append('prompt', prompt.slice(0, 32000));
+  form.append('size', '1024x1024');
+  const res = await fetch('https://api.openai.com/v1/images/edits', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${apiKey}` },
+    body: form
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.error?.message || `HTTP ${res.status}`);
+  const b64 = json.data?.[0]?.b64_json;
+  if (!b64) throw new Error('이미지가 반환되지 않았습니다.');
+  return `data:image/png;base64,${b64}`;
+}
+
+/* ===================== 다운로드 ===================== */
+$('downloadBtn').addEventListener('click', () => {
+  if (!resultDataUrl) return;
+  const a = document.createElement('a');
+  a.href = resultDataUrl;
+  a.download = 'dnf-avatar-sprite.png';
+  a.click();
+});
+
+function setStatus(msg, type) {
+  const el = $('status');
+  el.textContent = msg;
+  el.className = 'status ' + (type || '');
+}
+</script>
+</body>
+</html>
