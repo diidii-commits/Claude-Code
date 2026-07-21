@@ -11,6 +11,7 @@
   <meta name="twitter:card" content="summary" />
   <link rel="preconnect" href="https://cdn.df.nexon.com" crossorigin />
   <link rel="preconnect" href="https://resource.df.nexon.com" crossorigin />
+  <script>document.documentElement.className += " js";</script>
 </head>
 <body>
 <style>
@@ -28,43 +29,69 @@
   @font-face { font-family: 'SUIT'; font-weight: 800; font-display: swap; src: url('https://resource.df.nexon.com/ui/css/font/SUIT-ExtraBold.woff2') format('woff2'); }
 
   :root {
-    --bg: #070b14;
-    --bg-2: #0b1120;
-    --panel: #101a2e;
-    --panel-deep: #0b1322;
-    --line: #22304a;
-    --line-soft: #1a2740;
-    --ink: #eaf1ff;
-    --muted: #8b97b3;
-    --muted-2: #5f6c88;
-    --gold: #e6bb5e;
+    --bg: #08080d;
+    --bg-2: #0c0d16;
+    --panel: #14141f;
+    --panel-deep: #0e0e17;
+    --line: #29293a;
+    --line-soft: #1e1e2b;
+    --ink: #f1edff;
+    --muted: #9a93ad;
+    --muted-2: #6a6380;
+    --gold: #e8bd63;
+    --gold-bright: #f7e4ad;
     --gold-deep: #b98f37;
-    --gold-soft: rgba(230,187,94,0.08);
+    --gold-soft: rgba(232,189,99,0.08);
+    --azure: #3f9bff;
     --cyan: #5fd6e6;
     --rare: #b07bff;
     --unique: #ff6fd6;
     --legendary: #ff9a3c;
     --epic: #ffcf47;
     --taecho: #7ff5d4;
+    --spring: cubic-bezier(0.22, 1, 0.36, 1);
+    --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
     background:
-      radial-gradient(1100px 480px at 50% -8%, rgba(230,187,94,0.10), transparent 62%),
-      radial-gradient(900px 620px at 84% 112%, rgba(95,214,230,0.07), transparent 55%),
+      radial-gradient(1200px 520px at 50% -12%, rgba(232,189,99,0.11), transparent 60%),
+      radial-gradient(1000px 700px at 82% 120%, rgba(63,155,255,0.09), transparent 58%),
       linear-gradient(180deg, var(--bg), var(--bg-2));
+    background-attachment: fixed;
     color: var(--ink);
     font-family: 'SUIT', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
     line-height: 1.65;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
-  main { max-width: 560px; margin: 0 auto; padding: 42px 20px 66px; }
+  main { max-width: 560px; margin: 0 auto; padding: 30px 20px 66px; }
   .display { font-family: 'DNFForgedBlade', 'SUIT', sans-serif; font-weight: 700; }
 
+  /* ── 반투명 상단 브랜드 바 (materialize) ─── */
+  .brandbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(10,10,18,0.55);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(160%);
+    border-bottom: 1px solid rgba(232,189,99,0.14);
+  }
+  .brandbar .in {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 11px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brandbar .bt { font-family: 'DNFForgedBlade', 'SUIT', sans-serif; font-size: 15px; letter-spacing: 0.02em; color: var(--gold); }
+  .brandbar .bd { font-size: 11px; letter-spacing: 0.18em; color: var(--muted-2); font-variant-numeric: tabular-nums; }
+
   /* ── 마스트헤드 ─────────────────────────── */
-  .masthead { text-align: center; margin-bottom: 34px; }
+  .masthead { text-align: center; margin: 26px 0 34px; }
   .eyebrow {
     display: inline-block;
     font-size: 11px;
@@ -80,12 +107,12 @@
     margin: 0 0 12px;
     font-size: clamp(38px, 10.5vw, 54px);
     font-weight: 700;
-    letter-spacing: 0.01em;
-    line-height: 1.1;
+    letter-spacing: -0.01em;
+    line-height: 1.08;
     text-wrap: balance;
   }
   h1 .accent {
-    background: linear-gradient(100deg, var(--gold) 18%, #f6e2ad 50%, var(--gold) 82%);
+    background: linear-gradient(100deg, var(--gold) 16%, var(--gold-bright) 50%, var(--gold) 84%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -96,9 +123,9 @@
   .gate {
     background: linear-gradient(180deg, var(--panel), var(--panel-deep));
     border: 1px solid var(--line);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 28px 24px 22px;
-    box-shadow: 0 18px 50px -30px rgba(0,0,0,0.9);
+    box-shadow: 0 22px 60px -34px rgba(0,0,0,0.95);
   }
   .gate label {
     display: block;
@@ -112,38 +139,41 @@
   .gate input {
     flex: 1;
     min-width: 0;
-    background: #060a12;
+    background: #050509;
     border: 1px solid var(--line);
-    border-radius: 6px;
+    border-radius: 8px;
     color: var(--ink);
     font: inherit;
     font-size: 16px;
     padding: 13px 15px;
+    transition: border-color 0.2s var(--spring), box-shadow 0.2s var(--spring);
   }
-  .gate input:focus { outline: 2px solid var(--gold-deep); outline-offset: 1px; border-color: var(--gold-deep); }
-  .gate input::placeholder { color: #46506b; }
+  .gate input:focus { outline: none; border-color: var(--gold-deep); box-shadow: 0 0 0 3px rgba(232,189,99,0.16); }
+  .gate input::placeholder { color: #45455e; }
   .btn {
     font-family: 'SUIT', sans-serif;
     font-weight: 800;
     font-size: 15px;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 13px 20px;
     cursor: pointer;
     border: 1px solid var(--gold-deep);
     background: linear-gradient(180deg, #efc873, #c1963c);
     color: #201703;
     white-space: nowrap;
-    transition: filter 0.15s;
+    transition: transform 0.14s var(--spring), filter 0.14s ease, box-shadow 0.2s ease;
   }
-  .btn:hover { filter: brightness(1.08); }
+  .btn:hover { filter: brightness(1.07); box-shadow: 0 8px 22px -10px rgba(232,189,99,0.6); }
+  .btn:active { transform: scale(0.97); }
   .btn:focus-visible { outline: 2px solid var(--epic); outline-offset: 2px; }
   .btn.ghost {
     background: transparent;
     color: var(--muted);
     border-color: var(--line);
     font-weight: 600;
+    box-shadow: none;
   }
-  .btn.ghost:hover { color: var(--ink); border-color: var(--gold-deep); filter: none; }
+  .btn.ghost:hover { color: var(--ink); border-color: var(--gold-deep); filter: none; box-shadow: none; }
   .gate .hint { margin: 15px 0 0; font-size: 12.5px; color: var(--muted); }
 
   /* ── 항아리 개봉 연출 무대 ───────────────── */
@@ -175,7 +205,7 @@
     width: 30px; height: 30px;
     border-radius: 50%;
     transform: translate(-50%, -50%) scale(0);
-    background: radial-gradient(circle, #fff 0%, #ffe9b0 22%, rgba(230,187,94,0.55) 45%, rgba(95,214,230,0.15) 65%, transparent 78%);
+    background: radial-gradient(circle, #fff 0%, #ffe9b0 22%, rgba(232,189,99,0.55) 45%, rgba(63,155,255,0.16) 65%, transparent 78%);
     pointer-events: none;
   }
   .jar-wrap {
@@ -189,7 +219,7 @@
     width: 150px; height: 150px;
     transform: translateX(-50%);
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(230,187,94,0.45), rgba(95,214,230,0.12) 55%, transparent 72%);
+    background: radial-gradient(circle, rgba(232,189,99,0.45), rgba(63,155,255,0.14) 55%, transparent 72%);
     filter: blur(4px);
   }
   .jar-svg { position: relative; width: 178px; height: auto; }
@@ -199,7 +229,7 @@
     .stage.charging .jar-svg { animation: jarShake 0.62s ease-in-out; }
     .stage.charging .jar-glow { animation: glowPulse 0.62s ease-in-out; }
     .stage.pop .jar-wrap { animation: jarFade 0.5s ease-out 0.12s forwards; }
-    .stage.pop .jar-lid { animation: lidPop 0.5s cubic-bezier(0.3,0.7,0.3,1) forwards; }
+    .stage.pop .jar-lid { animation: lidPop 0.5s var(--spring-bounce) forwards; }
     .stage.pop .flash { animation: flashBurst 0.62s ease-out forwards; }
     @keyframes jarShake {
       0%,100% { transform: translateX(0) rotate(0); }
@@ -224,16 +254,16 @@
   /* ── 결과: 아이템 툴팁 카드 ─────────────── */
   .card {
     position: relative;
-    background: linear-gradient(180deg, #101a2d, #0a1220) padding-box;
+    background: linear-gradient(180deg, #14141f, #0b0b14) padding-box;
     border: 2px solid var(--tier, var(--gold));
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 26px 24px 22px;
-    box-shadow: 0 0 36px -8px color-mix(in srgb, var(--tier, var(--gold)) 55%, transparent);
+    box-shadow: 0 0 38px -8px color-mix(in srgb, var(--tier, var(--gold)) 52%, transparent), 0 28px 60px -34px rgba(0,0,0,0.9);
   }
   .card.taecho {
     border-color: transparent;
     background:
-      linear-gradient(180deg, #101a2d, #0a1220) padding-box,
+      linear-gradient(180deg, #14141f, #0b0b14) padding-box,
       linear-gradient(120deg, #7ff5d4, #9db7ff, #f6c6ff, #7ff5d4) border-box;
   }
   .card::before, .card::after {
@@ -248,15 +278,18 @@
   .card::after { bottom: 7px; right: 7px; border-width: 0 2px 2px 0; }
 
   @media (prefers-reduced-motion: no-preference) {
-    .reveal .card { animation: dropIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards; }
+    .reveal .card { animation: matIn 0.55s var(--spring) backwards; }
     .card.taecho { animation: taechoPulse 2.6s ease-in-out infinite; }
-    .reveal .card.taecho { animation: dropIn 0.5s cubic-bezier(0.2,0.9,0.3,1.2) backwards, taechoPulse 2.6s ease-in-out 0.6s infinite; }
-    @keyframes dropIn { from { opacity: 0; transform: translateY(-14px) scale(0.98); } to { opacity: 1; transform: none; } }
+    .reveal .card.taecho { animation: matIn 0.55s var(--spring) backwards, taechoPulse 2.6s ease-in-out 0.7s infinite; }
+    @keyframes matIn { from { opacity: 0; transform: translateY(-12px) scale(0.985); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
     @keyframes taechoPulse {
       0%, 100% { box-shadow: 0 0 30px -6px rgba(127,245,212,0.55); }
       50% { box-shadow: 0 0 46px -2px rgba(157,183,255,0.65); }
     }
+    /* 카드 내부 섹션 순차 등장 */
+    .reveal .card > .rvi { animation: rviUp 0.5s var(--spring) backwards; }
   }
+  @keyframes rviUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
   .card-meta {
     display: flex;
@@ -270,7 +303,7 @@
     font-family: 'DNFForgedBlade', 'SUIT', sans-serif;
     font-size: clamp(25px, 6.6vw, 31px);
     font-weight: 700;
-    letter-spacing: 0.005em;
+    letter-spacing: -0.005em;
     color: var(--tier, var(--gold));
     margin: 0 0 6px;
     line-height: 1.22;
@@ -284,7 +317,24 @@
   }
   .tier-line { margin: 0 0 18px; font-size: 14.5px; color: var(--ink); }
 
-  .divider { border: 0; border-top: 1px dashed var(--line); margin: 18px 0; }
+  /* 금장 장식 구분선 (중앙 마름모) */
+  .divider {
+    border: 0;
+    height: 12px;
+    margin: 18px 0;
+    background:
+      linear-gradient(90deg, transparent, var(--line) 15%, var(--line) 85%, transparent) center/100% 1px no-repeat;
+    position: relative;
+  }
+  .divider::after {
+    content: "";
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 6px; height: 6px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background: var(--gold-deep);
+    box-shadow: 0 0 0 3px var(--panel-deep);
+  }
 
   .sec-label {
     font-size: 11px;
@@ -297,7 +347,7 @@
     font-family: 'DNFForgedBlade', 'SUIT', sans-serif;
     font-size: 33px;
     font-weight: 700;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.005em;
     color: var(--ink);
     line-height: 1.2;
   }
@@ -324,9 +374,11 @@
     font-size: 30px;
     font-weight: 700;
     color: var(--ink);
+    font-variant-numeric: tabular-nums;
   }
   .pct small { font-size: 15px; color: var(--muted); font-weight: 700; font-family: 'SUIT', sans-serif; }
   .pct-sub { font-size: 12.5px; color: var(--muted-2); margin: 2px 0 6px; }
+  .num { font-variant-numeric: tabular-nums; }
 
   .mini { margin: 4px 0 0; }
   .mini .m { padding: 11px 0; border-top: 1px solid var(--line-soft); }
@@ -341,7 +393,7 @@
     padding: 14px 16px;
     background: var(--gold-soft);
     border-left: 3px solid var(--gold-deep);
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 8px 8px 0;
     font-size: 14px;
     color: var(--ink);
   }
@@ -357,15 +409,17 @@
     left: 50%;
     bottom: 28px;
     transform: translateX(-50%) translateY(8px);
-    background: #16203a;
+    background: rgba(22,22,36,0.92);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     border: 1px solid var(--gold-deep);
     color: var(--ink);
     font-size: 14px;
     padding: 11px 18px;
-    border-radius: 6px;
+    border-radius: 8px;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.25s, transform 0.25s;
+    transition: opacity 0.25s, transform 0.25s var(--spring);
     z-index: 50;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -378,17 +432,33 @@
     line-height: 1.75;
   }
   footer p { margin: 4px 0; }
+
+  /* ── 스크롤/로드 리빌 (JS 있을 때만 숨김) ── */
+  html.js .rv { opacity: 0; transform: translateY(16px); }
+  html.js .rv.in { opacity: 1; transform: none; transition: opacity 0.6s ease, transform 0.7s var(--spring); }
+  @media (prefers-reduced-motion: reduce) {
+    html.js .rv { opacity: 1 !important; transform: none !important; }
+    .reveal .card, .reveal .card > .rvi { animation: none !important; }
+  }
+
   [hidden] { display: none !important; }
 </style>
 
+<div class="brandbar rv" id="brandbar">
+  <div class="in">
+    <span class="bt">던파운세</span>
+    <span class="bd" id="brandDate">ARAD DAILY ORACLE</span>
+  </div>
+</div>
+
 <main>
   <header class="masthead">
-    <span class="eyebrow">ARAD DAILY ORACLE</span>
-    <h1>오늘의 <span class="accent">던파운세</span></h1>
-    <p>모험단명을 넣으면 오늘 하루 아라드의 기운을 감정해 드려요.<br>같은 모험단은 자정까지 같은 결과, 자정(KST)이 지나면 새로 바뀝니다.</p>
+    <span class="eyebrow rv">ARAD DAILY ORACLE</span>
+    <h1 class="rv">오늘의 <span class="accent">던파운세</span></h1>
+    <p class="rv">모험단명을 넣으면 오늘 하루 아라드의 기운을 감정해 드려요.<br>같은 모험단은 자정까지 같은 결과, 자정(KST)이 지나면 새로 바뀝니다.</p>
   </header>
 
-  <section class="gate" id="gate">
+  <section class="gate rv" id="gate">
     <label for="advName">모험단명 (또는 캐릭터명)</label>
     <div class="gate-row">
       <input id="advName" type="text" maxlength="20" placeholder="예) 잠수함패치" autocomplete="off" />
@@ -405,9 +475,9 @@
         <svg class="jar-svg" viewBox="0 0 200 220" aria-hidden="true">
           <defs>
             <linearGradient id="jarBody" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#22304a"/>
-              <stop offset="0.5" stop-color="#151f36"/>
-              <stop offset="1" stop-color="#0c1424"/>
+              <stop offset="0" stop-color="#2a2a3c"/>
+              <stop offset="0.5" stop-color="#181826"/>
+              <stop offset="1" stop-color="#0c0c16"/>
             </linearGradient>
             <linearGradient id="jarGold" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stop-color="#f4d488"/>
@@ -415,8 +485,8 @@
             </linearGradient>
             <radialGradient id="jarCore" cx="0.5" cy="0.5" r="0.5">
               <stop offset="0" stop-color="#fff3cf"/>
-              <stop offset="0.5" stop-color="#e6bb5e"/>
-              <stop offset="1" stop-color="#5fd6e6" stop-opacity="0"/>
+              <stop offset="0.5" stop-color="#e8bd63"/>
+              <stop offset="1" stop-color="#3f9bff" stop-opacity="0"/>
             </radialGradient>
           </defs>
           <!-- 본체 -->
@@ -670,6 +740,7 @@
   var input = document.getElementById("advName");
   var toast = document.getElementById("toast");
   var toastTimer = null;
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function showToast(msg) {
     toast.textContent = msg;
@@ -678,39 +749,69 @@
     toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 2200);
   }
 
+  /* 숫자 카운트업 (Apple식 값 애니메이션, reduced-motion이면 즉시) */
+  function countUp(el) {
+    var to = parseInt(el.getAttribute("data-to"), 10) || 0;
+    if (reduceMotion) { el.textContent = String(to); return; }
+    var dur = 700, start = null, done = false;
+    function finish() { if (!done) { done = true; el.textContent = String(to); } }
+    function frame(ts) {
+      if (done) return;
+      if (start === null) start = ts;
+      var t = Math.min(1, (ts - start) / dur);
+      var eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = String(Math.round(to * eased));
+      if (t < 1) requestAnimationFrame(frame);
+      else finish();
+    }
+    requestAnimationFrame(frame);
+    setTimeout(finish, dur + 250); // 탭이 백그라운드라 rAF가 멈춰도 최종값은 보장
+  }
+
+  function runCardEntrance() {
+    // 내부 섹션 순차 등장 딜레이
+    if (!reduceMotion) {
+      var kids = card.querySelectorAll(".rvi");
+      for (var i = 0; i < kids.length; i++) kids[i].style.animationDelay = (0.05 + i * 0.06) + "s";
+    }
+    // 카운트업 대상
+    var nums = card.querySelectorAll(".num[data-to]");
+    for (var j = 0; j < nums.length; j++) countUp(nums[j]);
+  }
+
   function render(f) {
     current = f;
     card.style.setProperty("--tier", f.tier.color);
     card.classList.toggle("taecho", f.tier.key === "taecho");
     card.innerHTML =
-      '<div class="card-meta"><span>' + kstDateLabel() + '</span><span>모험단 「' + esc(f.name) + '」</span></div>' +
-      '<h2 class="tier-name">[' + f.tier.name + '] 오늘의 아라드 운세</h2>' +
-      '<p class="tier-line">' + f.tier.line + '</p>' +
+      '<div class="card-meta rvi"><span>' + kstDateLabel() + '</span><span>모험단 「' + esc(f.name) + '」</span></div>' +
+      '<h2 class="tier-name rvi">[' + f.tier.name + '] 오늘의 아라드 운세</h2>' +
+      '<p class="tier-line rvi">' + f.tier.line + '</p>' +
       '<hr class="divider" />' +
-      '<p class="sec-label">오늘의 명당 채널</p>' +
-      '<div class="channel-big"><span class="region">' + esc(f.region) + '</span> CH.' + f.channel + '</div>' +
-      '<p class="flavor"><strong>' + f.chFlavor + '</strong><br>추천 시간대 ' + f.time[0] + ', ' + f.time[1] + '</p>' +
+      '<div class="rvi"><p class="sec-label">오늘의 명당 채널</p>' +
+      '<div class="channel-big"><span class="region">' + esc(f.region) + '</span> CH.<span class="num" data-to="' + f.channel + '">0</span></div>' +
+      '<p class="flavor"><strong>' + f.chFlavor + '</strong><br>추천 시간대 ' + f.time[0] + ', ' + f.time[1] + '</p></div>' +
       '<hr class="divider" />' +
-      '<p class="sec-label">강화소 기상도</p>' +
+      '<div class="rvi"><p class="sec-label">강화소 기상도</p>' +
       '<div class="stat-row"><span class="name">장비 증폭운</span>' + starHtml(f.amp) + '</div>' +
       '<p class="stat-comment">' + AMP[f.amp - 1] + '</p>' +
       '<div class="stat-row"><span class="name">무기 강화운</span>' + starHtml(f.reinf) + '</div>' +
       '<p class="stat-comment">' + REINF[f.reinf - 1] + '</p>' +
       '<div class="stat-row"><span class="name">잠긴 상자 개봉운</span>' + starHtml(f.lock) + '</div>' +
-      '<p class="stat-comment">' + LOCK[f.lock - 1] + '</p>' +
+      '<p class="stat-comment">' + LOCK[f.lock - 1] + '</p></div>' +
       '<hr class="divider" />' +
-      '<p class="sec-label">오늘의 파티 운</p>' +
-      '<div class="pct">' + f.party + '<small>%</small></div>' +
+      '<div class="rvi"><p class="sec-label">오늘의 파티 운</p>' +
+      '<div class="pct"><span class="num" data-to="' + f.party + '">0</span><small>%</small></div>' +
       '<p class="pct-sub">파티 잡고 던전 갈 때 오늘의 합</p>' +
-      '<p class="flavor">' + f.partyComment + '</p>' +
+      '<p class="flavor">' + f.partyComment + '</p></div>' +
       '<hr class="divider" />' +
-      '<div class="mini">' +
+      '<div class="mini rvi">' +
       '<div class="m"><div class="m-head"><span class="m-label">행운의 NPC</span><span class="m-value">' + f.npc[0] + '</span></div><p class="m-note">' + f.npc[1] + '</p></div>' +
       '<div class="m"><div class="m-head"><span class="m-label">행운의 아이템</span><span class="m-value">' + f.item[0] + '</span></div><p class="m-note">' + f.item[1] + '</p></div>' +
       '<div class="m"><div class="m-head"><span class="m-label">오늘의 추천 행동</span><span class="m-value">' + f.action[0] + '</span></div><p class="m-note">' + f.action[1] + '</p></div>' +
       '</div>' +
       '<hr class="divider" />' +
-      '<blockquote class="quote">「' + f.quote[0] + '」<span class="who">' + f.quote[1] + '</span></blockquote>';
+      '<blockquote class="quote rvi">「' + f.quote[0] + '」<span class="who">' + f.quote[1] + '</span></blockquote>';
 
     nudge.innerHTML = f.tier.key === "taecho"
       ? "<b>태초 운세</b>가 떴어요. 이건 스샷 찍어서 자랑하는 게 국룰입니다."
@@ -725,7 +826,7 @@
       var h = fxCanvas.height = rect.height;
       var ctx = fxCanvas.getContext("2d");
       var cx = w / 2, cy = h / 2 + 10;
-      var colors = ["#f6e2ad", "#e6bb5e", "#fff3cf", "#5fd6e6", "#ffcf47"];
+      var colors = ["#f6e2ad", "#e8bd63", "#fff3cf", "#3f9bff", "#ffcf47"];
       var parts = [];
       for (var i = 0; i < 46; i++) {
         var ang = Math.PI * 2 * (i / 46) + (Math.random() - 0.5) * 0.5;
@@ -773,14 +874,13 @@
     wrap.classList.remove("reveal");
     void wrap.offsetWidth;
     wrap.classList.add("reveal");
+    runCardEntrance();
     wrap.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
   function playAndReveal(f) {
     render(f);
-    if (reduceMotion) { showResult(); return; }
+    if (reduceMotion) { gate.hidden = true; showResult(); return; }
     gate.hidden = true;
     wrap.hidden = true;
     stageWrap.hidden = false;
@@ -848,6 +948,35 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
+  /* ── 로드/스크롤 리빌 (graceful degradation) ── */
+  function revealAll() {
+    var els = document.querySelectorAll(".rv");
+    for (var i = 0; i < els.length; i++) els[i].classList.add("in");
+  }
+  try {
+    var brandDate = document.getElementById("brandDate");
+    if (brandDate) brandDate.textContent = kstDateLabel();
+
+    var revEls = [].slice.call(document.querySelectorAll(".rv"));
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      revealAll();
+    } else {
+      // 초기 로드 요소는 살짝 지연 스태거로 등장
+      var above = revEls;
+      above.forEach(function (el, i) {
+        el.style.transitionDelay = (i * 0.07) + "s";
+      });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
+      revEls.forEach(function (el) { io.observe(el); });
+      // 스크롤 리스너 폴백 + 안전망
+      setTimeout(revealAll, 1200);
+    }
+  } catch (e) { revealAll(); }
+
   var param = new URLSearchParams(location.search).get("adv");
   if (param && param.trim()) {
     input.value = param.trim();
@@ -855,6 +984,7 @@
     gate.hidden = true;
     wrap.hidden = false;
     wrap.classList.add("reveal");
+    runCardEntrance();
   }
 })();
 </script>

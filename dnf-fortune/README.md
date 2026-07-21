@@ -20,11 +20,23 @@
 감정 버튼을 누르면 항아리가 흔들린 뒤 빛과 파티클이 터지고(무의존 canvas) 결과 카드가 등장한다.
 `prefers-reduced-motion` 환경에서는 연출을 건너뛰고 결과가 바로 뜬다.
 
-## 디자인 (폰트)
+## 디자인 (폰트 + priestdoll 기반 리스타일)
 
 던파 공식 웹폰트를 사용한다. 헤드라인·수치는 **DNFForgedBlade(연단된 칼날)**, 본문은 **SUIT**.
 두 폰트 모두 넥슨 CDN에서 `access-control-allow-origin: *`로 서빙되어 크로스오리진 로드가 가능하고,
-`font-display: swap`으로 폰트 로드 전에도 시스템 폰트로 즉시 읽힌다. 팔레트는 다크 네이비 + 골드(보상 화면 톤).
+`font-display: swap`으로 폰트 로드 전에도 시스템 폰트로 즉시 읽힌다.
+
+레이아웃·톤은 던파 공식 이벤트 페이지 `df.nexon.com/df/pg/priestdoll`을 기준으로 맞췄다(에셋 복제 없이 스타일만 참고).
+니어블랙(`#08080d`) 시네마틱 배경 + 골드/블루(`#3f9bff`) 레이어드 글로우, 중앙 정렬 컬럼, 금장 마름모 구분선.
+
+## 애플식 모션 (apple-design 스킬 기반)
+
+미적 완성도를 위해 아래 연출을 추가. 전부 `prefers-reduced-motion`과 무JS(graceful degradation)에 대응한다.
+- 반투명 sticky 브랜드 바(`backdrop-filter` materialize)
+- 로드/스크롤 리빌: `.rv` 요소가 IntersectionObserver로 fade-up 스태거 등장(관찰 실패 시 `revealAll` 안전망)
+- 카드 등장: blur+scale materialize, 내부 섹션 순차 스태거
+- 숫자 카운트업: 채널·파티운 % (spring easing, rAF + `setTimeout` 최종값 보장 → 탭 백그라운드로 rAF가 멈춰도 값이 남음)
+- 버튼 pointer-down 피드백(`:active` scale 0.97), spring 트랜지션
 
 ## 바이럴 설계 의도
 
