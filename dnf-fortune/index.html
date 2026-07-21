@@ -258,7 +258,7 @@
     border: 2px solid var(--tier, var(--gold));
     border-radius: 10px;
     padding: 26px 24px 22px;
-    box-shadow: 0 0 38px -8px color-mix(in srgb, var(--tier, var(--gold)) 52%, transparent), 0 28px 60px -34px rgba(0,0,0,0.9);
+    box-shadow: 0 0 38px -8px color-mix(in srgb, var(--tier, var(--gold)) 52%, transparent), 0 28px 60px -34px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(232,189,99,0.20);
   }
   .card.taecho {
     border-color: transparent;
@@ -266,21 +266,35 @@
       linear-gradient(180deg, #14141f, #0b0b14) padding-box,
       linear-gradient(120deg, #7ff5d4, #9db7ff, #f6c6ff, #7ff5d4) border-box;
   }
+  /* ── 보상 프레임 장식 (priestdoll 주간 보상 단계 테두리 느낌) ── */
+  .cardframe { position: relative; }
   .card::before, .card::after {
     content: "";
     position: absolute;
-    width: 15px; height: 15px;
-    border-color: var(--tier, var(--gold));
-    border-style: solid;
-    opacity: 0.9;
+    left: 6px; right: 6px;
+    border-top: 1px solid rgba(232,189,99,0.30);
+    pointer-events: none;
   }
-  .card::before { top: 7px; left: 7px; border-width: 2px 0 0 2px; }
-  .card::after { bottom: 7px; right: 7px; border-width: 0 2px 2px 0; }
+  .card::before { top: 6px; }
+  .card::after { bottom: 6px; }
+  .corn {
+    position: absolute;
+    width: 13px; height: 13px;
+    z-index: 3;
+    transform: rotate(45deg);
+    background: linear-gradient(135deg, #f7e4ad, #b98f37);
+    box-shadow: 0 0 0 2px var(--panel-deep), 0 0 9px rgba(232,189,99,0.55);
+    pointer-events: none;
+  }
+  .corn::after { content: ""; position: absolute; inset: 4px; background: var(--panel-deep); }
+  .corn.tl { left: -6px; top: -6px; }
+  .corn.tr { right: -6px; top: -6px; }
+  .corn.bl { left: -6px; bottom: -6px; }
+  .corn.br { right: -6px; bottom: -6px; }
 
   @media (prefers-reduced-motion: no-preference) {
-    .reveal .card { animation: matIn 0.55s var(--spring) backwards; }
+    .reveal .cardframe { animation: matIn 0.55s var(--spring) backwards; }
     .card.taecho { animation: taechoPulse 2.6s ease-in-out infinite; }
-    .reveal .card.taecho { animation: matIn 0.55s var(--spring) backwards, taechoPulse 2.6s ease-in-out 0.7s infinite; }
     @keyframes matIn { from { opacity: 0; transform: translateY(-12px) scale(0.985); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
     @keyframes taechoPulse {
       0%, 100% { box-shadow: 0 0 30px -6px rgba(127,245,212,0.55); }
@@ -381,11 +395,10 @@
   .num { font-variant-numeric: tabular-nums; }
 
   .mini { margin: 4px 0 0; }
-  .mini .m { padding: 11px 0; border-top: 1px solid var(--line-soft); }
-  .mini .m:first-child { border-top: 0; }
-  .mini .m-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-  .mini .m-label { font-size: 12px; letter-spacing: 0.1em; color: var(--gold); font-weight: 700; white-space: nowrap; }
-  .mini .m-value { font-size: 16px; font-weight: 700; color: var(--ink); text-align: right; }
+  .mini .m { padding: 13px 0; border-top: 1px solid var(--line-soft); }
+  .mini .m:first-child { border-top: 0; padding-top: 2px; }
+  .mini .m-label { margin: 0 0 4px; font-size: 11px; letter-spacing: 0.18em; color: var(--gold); font-weight: 700; }
+  .mini .m-value { margin: 0; font-size: 17px; font-weight: 800; color: var(--ink); line-height: 1.35; }
   .mini .m-note { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
 
   .quote {
@@ -438,7 +451,7 @@
   html.js .rv.in { opacity: 1; transform: none; transition: opacity 0.6s ease, transform 0.7s var(--spring); }
   @media (prefers-reduced-motion: reduce) {
     html.js .rv { opacity: 1 !important; transform: none !important; }
-    .reveal .card, .reveal .card > .rvi { animation: none !important; }
+    .reveal .cardframe, .reveal .card, .reveal .card > .rvi { animation: none !important; }
   }
 
   [hidden] { display: none !important; }
@@ -513,7 +526,10 @@
   </section>
 
   <section id="resultWrap" hidden>
-    <article class="card" id="card" aria-live="polite"></article>
+    <div class="cardframe">
+      <article class="card" id="card" aria-live="polite"></article>
+      <b class="corn tl"></b><b class="corn tr"></b><b class="corn bl"></b><b class="corn br"></b>
+    </div>
     <div class="actions">
       <button class="btn" id="copyBtn" type="button">결과 복사하기</button>
       <button class="btn ghost" id="shareBtn" type="button">링크 공유</button>
@@ -623,36 +639,36 @@
     [55, "한두 번 전멸해도 놀라지 마세요. 부활 코인 넉넉히 챙기고 갑시다."],
     [75, "무난하게 클리어할 각이에요. 딜 욕심만 안 부리면 평화롭습니다."],
     [90, "트라이 없이 원트 갈 각이에요. 오늘은 당신이 버스 기사입니다."],
-    [101, "공대장 기운 충만해요. 파티원들이 당신만 믿고 따라옵니다."]
+    [101, "오늘은 파티원들이 당신만 믿고 따라오는 날이에요. 편하게 리드해도 좋습니다."]
   ];
   /* 행운의 NPC [이름, 한 줄] */
   var NPCS = [
-    ["세리아 키르민", "방에서 잠깐 멍때리다 나와도 기분 좋아지는 날이에요"],
-    ["키리", "강화 얘기 말고 그냥 눈도장만 찍고 오세요"],
-    ["칸나", "오늘은 왠지 칸나 쪽 콘텐츠가 술술 풀립니다"],
-    ["풍진", "풍진 근처에서 좋은 소식 하나 들려올 기운이에요"],
-    ["린지 로섬", "큐브 조합, 오늘은 손맛 좀 볼 수도 있어요"],
-    ["클론터", "무색 큐브 조각 모아놨다면 오늘 한번 정산해도 좋아요"]
+    ["세리아 키르민", "세리아 방에 들를 때 왠지 좋은 예감이 드는 날이에요"],
+    ["키리", "오늘은 키리랑 눈만 마주쳐도 강화가 될 것 같은 기분이에요"],
+    ["칸나", "칸나 만나러 가는 길에 좋은 일이 하나 생길지도 몰라요"],
+    ["풍진", "풍진한테 인사하고 나면 하루가 술술 풀리는 날이에요"],
+    ["린지 로섬", "린지 로섬 들러서 큐브 한 번 굴려보기 딱 좋은 날이에요"],
+    ["클론터", "모아둔 무색 큐브 조각, 오늘 클론터한테 정산하기 좋아요"]
   ];
   /* 행운의 아이템 [이름, 한 줄] */
   var ITEMS = [
-    ["무색 큐브 조각", "창고 구석에서 잊고 있던 게 튀어나올 수 있어요"],
-    ["에픽 소울", "해체하다 기대 이상으로 쌓이는 날이에요"],
-    ["재련의 기운", "오늘 재련은 생각보다 순순히 붙어줍니다"],
-    ["모순의 결정체", "아껴둔 걸 오늘 쓰면 왠지 아깝지 않을 거예요"],
-    ["골드 주머니", "경매장 시세가 당신 편으로 흘러가는 날이에요"],
-    ["세리아의 쿠키", "챙겨 먹으면 하루 종일 기분이 좋습니다"]
+    ["무색 큐브 조각", "창고 구석에 잊고 있던 게 오늘 눈에 들어올 수 있어요"],
+    ["에픽 소울", "해체하다 보면 기대보다 잘 쌓이는 날이에요"],
+    ["재련의 기운", "오늘 재련은 생각보다 잘 붙을 것 같은 기운이에요"],
+    ["모순의 결정체", "아껴두던 걸 오늘 써도 왠지 아깝지 않을 거예요"],
+    ["골드 주머니", "경매장 시세가 오늘은 당신 편으로 흘러가요"],
+    ["세리아의 쿠키", "하나 챙겨 먹고 시작하면 하루가 잘 풀려요"]
   ];
   /* 오늘의 추천 행동 [행동, 한 줄] */
   var ACTIONS = [
-    ["경매장 시세 한 번 훑어보기", "급하게 지르지 말고 오늘은 눈으로만 담아두세요"],
-    ["밀린 마법부여 싹 정리하기", "미뤄둔 거 오늘 끝내면 마음이 한결 가벼워요"],
-    ["고정팟한테 안부 톡 하나 보내기", "오늘 연락 한 통이 다음 레이드 자리를 만듭니다"],
-    ["이벤트 페이지 보상 챙기기", "은근히 놓치기 쉬운 무료 보상부터 받아두세요"],
-    ["창고 정리하면서 재료 확인하기", "잊고 있던 재료가 오늘 딱 필요해질 수 있어요"],
-    ["무리한 증폭 대신 재련부터 손보기", "오늘은 안정적으로 스펙 올리는 쪽이 이득이에요"],
-    ["명성 낮은 던전 편하게 돌기", "부담 없이 돌다 보면 기분 좋은 드랍이 옵니다"],
-    ["오늘 나온 득템 스샷 찍어두기", "자랑은 타이밍이에요. 오늘 자랑거리 하나 만들어 보세요"]
+    ["경매장 시세 훑어보기", "급하게 지르지 말고 오늘은 눈으로만 담아두세요"],
+    ["밀린 마법부여 정리하기", "미뤄둔 거 오늘 끝내면 마음이 한결 가벼워져요"],
+    ["고정팟에 안부 한번 남기기", "오늘 안부 한마디가 다음에 같이 갈 사람을 만들어요"],
+    ["이벤트 보상 챙기기", "은근히 놓치기 쉬운 무료 보상부터 받아두세요"],
+    ["창고 정리하며 재료 확인하기", "잊고 있던 재료가 오늘 딱 필요해질 수 있어요"],
+    ["증폭보다 재련부터 손보기", "오늘은 안정적으로 스펙 올리는 쪽이 이득이에요"],
+    ["명성 낮은 던전 편하게 돌기", "부담 없이 돌다 보면 기분 좋은 드랍이 와요"],
+    ["오늘 득템 스샷 찍어두기", "자랑은 타이밍이에요. 오늘 하나 만들어 보세요"]
   ];
   var QUOTES = [
     ["어서 오세요 모험가님, 오늘은 왠지 좋은 일이 생길 것 같아요", "세리아"],
@@ -792,7 +808,7 @@
       '<div class="channel-big"><span class="region">' + esc(f.region) + '</span> CH.<span class="num" data-to="' + f.channel + '">0</span></div>' +
       '<p class="flavor"><strong>' + f.chFlavor + '</strong><br>추천 시간대 ' + f.time[0] + ', ' + f.time[1] + '</p></div>' +
       '<hr class="divider" />' +
-      '<div class="rvi"><p class="sec-label">강화소 기상도</p>' +
+      '<div class="rvi"><p class="sec-label">오늘의 장비 운세</p>' +
       '<div class="stat-row"><span class="name">장비 증폭운</span>' + starHtml(f.amp) + '</div>' +
       '<p class="stat-comment">' + AMP[f.amp - 1] + '</p>' +
       '<div class="stat-row"><span class="name">무기 강화운</span>' + starHtml(f.reinf) + '</div>' +
@@ -802,13 +818,13 @@
       '<hr class="divider" />' +
       '<div class="rvi"><p class="sec-label">오늘의 파티 운</p>' +
       '<div class="pct"><span class="num" data-to="' + f.party + '">0</span><small>%</small></div>' +
-      '<p class="pct-sub">파티 잡고 던전 갈 때 오늘의 합</p>' +
+      '<p class="pct-sub">오늘의 파티원들의 합</p>' +
       '<p class="flavor">' + f.partyComment + '</p></div>' +
       '<hr class="divider" />' +
       '<div class="mini rvi">' +
-      '<div class="m"><div class="m-head"><span class="m-label">행운의 NPC</span><span class="m-value">' + f.npc[0] + '</span></div><p class="m-note">' + f.npc[1] + '</p></div>' +
-      '<div class="m"><div class="m-head"><span class="m-label">행운의 아이템</span><span class="m-value">' + f.item[0] + '</span></div><p class="m-note">' + f.item[1] + '</p></div>' +
-      '<div class="m"><div class="m-head"><span class="m-label">오늘의 추천 행동</span><span class="m-value">' + f.action[0] + '</span></div><p class="m-note">' + f.action[1] + '</p></div>' +
+      '<div class="m"><p class="m-label">행운의 NPC</p><p class="m-value">' + f.npc[0] + '</p><p class="m-note">' + f.npc[1] + '</p></div>' +
+      '<div class="m"><p class="m-label">행운의 아이템</p><p class="m-value">' + f.item[0] + '</p><p class="m-note">' + f.item[1] + '</p></div>' +
+      '<div class="m"><p class="m-label">오늘의 추천 행동</p><p class="m-value">' + f.action[0] + '</p><p class="m-note">' + f.action[1] + '</p></div>' +
       '</div>' +
       '<hr class="divider" />' +
       '<blockquote class="quote rvi">「' + f.quote[0] + '」<span class="who">' + f.quote[1] + '</span></blockquote>';
