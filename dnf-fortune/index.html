@@ -113,6 +113,7 @@
   }
   h1 .accent {
     background: linear-gradient(100deg, var(--gold) 16%, var(--gold-bright) 50%, var(--gold) 84%);
+    background-size: 220% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -432,16 +433,40 @@
   .mini .m-note { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
   .mini .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 9px; vertical-align: -2px; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3), 0 0 0 1px rgba(232,189,99,0.3), 0 0 8px -1px currentColor; }
 
-  .quote {
-    margin: 0;
-    padding: 14px 16px;
-    background: var(--gold-soft);
-    border-left: 3px solid var(--gold-deep);
-    border-radius: 0 8px 8px 0;
-    font-size: 14px;
-    color: var(--ink);
+  /* ── 오늘의 키워드(사자성어) 인장 + 총운 ── */
+  .keyword { text-align: center; }
+  .saja-plaque {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 13px 26px;
+    margin: 4px 0 0;
+    border: 1px solid rgba(232,189,99,0.35);
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(232,189,99,0.12), rgba(232,189,99,0.02));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 24px -18px rgba(232,189,99,0.6);
   }
-  .quote .who { display: block; margin-top: 6px; font-size: 12.5px; color: var(--muted); text-align: right; }
+  .saja-hanja {
+    font-family: 'DNFForgedBlade', 'SUIT', sans-serif;
+    font-size: clamp(30px, 8.5vw, 40px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    background: linear-gradient(100deg, var(--gold) 16%, var(--gold-bright) 50%, var(--gold) 84%);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .saja-read { font-size: 13px; letter-spacing: 0.24em; color: var(--muted); font-weight: 600; }
+  .saja-mean { margin: 12px 0 0; font-size: 14px; color: var(--ink); }
+  .chongun { margin: 0; font-size: 14.5px; color: var(--ink); line-height: 1.72; }
+  @media (prefers-reduced-motion: no-preference) {
+    h1 .accent { animation: goldSheen 1.6s ease-out 0.3s backwards; }
+    .reveal .saja-hanja { animation: goldSheen 1.4s ease-out 0.5s backwards; }
+    @keyframes goldSheen { from { background-position: 120% 50%; } to { background-position: 0% 50%; } }
+  }
 
   .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
   .actions .btn { flex: 1; min-width: 140px; }
@@ -609,11 +634,11 @@
 
   /* ── 콘텐츠 풀 ── */
   var TIERS = [
-    { key: "rare",      name: "레어",     color: "#b07bff", p: 0.30, line: "나쁠 것도 좋을 것도 없는 무난한 하루예요. 크게 지르지만 않으면 본전은 챙깁니다." },
-    { key: "unique",    name: "유니크",   color: "#ff6fd6", p: 0.30, line: "은근히 잘 풀리는 날이에요. 소소하게 이득 보다 보면 저녁엔 웃고 있을걸요." },
-    { key: "legendary", name: "레전더리", color: "#ff9a3c", p: 0.22, line: "오늘 기운 좋네요. 평소 망설이던 거 한 번 질러봐도 되는 날이에요." },
-    { key: "epic",      name: "에픽",     color: "#ffcf47", p: 0.15, line: "오늘 아라드 주인공은 당신이에요. 가는 던전마다 술술 풀리는 날입니다." },
-    { key: "taecho",    name: "태초",     color: "#7ff5d4", p: 0.03, line: "이런 날 접속 안 하면 두고두고 아쉬워요. 오늘은 뭘 해도 되는 날입니다." }
+    { key: "rare",      name: "레어",     color: "#b07bff", p: 0.30, line: "나쁠 것도 좋을 것도 없는 무난한 하루예요. 크게 지르지만 않으면 본전은 챙깁니다.", chongun: "욕심을 조금만 내려놓으면 편안하게 흘러가는 하루예요. 무리한 도전보다 하던 걸 꾸준히 이어가는 쪽이 이득입니다." },
+    { key: "unique",    name: "유니크",   color: "#ff6fd6", p: 0.30, line: "은근히 잘 풀리는 날이에요. 소소하게 이득 보다 보면 저녁엔 웃고 있을걸요.", chongun: "작은 행운이 여기저기 숨어 있는 날이에요. 놓치지 말고 하나씩 챙기다 보면 저녁엔 기분 좋게 마무리됩니다." },
+    { key: "legendary", name: "레전더리", color: "#ff9a3c", p: 0.22, line: "오늘 기운 좋네요. 평소 망설이던 거 한 번 질러봐도 되는 날이에요.", chongun: "평소보다 배포를 키워도 되는 날이에요. 미뤄뒀던 도전이 있다면 오늘 한 번 꺼내 보세요." },
+    { key: "epic",      name: "에픽",     color: "#ffcf47", p: 0.15, line: "오늘 아라드 주인공은 당신이에요. 가는 던전마다 술술 풀리는 날입니다.", chongun: "무슨 일이든 손에 착착 붙는 날이에요. 오늘만큼은 스스로를 믿고 크게 움직여도 좋습니다." },
+    { key: "taecho",    name: "태초",     color: "#7ff5d4", p: 0.03, line: "이런 날 접속 안 하면 두고두고 아쉬워요. 오늘은 뭘 해도 되는 날입니다.", chongun: "일 년에 몇 번 없는 기운이 도는 날이에요. 망설이지 말고 오늘 하고 싶었던 걸 마음껏 질러 보세요." }
   ];
 
   /* 지역 채널 [지역명, 채널 수] */
@@ -710,17 +735,20 @@
     ["명성 낮은 던전 편하게 돌기", "부담 없이 돌다 보면 기분 좋은 드랍이 와요"],
     ["오늘 득템 스샷 찍어두기", "자랑은 타이밍이에요. 오늘 하나 만들어 보세요"]
   ];
-  var QUOTES = [
-    ["어서 오세요 모험가님, 오늘은 왠지 좋은 일이 생길 것 같아요", "세리아"],
-    ["강화는 마음의 준비가 됐을 때 누르는 거예요", "키리"],
-    ["골드는 돌고 도는 거죠. 오늘은 당신 차례일지도 몰라요", "어느 상인"],
-    ["빛이 그대의 파밍과 함께하기를", "어느 성직자"],
-    ["운명은 개척하는 자의 것이에요. 일단 접속부터 하세요", "어느 귀검사"],
-    ["오늘의 드랍은 어제의 꾸준함이 만든 거예요", "아라드 격언"],
-    ["실패한 강화 앞에서도 웃을 줄 알아야 진짜 모험가죠", "아라드 격언"],
-    ["던전 앞에서 고민할 시간에 한 판 더 돌 수 있어요", "어느 파밍 장인"],
-    ["내일의 태초보다 오늘의 에픽이에요", "아라드 격언"],
-    ["장비는 거들 뿐, 오늘의 주인공은 당신이에요", "세리아"]
+  /* 오늘의 키워드 [사자성어(한자), 한글 독음, 풀이] */
+  var SAJA = [
+    ["一攫千金", "일확천금", "한 방을 노려볼 만한 기운이 도는 날이에요"],
+    ["大器晩成", "대기만성", "지금 좀 더뎌도 결국 크게 될 사람이에요. 조급해 말아요"],
+    ["苦盡甘來", "고진감래", "고생 끝에 단맛이 오는 날이에요. 조금만 더 버텨봐요"],
+    ["一石二鳥", "일석이조", "한 번 움직여 두 가지를 챙기기 좋은 날이에요"],
+    ["錦上添花", "금상첨화", "좋은 일에 좋은 일이 더해지는 하루예요"],
+    ["有備無患", "유비무환", "미리 챙겨두면 걱정 없는 날이에요. 재료부터 준비하세요"],
+    ["千載一遇", "천재일우", "좀처럼 오지 않는 기회가 찾아오는 날이에요"],
+    ["見物生心", "견물생심", "눈에 띄면 지르고 싶어지는 날이에요. 지갑을 조심하세요"],
+    ["一心同體", "일심동체", "오늘은 파티원과 손발이 척척 맞는 날이에요"],
+    ["大同小異", "대동소이", "큰 기복 없이 무난하게 흘러가는 하루예요"],
+    ["走馬看山", "주마간산", "급하게 훑으면 놓치기 쉬운 날이에요. 천천히 살펴봐요"],
+    ["十匙一飯", "십시일반", "조금씩 모으다 보면 어느새 큰 게 되는 날이에요"]
   ];
 
   /* ── 운세 생성 (rng 호출 순서 고정) ── */
@@ -755,7 +783,7 @@
     var npc = pick(rng, NPCS);
     var item = pick(rng, ITEMS);
     var action = pick(rng, ACTIONS);
-    var quote = pick(rng, QUOTES);
+    var saja = pick(rng, SAJA);
     return {
       name: name.trim(),
       tier: TIERS[tierIdx],
@@ -765,7 +793,7 @@
       time: time,
       amp: amp, reinf: reinf, lock: lock,
       party: party, partyComment: partyComment,
-      npc: npc, item: item, action: action, quote: quote
+      npc: npc, item: item, action: action, saja: saja
     };
   }
 
@@ -867,7 +895,11 @@
       '<div class="m"><p class="m-label">오늘의 추천 행동</p><p class="m-value">' + f.action[0] + '</p><p class="m-note">' + f.action[1] + '</p></div>' +
       '</div>' +
       '<hr class="divider" />' +
-      '<blockquote class="quote rvi">「' + f.quote[0] + '」<span class="who">' + f.quote[1] + '</span></blockquote>';
+      '<div class="rvi keyword"><p class="sec-label">오늘의 키워드</p>' +
+      '<div class="saja-plaque"><span class="saja-hanja">' + f.saja[0] + '</span><span class="saja-read">' + f.saja[1] + '</span></div>' +
+      '<p class="saja-mean">' + f.saja[2] + '</p></div>' +
+      '<hr class="divider" />' +
+      '<div class="rvi"><p class="sec-label">오늘의 총운</p><p class="chongun">' + f.tier.chongun + '</p></div>';
 
     nudge.innerHTML = f.tier.key === "taecho"
       ? "<b>태초 운세</b>가 떴어요. 이건 스샷 찍어서 자랑하는 게 국룰입니다."
@@ -983,6 +1015,7 @@
       "🍀 행운의 NPC " + f.npc[0],
       "🎨 행운의 색깔 " + f.item[0],
       "✅ 오늘의 추천 행동 " + f.action[0],
+      "🔑 오늘의 키워드 " + f.saja[0] + " (" + f.saja[1] + ")",
       "━━━━━━━━━━━━━━",
       "나도 감정받기 → " + location.origin + location.pathname
     ];
