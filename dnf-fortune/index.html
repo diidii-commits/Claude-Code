@@ -3,66 +3,89 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>오늘의 던파운세 — 아라드 데일리 오라클</title>
-  <meta name="description" content="모험단명만 넣으면 끝. 최후의 조율자 명당 채널, 증폭·강화운, 봉인된 자물쇠 별점까지 — 오늘 하루 아라드의 기운을 감정해 드립니다. (비공식 팬 콘텐츠)" />
-  <meta property="og:title" content="오늘의 던파운세 — 태초 운세 확률 3%" />
-  <meta property="og:description" content="오늘 조율자 몇 채널이 명당인지, 증폭 눌러도 되는 날인지 감정해 드립니다. 회원가입 없음." />
+  <title>오늘의 던파운세 | 아라드 데일리 오라클</title>
+  <meta name="description" content="모험단명만 넣으면 끝. 오늘의 명당 채널, 증폭·강화운, 행운의 NPC까지 오늘 하루 아라드의 기운을 감정해 드려요. (비공식 팬 콘텐츠)" />
+  <meta property="og:title" content="오늘의 던파운세 · 태초 운세 확률 3%" />
+  <meta property="og:description" content="오늘 어느 채널이 명당인지, 증폭 눌러도 되는 날인지 감정해 드려요. 회원가입 없이 이름만 넣으면 끝." />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
+  <link rel="preconnect" href="https://cdn.df.nexon.com" crossorigin />
+  <link rel="preconnect" href="https://resource.df.nexon.com" crossorigin />
 </head>
 <body>
 <style>
+  /* ── 던파 공식 웹폰트 (연단된 칼날 = 헤드라인, SUIT = 본문) ── */
+  @font-face {
+    font-family: 'DNFForgedBlade';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('https://cdn.df.nexon.com/img/common/font/DNFForgedBlade-Bold.otf') format('opentype');
+  }
+  @font-face { font-family: 'SUIT'; font-weight: 400; font-display: swap; src: url('https://resource.df.nexon.com/ui/css/font/SUIT-Regular.woff2') format('woff2'); }
+  @font-face { font-family: 'SUIT'; font-weight: 500; font-display: swap; src: url('https://resource.df.nexon.com/ui/css/font/SUIT-Medium.woff2') format('woff2'); }
+  @font-face { font-family: 'SUIT'; font-weight: 700; font-display: swap; src: url('https://resource.df.nexon.com/ui/css/font/SUIT-Bold.woff2') format('woff2'); }
+  @font-face { font-family: 'SUIT'; font-weight: 800; font-display: swap; src: url('https://resource.df.nexon.com/ui/css/font/SUIT-ExtraBold.woff2') format('woff2'); }
+
   :root {
-    --bg: #0d0b12;
-    --panel: #16121f;
-    --panel-deep: #110e18;
-    --line: #2b2438;
-    --ink: #e8e2f2;
-    --muted: #8d84a3;
-    --gold: #d4a94e;
-    --gold-dim: #8f7434;
-    --rare: #a06bff;
-    --unique: #ff5fd2;
-    --legendary: #ff8a2a;
-    --epic: #ffc42e;
+    --bg: #070b14;
+    --bg-2: #0b1120;
+    --panel: #101a2e;
+    --panel-deep: #0b1322;
+    --line: #22304a;
+    --line-soft: #1a2740;
+    --ink: #eaf1ff;
+    --muted: #8b97b3;
+    --muted-2: #5f6c88;
+    --gold: #e6bb5e;
+    --gold-deep: #b98f37;
+    --gold-soft: rgba(230,187,94,0.08);
+    --cyan: #5fd6e6;
+    --rare: #b07bff;
+    --unique: #ff6fd6;
+    --legendary: #ff9a3c;
+    --epic: #ffcf47;
     --taecho: #7ff5d4;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
     background:
-      radial-gradient(1200px 500px at 50% -10%, rgba(212,169,78,0.07), transparent 60%),
-      radial-gradient(900px 600px at 85% 110%, rgba(127,245,212,0.04), transparent 55%),
-      var(--bg);
+      radial-gradient(1100px 480px at 50% -8%, rgba(230,187,94,0.10), transparent 62%),
+      radial-gradient(900px 620px at 84% 112%, rgba(95,214,230,0.07), transparent 55%),
+      linear-gradient(180deg, var(--bg), var(--bg-2));
     color: var(--ink);
-    font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
-    line-height: 1.6;
+    font-family: 'SUIT', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+    line-height: 1.65;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
-  main { max-width: 560px; margin: 0 auto; padding: 40px 20px 64px; }
+  main { max-width: 560px; margin: 0 auto; padding: 42px 20px 66px; }
+  .display { font-family: 'DNFForgedBlade', 'SUIT', sans-serif; font-weight: 700; }
 
   /* ── 마스트헤드 ─────────────────────────── */
-  .masthead { text-align: center; margin-bottom: 36px; }
+  .masthead { text-align: center; margin-bottom: 34px; }
   .eyebrow {
     display: inline-block;
     font-size: 11px;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.26em;
     color: var(--gold);
-    border: 1px solid var(--gold-dim);
+    border: 1px solid var(--gold-deep);
     border-radius: 2px;
-    padding: 4px 12px;
-    margin-bottom: 16px;
+    padding: 5px 13px;
+    margin-bottom: 18px;
   }
   h1 {
-    margin: 0 0 10px;
-    font-size: clamp(34px, 9vw, 46px);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.15;
+    font-family: 'DNFForgedBlade', 'SUIT', sans-serif;
+    margin: 0 0 12px;
+    font-size: clamp(38px, 10.5vw, 54px);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
     text-wrap: balance;
   }
   h1 .accent {
-    background: linear-gradient(100deg, var(--gold) 20%, #f2dda0 50%, var(--gold) 80%);
+    background: linear-gradient(100deg, var(--gold) 18%, #f6e2ad 50%, var(--gold) 82%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -73,41 +96,44 @@
   .gate {
     background: linear-gradient(180deg, var(--panel), var(--panel-deep));
     border: 1px solid var(--line);
-    border-radius: 6px;
+    border-radius: 10px;
     padding: 28px 24px 22px;
+    box-shadow: 0 18px 50px -30px rgba(0,0,0,0.9);
   }
   .gate label {
     display: block;
     font-size: 12px;
     letter-spacing: 0.14em;
     color: var(--gold);
-    margin-bottom: 10px;
+    margin-bottom: 11px;
+    font-weight: 700;
   }
   .gate-row { display: flex; gap: 10px; }
   .gate input {
     flex: 1;
     min-width: 0;
-    background: #0b0910;
+    background: #060a12;
     border: 1px solid var(--line);
-    border-radius: 4px;
+    border-radius: 6px;
     color: var(--ink);
     font: inherit;
     font-size: 16px;
-    padding: 12px 14px;
+    padding: 13px 15px;
   }
-  .gate input:focus { outline: 2px solid var(--gold-dim); outline-offset: 1px; border-color: var(--gold-dim); }
-  .gate input::placeholder { color: #57506b; }
+  .gate input:focus { outline: 2px solid var(--gold-deep); outline-offset: 1px; border-color: var(--gold-deep); }
+  .gate input::placeholder { color: #46506b; }
   .btn {
-    font: inherit;
-    font-weight: 700;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 800;
     font-size: 15px;
-    border-radius: 4px;
-    padding: 12px 20px;
+    border-radius: 6px;
+    padding: 13px 20px;
     cursor: pointer;
-    border: 1px solid var(--gold-dim);
-    background: linear-gradient(180deg, #e4bc60, #b98f37);
-    color: #221a08;
+    border: 1px solid var(--gold-deep);
+    background: linear-gradient(180deg, #efc873, #c1963c);
+    color: #201703;
     white-space: nowrap;
+    transition: filter 0.15s;
   }
   .btn:hover { filter: brightness(1.08); }
   .btn:focus-visible { outline: 2px solid var(--epic); outline-offset: 2px; }
@@ -115,55 +141,120 @@
     background: transparent;
     color: var(--muted);
     border-color: var(--line);
-    font-weight: 500;
+    font-weight: 600;
   }
-  .btn.ghost:hover { color: var(--ink); border-color: var(--gold-dim); filter: none; }
-  .gate .hint { margin: 14px 0 0; font-size: 12.5px; color: var(--muted); }
+  .btn.ghost:hover { color: var(--ink); border-color: var(--gold-deep); filter: none; }
+  .gate .hint { margin: 15px 0 0; font-size: 12.5px; color: var(--muted); }
+
+  /* ── 항아리 개봉 연출 무대 ───────────────── */
+  .stage {
+    position: relative;
+    height: 300px;
+    margin-top: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .stage-caption {
+    position: absolute;
+    top: 8px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .stage.on .stage-caption { opacity: 1; }
+  .fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .flash {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: radial-gradient(circle, #fff 0%, #ffe9b0 22%, rgba(230,187,94,0.55) 45%, rgba(95,214,230,0.15) 65%, transparent 78%);
+    pointer-events: none;
+  }
+  .jar-wrap {
+    position: relative;
+    width: 190px; height: 210px;
+    display: flex; align-items: flex-end; justify-content: center;
+  }
+  .jar-glow {
+    position: absolute;
+    left: 50%; bottom: 34px;
+    width: 150px; height: 150px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(230,187,94,0.45), rgba(95,214,230,0.12) 55%, transparent 72%);
+    filter: blur(4px);
+  }
+  .jar-svg { position: relative; width: 178px; height: auto; }
+  .jar-lid { transform-origin: 50% 100%; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .stage.charging .jar-svg { animation: jarShake 0.62s ease-in-out; }
+    .stage.charging .jar-glow { animation: glowPulse 0.62s ease-in-out; }
+    .stage.pop .jar-wrap { animation: jarFade 0.5s ease-out 0.12s forwards; }
+    .stage.pop .jar-lid { animation: lidPop 0.5s cubic-bezier(0.3,0.7,0.3,1) forwards; }
+    .stage.pop .flash { animation: flashBurst 0.62s ease-out forwards; }
+    @keyframes jarShake {
+      0%,100% { transform: translateX(0) rotate(0); }
+      20% { transform: translateX(-4px) rotate(-2deg); }
+      45% { transform: translateX(5px) rotate(2deg); }
+      70% { transform: translateX(-3px) rotate(-1.4deg); }
+    }
+    @keyframes glowPulse { 0%,100% { opacity: 0.65; transform: translateX(-50%) scale(0.9); } 55% { opacity: 1; transform: translateX(-50%) scale(1.18); } }
+    @keyframes lidPop {
+      0% { transform: translateY(0) rotate(0); opacity: 1; }
+      100% { transform: translateY(-88px) rotate(-24deg); opacity: 0; }
+    }
+    @keyframes flashBurst {
+      0% { transform: translate(-50%,-50%) scale(0); opacity: 0; }
+      30% { opacity: 1; }
+      60% { transform: translate(-50%,-50%) scale(7.5); opacity: 0.85; }
+      100% { transform: translate(-50%,-50%) scale(11); opacity: 0; }
+    }
+    @keyframes jarFade { to { opacity: 0; transform: scale(0.94); } }
+  }
 
   /* ── 결과: 아이템 툴팁 카드 ─────────────── */
-  .drop-beam {
-    height: 3px;
-    margin: 34px auto 0;
-    width: 60%;
-    background: linear-gradient(90deg, transparent, var(--tier, var(--gold)), transparent);
-    opacity: 0;
-  }
   .card {
     position: relative;
-    margin-top: 10px;
-    background: linear-gradient(180deg, #14101d, #0f0c15) padding-box;
+    background: linear-gradient(180deg, #101a2d, #0a1220) padding-box;
     border: 2px solid var(--tier, var(--gold));
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 26px 24px 22px;
-    box-shadow: 0 0 34px -8px color-mix(in srgb, var(--tier, var(--gold)) 55%, transparent);
+    box-shadow: 0 0 36px -8px color-mix(in srgb, var(--tier, var(--gold)) 55%, transparent);
   }
   .card.taecho {
     border-color: transparent;
     background:
-      linear-gradient(180deg, #14101d, #0f0c15) padding-box,
+      linear-gradient(180deg, #101a2d, #0a1220) padding-box,
       linear-gradient(120deg, #7ff5d4, #9db7ff, #f6c6ff, #7ff5d4) border-box;
   }
   .card::before, .card::after {
     content: "";
     position: absolute;
-    width: 14px; height: 14px;
+    width: 15px; height: 15px;
     border-color: var(--tier, var(--gold));
     border-style: solid;
     opacity: 0.9;
   }
-  .card::before { top: 6px; left: 6px; border-width: 2px 0 0 2px; }
-  .card::after { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
+  .card::before { top: 7px; left: 7px; border-width: 2px 0 0 2px; }
+  .card::after { bottom: 7px; right: 7px; border-width: 0 2px 2px 0; }
 
   @media (prefers-reduced-motion: no-preference) {
-    .reveal .drop-beam { animation: beam 0.9s ease-out forwards; }
-    .reveal .card { animation: drop 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.2) 0.25s backwards; }
-    .card.taecho { animation: taecho-pulse 2.6s ease-in-out infinite; }
-    .reveal .card.taecho { animation: drop 0.55s cubic-bezier(0.2,0.9,0.3,1.2) 0.25s backwards, taecho-pulse 2.6s ease-in-out 0.8s infinite; }
-    @keyframes beam { 0% { opacity: 0; transform: scaleX(0.2); } 40% { opacity: 1; transform: scaleX(1); } 100% { opacity: 0.35; } }
-    @keyframes drop { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
-    @keyframes taecho-pulse {
+    .reveal .card { animation: dropIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards; }
+    .card.taecho { animation: taechoPulse 2.6s ease-in-out infinite; }
+    .reveal .card.taecho { animation: dropIn 0.5s cubic-bezier(0.2,0.9,0.3,1.2) backwards, taechoPulse 2.6s ease-in-out 0.6s infinite; }
+    @keyframes dropIn { from { opacity: 0; transform: translateY(-14px) scale(0.98); } to { opacity: 1; transform: none; } }
+    @keyframes taechoPulse {
       0%, 100% { box-shadow: 0 0 30px -6px rgba(127,245,212,0.55); }
-      50% { box-shadow: 0 0 44px -2px rgba(157,183,255,0.65); }
+      50% { box-shadow: 0 0 46px -2px rgba(157,183,255,0.65); }
     }
   }
 
@@ -176,12 +267,13 @@
     margin-bottom: 14px;
   }
   .tier-name {
-    font-size: clamp(24px, 6.4vw, 30px);
-    font-weight: 800;
-    letter-spacing: -0.02em;
+    font-family: 'DNFForgedBlade', 'SUIT', sans-serif;
+    font-size: clamp(25px, 6.6vw, 31px);
+    font-weight: 700;
+    letter-spacing: 0.005em;
     color: var(--tier, var(--gold));
-    margin: 0 0 4px;
-    line-height: 1.25;
+    margin: 0 0 6px;
+    line-height: 1.22;
     text-wrap: balance;
   }
   .card.taecho .tier-name {
@@ -192,28 +284,26 @@
   }
   .tier-line { margin: 0 0 18px; font-size: 14.5px; color: var(--ink); }
 
-  .divider {
-    border: 0;
-    border-top: 1px dashed var(--line);
-    margin: 18px 0;
-  }
+  .divider { border: 0; border-top: 1px dashed var(--line); margin: 18px 0; }
 
   .sec-label {
     font-size: 11px;
     letter-spacing: 0.18em;
     color: var(--gold);
     margin: 0 0 8px;
+    font-weight: 700;
   }
   .channel-big {
-    font-size: 34px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
+    font-family: 'DNFForgedBlade', 'SUIT', sans-serif;
+    font-size: 33px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
     color: var(--ink);
-    font-variant-numeric: tabular-nums;
     line-height: 1.2;
   }
-  .channel-big small { font-size: 17px; font-weight: 700; color: var(--muted); margin-left: 4px; }
-  .flavor { margin: 6px 0 0; font-size: 14px; color: var(--muted); }
+  .channel-big .region { color: var(--cyan); }
+  .channel-big small { font-size: 16px; font-weight: 700; color: var(--muted); margin-left: 3px; font-family: 'SUIT', sans-serif; }
+  .flavor { margin: 7px 0 0; font-size: 14px; color: var(--muted); }
   .flavor strong { color: var(--ink); font-weight: 600; }
 
   .stat-row {
@@ -221,40 +311,45 @@
     align-items: baseline;
     justify-content: space-between;
     gap: 14px;
-    margin: 10px 0 2px;
+    margin: 12px 0 2px;
   }
   .stat-row .name { font-size: 15px; font-weight: 700; }
   .stars { font-size: 17px; letter-spacing: 3px; white-space: nowrap; }
-  .stars .on { color: var(--epic); text-shadow: 0 0 8px rgba(255,196,46,0.45); }
-  .stars .off { color: #453c58; }
-  .stat-comment { margin: 2px 0 10px; font-size: 13.5px; color: var(--muted); }
+  .stars .on { color: var(--epic); text-shadow: 0 0 8px rgba(255,207,71,0.45); }
+  .stars .off { color: #384258; }
+  .stat-comment { margin: 3px 0 10px; font-size: 13.5px; color: var(--muted); }
 
   .pct {
+    font-family: 'DNFForgedBlade', 'SUIT', sans-serif;
     font-size: 30px;
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
+    font-weight: 700;
     color: var(--ink);
   }
-  .pct small { font-size: 16px; color: var(--muted); font-weight: 700; }
+  .pct small { font-size: 15px; color: var(--muted); font-weight: 700; font-family: 'SUIT', sans-serif; }
+  .pct-sub { font-size: 12.5px; color: var(--muted-2); margin: 2px 0 6px; }
 
-  .kv { display: grid; grid-template-columns: 92px 1fr; gap: 8px 14px; font-size: 14px; }
-  .kv dt { color: var(--muted); margin: 0; }
-  .kv dd { margin: 0; font-weight: 600; }
-  .kv dd.warn { color: #ff8f8f; }
+  .mini { margin: 4px 0 0; }
+  .mini .m { padding: 11px 0; border-top: 1px solid var(--line-soft); }
+  .mini .m:first-child { border-top: 0; }
+  .mini .m-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .mini .m-label { font-size: 12px; letter-spacing: 0.1em; color: var(--gold); font-weight: 700; white-space: nowrap; }
+  .mini .m-value { font-size: 16px; font-weight: 700; color: var(--ink); text-align: right; }
+  .mini .m-note { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
 
   .quote {
     margin: 0;
     padding: 14px 16px;
-    background: rgba(212,169,78,0.06);
-    border-left: 3px solid var(--gold-dim);
-    border-radius: 0 4px 4px 0;
+    background: var(--gold-soft);
+    border-left: 3px solid var(--gold-deep);
+    border-radius: 0 6px 6px 0;
     font-size: 14px;
     color: var(--ink);
   }
+  .quote .who { display: block; margin-top: 6px; font-size: 12.5px; color: var(--muted); text-align: right; }
 
   .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
   .actions .btn { flex: 1; min-width: 140px; }
-  .share-nudge { text-align: center; font-size: 12.5px; color: var(--muted); margin: 14px 0 0; }
+  .share-nudge { text-align: center; font-size: 12.5px; color: var(--muted); margin: 15px 0 0; }
   .share-nudge b { color: var(--taecho); font-weight: 700; }
 
   .toast {
@@ -262,15 +357,16 @@
     left: 50%;
     bottom: 28px;
     transform: translateX(-50%) translateY(8px);
-    background: #221c30;
-    border: 1px solid var(--gold-dim);
+    background: #16203a;
+    border: 1px solid var(--gold-deep);
     color: var(--ink);
     font-size: 14px;
-    padding: 10px 18px;
-    border-radius: 4px;
+    padding: 11px 18px;
+    border-radius: 6px;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s, transform 0.25s;
+    z-index: 50;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -278,8 +374,8 @@
     margin-top: 44px;
     text-align: center;
     font-size: 12px;
-    color: #6a6180;
-    line-height: 1.7;
+    color: #58637f;
+    line-height: 1.75;
   }
   footer p { margin: 4px 0; }
   [hidden] { display: none !important; }
@@ -289,7 +385,7 @@
   <header class="masthead">
     <span class="eyebrow">ARAD DAILY ORACLE</span>
     <h1>오늘의 <span class="accent">던파운세</span></h1>
-    <p>모험단명을 넣으면, 오늘 하루 아라드의 기운을 감정해 드립니다.<br>같은 모험단은 하루 동안 같은 결과 — 자정(KST)에 리셋됩니다.</p>
+    <p>모험단명을 넣으면 오늘 하루 아라드의 기운을 감정해 드려요.<br>같은 모험단은 자정까지 같은 결과, 자정(KST)이 지나면 새로 바뀝니다.</p>
   </header>
 
   <section class="gate" id="gate">
@@ -298,11 +394,55 @@
       <input id="advName" type="text" maxlength="20" placeholder="예) 잠수함패치" autocomplete="off" />
       <button class="btn" id="drawBtn" type="button">운세 감정</button>
     </div>
-    <p class="hint">회원가입 없음 · 입력한 이름은 어디에도 저장되지 않습니다. 순수 재미용 비공식 팬 콘텐츠입니다.</p>
+    <p class="hint">회원가입 없어요. 입력한 이름은 어디에도 저장되지 않는 순수 재미용 비공식 팬 콘텐츠입니다.</p>
+  </section>
+
+  <section id="stageWrap" hidden>
+    <div class="stage" id="stage">
+      <div class="stage-caption" id="stageCap">항아리를 여는 중</div>
+      <div class="jar-wrap" id="jarWrap">
+        <div class="jar-glow"></div>
+        <svg class="jar-svg" viewBox="0 0 200 220" aria-hidden="true">
+          <defs>
+            <linearGradient id="jarBody" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#22304a"/>
+              <stop offset="0.5" stop-color="#151f36"/>
+              <stop offset="1" stop-color="#0c1424"/>
+            </linearGradient>
+            <linearGradient id="jarGold" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f4d488"/>
+              <stop offset="1" stop-color="#b98f37"/>
+            </linearGradient>
+            <radialGradient id="jarCore" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="#fff3cf"/>
+              <stop offset="0.5" stop-color="#e6bb5e"/>
+              <stop offset="1" stop-color="#5fd6e6" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- 본체 -->
+          <path d="M46 108 Q34 210 100 212 Q166 210 154 108 Q150 96 100 96 Q50 96 46 108 Z" fill="url(#jarBody)" stroke="url(#jarGold)" stroke-width="3"/>
+          <!-- 금테 밴드 -->
+          <path d="M50 132 Q100 148 150 132" fill="none" stroke="url(#jarGold)" stroke-width="3" opacity="0.85"/>
+          <path d="M56 170 Q100 184 144 170" fill="none" stroke="#b98f37" stroke-width="2" opacity="0.6"/>
+          <!-- 안쪽 빛 -->
+          <ellipse cx="100" cy="104" rx="42" ry="16" fill="url(#jarCore)"/>
+          <circle cx="100" cy="104" r="9" fill="#fff3cf" opacity="0.9"/>
+          <!-- 목/입구 -->
+          <path d="M62 100 Q100 78 138 100" fill="none" stroke="url(#jarGold)" stroke-width="3"/>
+          <!-- 뚜껑 -->
+          <g class="jar-lid">
+            <ellipse cx="100" cy="86" rx="46" ry="14" fill="#18233b" stroke="url(#jarGold)" stroke-width="3"/>
+            <path d="M74 84 Q100 66 126 84" fill="#101a2d" stroke="url(#jarGold)" stroke-width="3"/>
+            <circle cx="100" cy="70" r="6" fill="url(#jarGold)"/>
+          </g>
+        </svg>
+      </div>
+      <div class="flash" id="flash"></div>
+      <canvas class="fx" id="fx"></canvas>
+    </div>
   </section>
 
   <section id="resultWrap" hidden>
-    <div class="drop-beam" id="beam"></div>
     <article class="card" id="card" aria-live="polite"></article>
     <div class="actions">
       <button class="btn" id="copyBtn" type="button">결과 복사하기</button>
@@ -314,7 +454,7 @@
 
   <footer>
     <p>본 페이지는 유저가 만든 비공식 팬 콘텐츠이며, 던전앤파이터 및 네오플·넥슨과 무관합니다.</p>
-    <p>모든 결과는 실제 게임 확률과 아무 관련이 없는 랜덤 재미 요소입니다. 증폭은 언제나 본인 책임.</p>
+    <p>모든 결과는 실제 게임 확률과 관련 없는 랜덤 재미 요소예요. 증폭은 언제나 본인 책임.</p>
   </footer>
 </main>
 
@@ -350,97 +490,114 @@
 
   /* ── 콘텐츠 풀 ── */
   var TIERS = [
-    { key: "rare",      name: "레어",     color: "#a06bff", p: 0.30, line: "무난하게 흘러가는 하루. 큰 욕심만 부리지 않으면 잃을 것도 없다." },
-    { key: "unique",    name: "유니크",   color: "#ff5fd2", p: 0.30, line: "은근히 풀리는 날. 작은 이득이 쌓여 저녁쯤엔 웃고 있을 것이다." },
-    { key: "legendary", name: "레전더리", color: "#ff8a2a", p: 0.22, line: "기운이 심상치 않다. 평소 안 하던 시도가 의외로 통하는 날." },
-    { key: "epic",      name: "에픽",     color: "#ffc42e", p: 0.15, line: "오늘 아라드의 주인공은 당신. 던전이 먼저 인사를 건넨다." },
-    { key: "taecho",    name: "태초",     color: "#7ff5d4", p: 0.03, line: "운명이 당신을 선택했다. 오늘 접속하지 않으면 두고두고 회자될 후회가 된다." }
-  ];
-  var AMP = [
-    "오늘은 아니다. 증폭기 근처에도 가지 마라. 밀린 마법부여나 정리하자.",
-    "7까지는 무난, 8부터는 심장과 골드가 동시에 아프다.",
-    "평범한 기운. 이벤트 보호권 있을 때를 노리는 것도 지혜다.",
-    "이계의 기운이 등을 밀어준다. 10증폭, 오늘은 도전해 볼 만하다.",
-    "역대급 기운. 오늘 지나면 이 손맛 다시 없다. (결과는 책임 안 짐)"
-  ];
-  var REINF = [
-    "키리도 오늘은 조용히 고개를 젓는다. 무기는 고이 모셔두자.",
-    "10강까지만. 11강 버튼에 손을 올리는 순간 운세는 무효가 된다.",
-    "반반. 성공하면 실력이고, 실패하면 운세 탓을 하면 된다.",
-    "키리의 약속과 믿음이 유난히 반짝인다. 12강 노려볼 만한 날.",
-    "두드려라, 열릴 것이다. 오늘 당신의 무기가 빛날 운명."
-  ];
-  var LOCK = [
-    "오늘 자물쇠 안에는 실망만 들어 있다. 열쇠를 아껴라.",
-    "흔한 소모품의 기운. 기대 없이 열면 덜 아프다.",
-    "틈새로 반짝이는 것이 살짝 보인다. 한두 개 정도는 열어볼 만.",
-    "자물쇠 너머에서 이달의 특별 아이템이 손짓하는 게 보인다.",
-    "오늘의 자물쇠는 사실상 장식. 특별 아이템이 나올 기세다."
-  ];
-  var CH_FLAVOR = [
-    "어젯밤 태초가 두 번 터졌다는 소문이 도는 자리",
-    "결정 드랍 이펙트가 유난히 자주 보이는 명당",
-    "사람이 없어 조용히, 그리고 꾸준히 먹는 자리",
-    "아라드의 기운이 소용돌이치는 채널",
-    "서버의 노른자 자리. 자리싸움 나기 전에 선점하라",
-    "겉보기엔 평범하지만 아는 사람만 아는 포인트",
-    "점검의 기운이 모두 빠져나간 청정 채널",
-    "입장하는 순간 BGM부터 다르게 들리는 자리"
-  ];
-  var TIMES = [
-    "오전 6시~9시 · 부지런한 모험가가 결정을 먹는다",
-    "점심시간 · 식후 한 판이 국룰",
-    "오후 3시~6시 · 나른할수록 드랍은 짜릿하다",
-    "저녁 8시~10시 · 오늘의 황금 시간대",
-    "밤 11시~새벽 1시 · 아라드의 기운이 절정",
-    "새벽 2시~4시 · 수면과 태초를 맞바꾸는 시간"
-  ];
-  var CLASSES = [
-    "검신", "마제스티", "인다라천", "다크로드", "시라누이", "그랜드 마스터",
-    "뱅가드", "세이비어", "옵티머스", "레퀴엠", "언터처블", "저스티스",
-    "이모탈", "세인트", "이단심판관", "태을선인", "어센션", "헤카테",
-    "트렌드세터", "패스파인더", "메이븐", "프레데터", "알키오네", "갓파더"
-  ];
-  var ITEMS = [
-    "무색 큐브 조각 한 줌", "황금빛 보석", "순수한 황금 고서", "이계의 결정",
-    "테라니움 조각", "세리아의 수제 쿠키", "모험가 명성 물약", "빛나는 우편함",
-    "경매장 알림창", "창고 정리 중 발견한 옛 유물"
-  ];
-  var TABOO = [
-    "새벽 감성 충동 증폭",
-    "지인팟 단톡에 딜미터기 캡처 전송",
-    "경매장에 0 하나 더 붙여 등록",
-    "“한 판만 더” (결국 새벽 4시)",
-    "패치노트 안 읽고 스킬트리 초기화",
-    "레이드 시작 5분 전 자리 비움",
-    "시세 확인 없이 지르기",
-    "강화 재료인 줄 모르고 장비 분해",
-    "오늘 나온 득템 자랑 3회 이상",
-    "이벤트 기간 착각 (어제 끝났음)",
-    "명당 채널에서 잠수",
-    "세리아 방에 로그인만 하고 밤새기"
-  ];
-  var QUOTES = [
-    "「어서 오세요, 모험가님. 오늘은 왠지 좋은 일이 생길 것 같아요.」 — 세리아",
-    "「강화는 마음의 준비가 되었을 때 누르는 겁니다.」 — 키리",
-    "「골드는 돌고 도는 것. 오늘은 당신 차례일지도.」 — 어느 상인",
-    "「빛이 그대의 파밍과 함께하기를.」 — 어느 성직자",
-    "「운명은 개척하는 자의 것. 일단 입장부터 해라.」 — 어느 귀검사",
-    "「오늘의 드랍은 어제의 꾸준함이 만든 것.」 — 아라드 격언",
-    "「무릇 모험가란, 실패한 증폭 앞에서도 웃는 법.」 — 아라드 격언",
-    "「던전 앞에서 고민하는 시간에 한 판을 더 돌 수 있다.」 — 어느 파밍 장인",
-    "「내일의 태초보다 오늘의 에픽.」 — 아라드 격언",
-    "「장비는 거들 뿐, 오늘의 주인공은 당신입니다.」 — 세리아"
-  ];
-  var PARTY_COMMENT = [
-    [30, "오늘 막공은 던전보다 사람이 무섭다. 믿을 건 고정팟뿐."],
-    [55, "한두 번 터져도 놀라지 말 것. 부활 코인은 넉넉히."],
-    [75, "무난한 클리어 각. 딜미터기 캡처는 넣어두는 게 평화롭다."],
-    [90, "트라이 없이 원트 각. 오늘은 당신이 버스 기사."],
-    [101, "성스러운 공대장의 기운. 공대원 일곱 명이 당신만 믿는다."]
+    { key: "rare",      name: "레어",     color: "#b07bff", p: 0.30, line: "나쁠 것도 좋을 것도 없는 무난한 하루예요. 크게 지르지만 않으면 본전은 챙깁니다." },
+    { key: "unique",    name: "유니크",   color: "#ff6fd6", p: 0.30, line: "은근히 잘 풀리는 날이에요. 소소하게 이득 보다 보면 저녁엔 웃고 있을걸요." },
+    { key: "legendary", name: "레전더리", color: "#ff9a3c", p: 0.22, line: "오늘 기운 좋네요. 평소 망설이던 거 한 번 질러봐도 되는 날이에요." },
+    { key: "epic",      name: "에픽",     color: "#ffcf47", p: 0.15, line: "오늘 아라드 주인공은 당신이에요. 던전이 먼저 인사 걸어옵니다." },
+    { key: "taecho",    name: "태초",     color: "#7ff5d4", p: 0.03, line: "이런 날 접속 안 하면 두고두고 아쉬워요. 오늘은 뭘 해도 되는 날입니다." }
   ];
 
-  /* ── 운세 생성 ── */
+  /* 지역 채널 [지역명, 채널 수] */
+  var REGIONS = [
+    ["벨 마이어 공국", 18],
+    ["지벤 황국", 12],
+    ["마계", 16],
+    ["백해", 18],
+    ["중천", 18],
+    ["천해천", 68]
+  ];
+
+  var CH_FLAVOR = [
+    "어젯밤 여기서 태초가 두 번 떴다는 소문이 도는 자리",
+    "결정 드랍 이펙트가 유난히 자주 보이는 채널",
+    "사람 없이 조용하게, 대신 꾸준히 먹기 좋은 곳",
+    "아라드의 기운이 유독 몰려 있는 자리",
+    "고인물들이 조용히 선점하는 노른자 채널",
+    "겉보기엔 평범한데 아는 사람만 아는 포인트",
+    "점검 기운 싹 빠져나간 청정 채널",
+    "들어가는 순간 브금부터 다르게 들리는 자리"
+  ];
+  /* [시간대, 설명] */
+  var TIMES = [
+    ["오전 6시~9시", "부지런한 모험가가 득템하는 시간대"],
+    ["점심 12시~1시", "밥 먹고 한 판이 국룰인 시간"],
+    ["오후 3시~6시", "나른할수록 드랍은 짜릿해지는 시간"],
+    ["저녁 8시~10시", "오늘의 황금 시간대"],
+    ["밤 11시~새벽 1시", "아라드 기운이 절정에 오르는 시간"],
+    ["새벽 2시~4시", "잠 대신 태초를 노려보는 시간"]
+  ];
+  var AMP = [
+    "오늘은 아니에요. 증폭기 근처도 가지 마세요. 밀린 마부나 정리합시다.",
+    "7까지는 무난한데 8부터는 심장이랑 골드가 같이 아파요.",
+    "그냥 평범한 기운이에요. 보호권 있을 때 노리는 게 지혜입니다.",
+    "등 떠밀어 주는 기운이 있어요. 10증폭 오늘 도전할 만합니다.",
+    "역대급 기운이에요. 오늘 지나면 이 손맛 못 봐요 (결과는 책임 못 짐)."
+  ];
+  var REINF = [
+    "키리도 오늘은 조용히 고개 젓네요. 무기는 고이 모셔둡시다.",
+    "10강까지만이에요. 11강 버튼에 손 올리는 순간 운세 무효입니다.",
+    "딱 반반이에요. 되면 실력이고 안 되면 운세 탓 하면 됩니다.",
+    "키리 눈빛이 오늘따라 좋아요. 12강 노려볼 만한 날입니다.",
+    "두드리면 열리는 날이에요. 오늘 당신 무기가 빛 봅니다."
+  ];
+  var LOCK = [
+    "오늘 상자 안엔 실망만 들어 있어요. 열쇠 아끼세요.",
+    "흔한 소모품 기운이에요. 기대 안 하고 열면 덜 아파요.",
+    "틈으로 뭔가 반짝여요. 한두 개 정도는 열어볼 만합니다.",
+    "상자 너머에서 이달의 특별 아이템이 손짓하네요.",
+    "오늘 자물쇠는 사실상 장식이에요. 좋은 거 나올 기세입니다."
+  ];
+  /* [상한 미만, 코멘트] 파티 운 */
+  var PARTY_COMMENT = [
+    [30, "오늘 파티는 던전보다 사람이 무서워요. 믿을 건 고정팟뿐입니다."],
+    [55, "한두 번 전멸해도 놀라지 마세요. 부활 코인 넉넉히 챙기고 갑시다."],
+    [75, "무난하게 클리어할 각이에요. 딜 욕심만 안 부리면 평화롭습니다."],
+    [90, "트라이 없이 원트 갈 각이에요. 오늘은 당신이 버스 기사입니다."],
+    [101, "공대장 기운 충만해요. 파티원들이 당신만 믿고 따라옵니다."]
+  ];
+  /* 행운의 NPC [이름, 한 줄] */
+  var NPCS = [
+    ["세리아 키르민", "방에서 잠깐 멍때리다 나와도 기분 좋아지는 날이에요"],
+    ["키리", "강화 얘기 말고 그냥 눈도장만 찍고 오세요"],
+    ["칸나", "오늘은 왠지 칸나 쪽 콘텐츠가 술술 풀립니다"],
+    ["풍진", "풍진 근처에서 좋은 소식 하나 들려올 기운이에요"],
+    ["린지 로섬", "큐브 조합, 오늘은 손맛 좀 볼 수도 있어요"],
+    ["클론터", "무색 큐브 조각 모아놨다면 오늘 한번 정산해도 좋아요"]
+  ];
+  /* 행운의 아이템 [이름, 한 줄] */
+  var ITEMS = [
+    ["무색 큐브 조각", "창고 구석에서 잊고 있던 게 튀어나올 수 있어요"],
+    ["에픽 소울", "해체하다 기대 이상으로 쌓이는 날이에요"],
+    ["재련의 기운", "오늘 재련은 생각보다 순순히 붙어줍니다"],
+    ["모순의 결정체", "아껴둔 걸 오늘 쓰면 왠지 아깝지 않을 거예요"],
+    ["골드 주머니", "경매장 시세가 당신 편으로 흘러가는 날이에요"],
+    ["세리아의 쿠키", "챙겨 먹으면 하루 종일 기분이 좋습니다"]
+  ];
+  /* 오늘의 추천 행동 [행동, 한 줄] */
+  var ACTIONS = [
+    ["경매장 시세 한 번 훑어보기", "급하게 지르지 말고 오늘은 눈으로만 담아두세요"],
+    ["밀린 마법부여 싹 정리하기", "미뤄둔 거 오늘 끝내면 마음이 한결 가벼워요"],
+    ["고정팟한테 안부 톡 하나 보내기", "오늘 연락 한 통이 다음 레이드 자리를 만듭니다"],
+    ["이벤트 페이지 보상 챙기기", "은근히 놓치기 쉬운 무료 보상부터 받아두세요"],
+    ["창고 정리하면서 재료 확인하기", "잊고 있던 재료가 오늘 딱 필요해질 수 있어요"],
+    ["무리한 증폭 대신 재련부터 손보기", "오늘은 안정적으로 스펙 올리는 쪽이 이득이에요"],
+    ["명성 낮은 던전 편하게 돌기", "부담 없이 돌다 보면 기분 좋은 드랍이 옵니다"],
+    ["오늘 나온 득템 스샷 찍어두기", "자랑은 타이밍이에요. 오늘 자랑거리 하나 만들어 보세요"]
+  ];
+  var QUOTES = [
+    ["어서 오세요 모험가님, 오늘은 왠지 좋은 일이 생길 것 같아요", "세리아"],
+    ["강화는 마음의 준비가 됐을 때 누르는 거예요", "키리"],
+    ["골드는 돌고 도는 거죠. 오늘은 당신 차례일지도 몰라요", "어느 상인"],
+    ["빛이 그대의 파밍과 함께하기를", "어느 성직자"],
+    ["운명은 개척하는 자의 것이에요. 일단 접속부터 하세요", "어느 귀검사"],
+    ["오늘의 드랍은 어제의 꾸준함이 만든 거예요", "아라드 격언"],
+    ["실패한 강화 앞에서도 웃을 줄 알아야 진짜 모험가죠", "아라드 격언"],
+    ["던전 앞에서 고민할 시간에 한 판 더 돌 수 있어요", "어느 파밍 장인"],
+    ["내일의 태초보다 오늘의 에픽이에요", "아라드 격언"],
+    ["장비는 거들 뿐, 오늘의 주인공은 당신이에요", "세리아"]
+  ];
+
+  /* ── 운세 생성 (rng 호출 순서 고정) ── */
   function pick(rng, arr) { return arr[Math.floor(rng() * arr.length)]; }
   function starsFor(rng, tierIdx) {
     var raw = rng() * 4 + 0.5 + tierIdx * 0.4;
@@ -457,26 +614,32 @@
   function makeFortune(name) {
     var rng = mulberry32(hash32(name.trim() + "|" + kstDateKey() + "|arad"));
     var tierIdx = rollTier(rng);
+    var region = pick(rng, REGIONS);
+    var channel = 1 + Math.floor(rng() * region[1]);
+    var chFlavor = pick(rng, CH_FLAVOR);
+    var time = pick(rng, TIMES);
+    var amp = starsFor(rng, tierIdx);
+    var reinf = starsFor(rng, tierIdx);
+    var lock = starsFor(rng, tierIdx);
     var party = 17 + Math.floor(rng() * 83);
     var partyComment = "";
     for (var i = 0; i < PARTY_COMMENT.length; i++) {
       if (party < PARTY_COMMENT[i][0]) { partyComment = PARTY_COMMENT[i][1]; break; }
     }
+    var npc = pick(rng, NPCS);
+    var item = pick(rng, ITEMS);
+    var action = pick(rng, ACTIONS);
+    var quote = pick(rng, QUOTES);
     return {
       name: name.trim(),
       tier: TIERS[tierIdx],
-      channel: 1 + Math.floor(rng() * 40),
-      chFlavor: pick(rng, CH_FLAVOR),
-      time: pick(rng, TIMES),
-      amp: starsFor(rng, tierIdx),
-      reinf: starsFor(rng, tierIdx),
-      lock: starsFor(rng, tierIdx),
-      party: party,
-      partyComment: partyComment,
-      job: pick(rng, CLASSES),
-      item: pick(rng, ITEMS),
-      taboo: pick(rng, TABOO),
-      quote: pick(rng, QUOTES)
+      region: region[0],
+      channel: channel,
+      chFlavor: chFlavor,
+      time: time,
+      amp: amp, reinf: reinf, lock: lock,
+      party: party, partyComment: partyComment,
+      npc: npc, item: item, action: action, quote: quote
     };
   }
 
@@ -495,6 +658,12 @@
 
   var current = null;
   var gate = document.getElementById("gate");
+  var stageWrap = document.getElementById("stageWrap");
+  var stage = document.getElementById("stage");
+  var stageCap = document.getElementById("stageCap");
+  var jarWrap = document.getElementById("jarWrap");
+  var flash = document.getElementById("flash");
+  var fxCanvas = document.getElementById("fx");
   var wrap = document.getElementById("resultWrap");
   var card = document.getElementById("card");
   var nudge = document.getElementById("nudge");
@@ -518,63 +687,136 @@
       '<h2 class="tier-name">[' + f.tier.name + '] 오늘의 아라드 운세</h2>' +
       '<p class="tier-line">' + f.tier.line + '</p>' +
       '<hr class="divider" />' +
-      '<p class="sec-label">최후의 조율자 · 오늘의 명당</p>' +
-      '<div class="channel-big">' + f.channel + '<small>채널</small></div>' +
-      '<p class="flavor"><strong>' + f.chFlavor + '.</strong><br>추천 시간 — ' + f.time + '</p>' +
+      '<p class="sec-label">오늘의 명당 채널</p>' +
+      '<div class="channel-big"><span class="region">' + esc(f.region) + '</span> CH.' + f.channel + '</div>' +
+      '<p class="flavor"><strong>' + f.chFlavor + '</strong><br>추천 시간대 ' + f.time[0] + ', ' + f.time[1] + '</p>' +
       '<hr class="divider" />' +
       '<p class="sec-label">강화소 기상도</p>' +
       '<div class="stat-row"><span class="name">장비 증폭운</span>' + starHtml(f.amp) + '</div>' +
       '<p class="stat-comment">' + AMP[f.amp - 1] + '</p>' +
       '<div class="stat-row"><span class="name">무기 강화운</span>' + starHtml(f.reinf) + '</div>' +
       '<p class="stat-comment">' + REINF[f.reinf - 1] + '</p>' +
-      '<div class="stat-row"><span class="name">봉인된 자물쇠</span>' + starHtml(f.lock) + '</div>' +
+      '<div class="stat-row"><span class="name">잠긴 상자 개봉운</span>' + starHtml(f.lock) + '</div>' +
       '<p class="stat-comment">' + LOCK[f.lock - 1] + '</p>' +
       '<hr class="divider" />' +
-      '<p class="sec-label">오늘의 막공운</p>' +
+      '<p class="sec-label">오늘의 파티 운</p>' +
       '<div class="pct">' + f.party + '<small>%</small></div>' +
+      '<p class="pct-sub">파티 잡고 던전 갈 때 오늘의 합</p>' +
       '<p class="flavor">' + f.partyComment + '</p>' +
       '<hr class="divider" />' +
-      '<dl class="kv">' +
-      '<dt>행운의 직업</dt><dd>' + f.job + '</dd>' +
-      '<dt>행운의 물건</dt><dd>' + f.item + '</dd>' +
-      '<dt>오늘의 금기</dt><dd class="warn">' + f.taboo + '</dd>' +
-      '</dl>' +
+      '<div class="mini">' +
+      '<div class="m"><div class="m-head"><span class="m-label">행운의 NPC</span><span class="m-value">' + f.npc[0] + '</span></div><p class="m-note">' + f.npc[1] + '</p></div>' +
+      '<div class="m"><div class="m-head"><span class="m-label">행운의 아이템</span><span class="m-value">' + f.item[0] + '</span></div><p class="m-note">' + f.item[1] + '</p></div>' +
+      '<div class="m"><div class="m-head"><span class="m-label">오늘의 추천 행동</span><span class="m-value">' + f.action[0] + '</span></div><p class="m-note">' + f.action[1] + '</p></div>' +
+      '</div>' +
       '<hr class="divider" />' +
-      '<blockquote class="quote">' + f.quote + '</blockquote>';
+      '<blockquote class="quote">「' + f.quote[0] + '」<span class="who">' + f.quote[1] + '</span></blockquote>';
 
     nudge.innerHTML = f.tier.key === "taecho"
-      ? "<b>태초 운세</b>가 나왔습니다. 스크린샷은 국룰입니다."
-      : "태초 운세가 나올 확률은 단 3%. 내일 다시 도전하세요.";
+      ? "<b>태초 운세</b>가 떴어요. 이건 스샷 찍어서 자랑하는 게 국룰입니다."
+      : "태초 운세가 나올 확률은 단 3%. 내일 또 도전해 보세요.";
+  }
 
-    gate.hidden = true;
+  /* ── 항아리 개봉 파티클 버스트 ── */
+  function particleBurst() {
+    try {
+      var rect = stage.getBoundingClientRect();
+      var w = fxCanvas.width = rect.width;
+      var h = fxCanvas.height = rect.height;
+      var ctx = fxCanvas.getContext("2d");
+      var cx = w / 2, cy = h / 2 + 10;
+      var colors = ["#f6e2ad", "#e6bb5e", "#fff3cf", "#5fd6e6", "#ffcf47"];
+      var parts = [];
+      for (var i = 0; i < 46; i++) {
+        var ang = Math.PI * 2 * (i / 46) + (Math.random() - 0.5) * 0.5;
+        var sp = 3.2 + Math.random() * 5.5;
+        parts.push({
+          x: cx, y: cy,
+          vx: Math.cos(ang) * sp,
+          vy: Math.sin(ang) * sp - 2.4,
+          r: 1.6 + Math.random() * 3.2,
+          c: colors[(Math.random() * colors.length) | 0],
+          life: 1
+        });
+      }
+      var frames = 0;
+      function step() {
+        frames++;
+        ctx.clearRect(0, 0, w, h);
+        var alive = false;
+        for (var i = 0; i < parts.length; i++) {
+          var p = parts[i];
+          if (p.life <= 0) continue;
+          alive = true;
+          p.vy += 0.16;
+          p.vx *= 0.985;
+          p.x += p.vx; p.y += p.vy;
+          p.life -= 0.018;
+          ctx.globalAlpha = Math.max(0, p.life);
+          ctx.fillStyle = p.c;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        if (alive && frames < 130) requestAnimationFrame(step);
+        else ctx.clearRect(0, 0, w, h);
+      }
+      requestAnimationFrame(step);
+    } catch (e) { /* 파티클 실패해도 결과는 나온다 */ }
+  }
+
+  function showResult() {
+    stageWrap.hidden = true;
+    stage.classList.remove("charging", "pop", "on");
     wrap.hidden = false;
     wrap.classList.remove("reveal");
     void wrap.offsetWidth;
     wrap.classList.add("reveal");
-    document.getElementById("beam").style.setProperty("--tier", f.tier.color);
     wrap.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function playAndReveal(f) {
+    render(f);
+    if (reduceMotion) { showResult(); return; }
+    gate.hidden = true;
+    wrap.hidden = true;
+    stageWrap.hidden = false;
+    stage.classList.remove("pop");
+    stage.classList.add("on", "charging");
+    stage.scrollIntoView({ behavior: "smooth", block: "center" });
+    setTimeout(function () {
+      stage.classList.remove("charging");
+      stage.classList.add("pop");
+      stageCap.textContent = "";
+      particleBurst();
+    }, 640);
+    setTimeout(showResult, 1360);
   }
 
   function copyText() {
     if (!current) return;
     var f = current;
     var lines = [
-      "🔮 오늘의 던파운세 — " + kstDateLabel(),
+      "🔮 오늘의 던파운세 · " + kstDateLabel(),
       "🛡 모험단 「" + f.name + "」",
       "━━━━━━━━━━━━━━",
-      "💎 운세 등급: [" + f.tier.name + "]",
-      "🗺 조율자 명당: " + f.channel + "채널 (" + f.time.split(" · ")[0] + ")",
+      "💎 운세 등급 [" + f.tier.name + "]",
+      "🗺 오늘의 명당 " + f.region + " CH." + f.channel + " (" + f.time[0] + ")",
       "⚒ 증폭운 " + starText(f.amp) + " / 강화운 " + starText(f.reinf),
-      "🔒 봉인된 자물쇠 " + starText(f.lock),
-      "⚔ 막공운 " + f.party + "%",
-      "🍀 행운의 직업: " + f.job,
-      "🚫 오늘의 금기: " + f.taboo,
+      "🔒 상자 개봉운 " + starText(f.lock),
+      "🎉 파티운 " + f.party + "%",
+      "🍀 행운의 NPC " + f.npc[0],
+      "🎁 행운의 아이템 " + f.item[0],
+      "✅ 오늘의 추천 행동 " + f.action[0],
       "━━━━━━━━━━━━━━",
       "나도 감정받기 → " + location.origin + location.pathname
     ];
     navigator.clipboard.writeText(lines.join("\n")).then(
-      function () { showToast("운세가 복사되었습니다. 게시판에 붙여넣어 자랑하세요!"); },
-      function () { showToast("복사에 실패했습니다. 스크린샷을 이용해 주세요."); }
+      function () { showToast("운세를 복사했어요. 게시판에 붙여넣어 자랑해 보세요!"); },
+      function () { showToast("복사에 실패했어요. 스크린샷을 이용해 주세요."); }
     );
   }
 
@@ -583,14 +825,14 @@
     if (navigator.share) {
       navigator.share({ title: "오늘의 던파운세", text: "오늘 아라드의 기운을 감정받아 보세요.", url: url }).catch(function () {});
     } else {
-      navigator.clipboard.writeText(url).then(function () { showToast("링크가 복사되었습니다."); });
+      navigator.clipboard.writeText(url).then(function () { showToast("링크를 복사했어요."); });
     }
   }
 
   function draw() {
     var name = input.value.trim();
     if (!name) { input.focus(); showToast("모험단명을 입력해 주세요."); return; }
-    render(makeFortune(name));
+    playAndReveal(makeFortune(name));
   }
 
   document.getElementById("drawBtn").addEventListener("click", draw);
@@ -599,6 +841,7 @@
   document.getElementById("shareBtn").addEventListener("click", shareLink);
   document.getElementById("againBtn").addEventListener("click", function () {
     wrap.hidden = true;
+    stageWrap.hidden = true;
     gate.hidden = false;
     input.value = "";
     input.focus();
@@ -609,6 +852,9 @@
   if (param && param.trim()) {
     input.value = param.trim();
     render(makeFortune(param.trim()));
+    gate.hidden = true;
+    wrap.hidden = false;
+    wrap.classList.add("reveal");
   }
 })();
 </script>
