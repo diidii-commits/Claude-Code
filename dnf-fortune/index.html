@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>오늘의 던파운세 — 아라드 데일리 오라클</title>
+  <meta name="description" content="모험단명만 넣으면 끝. 최후의 조율자 명당 채널, 증폭·강화운, 봉인된 자물쇠 별점까지 — 오늘 하루 아라드의 기운을 감정해 드립니다. (비공식 팬 콘텐츠)" />
+  <meta property="og:title" content="오늘의 던파운세 — 태초 운세 확률 3%" />
+  <meta property="og:description" content="오늘 조율자 몇 채널이 명당인지, 증폭 눌러도 되는 날인지 감정해 드립니다. 회원가입 없음." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+</head>
+<body>
+<style>
+  :root {
+    --bg: #0d0b12;
+    --panel: #16121f;
+    --panel-deep: #110e18;
+    --line: #2b2438;
+    --ink: #e8e2f2;
+    --muted: #8d84a3;
+    --gold: #d4a94e;
+    --gold-dim: #8f7434;
+    --rare: #a06bff;
+    --unique: #ff5fd2;
+    --legendary: #ff8a2a;
+    --epic: #ffc42e;
+    --taecho: #7ff5d4;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(1200px 500px at 50% -10%, rgba(212,169,78,0.07), transparent 60%),
+      radial-gradient(900px 600px at 85% 110%, rgba(127,245,212,0.04), transparent 55%),
+      var(--bg);
+    color: var(--ink);
+    font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  main { max-width: 560px; margin: 0 auto; padding: 40px 20px 64px; }
+
+  /* ── 마스트헤드 ─────────────────────────── */
+  .masthead { text-align: center; margin-bottom: 36px; }
+  .eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    border-radius: 2px;
+    padding: 4px 12px;
+    margin-bottom: 16px;
+  }
+  h1 {
+    margin: 0 0 10px;
+    font-size: clamp(34px, 9vw, 46px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  h1 .accent {
+    background: linear-gradient(100deg, var(--gold) 20%, #f2dda0 50%, var(--gold) 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .masthead p { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+  /* ── 입장 게이트 ────────────────────────── */
+  .gate {
+    background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 28px 24px 22px;
+  }
+  .gate label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .gate-row { display: flex; gap: 10px; }
+  .gate input {
+    flex: 1;
+    min-width: 0;
+    background: #0b0910;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--ink);
+    font: inherit;
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+  .gate input:focus { outline: 2px solid var(--gold-dim); outline-offset: 1px; border-color: var(--gold-dim); }
+  .gate input::placeholder { color: #57506b; }
+  .btn {
+    font: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 4px;
+    padding: 12px 20px;
+    cursor: pointer;
+    border: 1px solid var(--gold-dim);
+    background: linear-gradient(180deg, #e4bc60, #b98f37);
+    color: #221a08;
+    white-space: nowrap;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn:focus-visible { outline: 2px solid var(--epic); outline-offset: 2px; }
+  .btn.ghost {
+    background: transparent;
+    color: var(--muted);
+    border-color: var(--line);
+    font-weight: 500;
+  }
+  .btn.ghost:hover { color: var(--ink); border-color: var(--gold-dim); filter: none; }
+  .gate .hint { margin: 14px 0 0; font-size: 12.5px; color: var(--muted); }
+
+  /* ── 결과: 아이템 툴팁 카드 ─────────────── */
+  .drop-beam {
+    height: 3px;
+    margin: 34px auto 0;
+    width: 60%;
+    background: linear-gradient(90deg, transparent, var(--tier, var(--gold)), transparent);
+    opacity: 0;
+  }
+  .card {
+    position: relative;
+    margin-top: 10px;
+    background: linear-gradient(180deg, #14101d, #0f0c15) padding-box;
+    border: 2px solid var(--tier, var(--gold));
+    border-radius: 6px;
+    padding: 26px 24px 22px;
+    box-shadow: 0 0 34px -8px color-mix(in srgb, var(--tier, var(--gold)) 55%, transparent);
+  }
+  .card.taecho {
+    border-color: transparent;
+    background:
+      linear-gradient(180deg, #14101d, #0f0c15) padding-box,
+      linear-gradient(120deg, #7ff5d4, #9db7ff, #f6c6ff, #7ff5d4) border-box;
+  }
+  .card::before, .card::after {
+    content: "";
+    position: absolute;
+    width: 14px; height: 14px;
+    border-color: var(--tier, var(--gold));
+    border-style: solid;
+    opacity: 0.9;
+  }
+  .card::before { top: 6px; left: 6px; border-width: 2px 0 0 2px; }
+  .card::after { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal .drop-beam { animation: beam 0.9s ease-out forwards; }
+    .reveal .card { animation: drop 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.2) 0.25s backwards; }
+    .card.taecho { animation: taecho-pulse 2.6s ease-in-out infinite; }
+    .reveal .card.taecho { animation: drop 0.55s cubic-bezier(0.2,0.9,0.3,1.2) 0.25s backwards, taecho-pulse 2.6s ease-in-out 0.8s infinite; }
+    @keyframes beam { 0% { opacity: 0; transform: scaleX(0.2); } 40% { opacity: 1; transform: scaleX(1); } 100% { opacity: 0.35; } }
+    @keyframes drop { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
+    @keyframes taecho-pulse {
+      0%, 100% { box-shadow: 0 0 30px -6px rgba(127,245,212,0.55); }
+      50% { box-shadow: 0 0 44px -2px rgba(157,183,255,0.65); }
+    }
+  }
+
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .tier-name {
+    font-size: clamp(24px, 6.4vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--tier, var(--gold));
+    margin: 0 0 4px;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  .card.taecho .tier-name {
+    background: linear-gradient(100deg, #7ff5d4, #b9d4ff, #f0c9ff, #7ff5d4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .tier-line { margin: 0 0 18px; font-size: 14.5px; color: var(--ink); }
+
+  .divider {
+    border: 0;
+    border-top: 1px dashed var(--line);
+    margin: 18px 0;
+  }
+
+  .sec-label {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    margin: 0 0 8px;
+  }
+  .channel-big {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+  }
+  .channel-big small { font-size: 17px; font-weight: 700; color: var(--muted); margin-left: 4px; }
+  .flavor { margin: 6px 0 0; font-size: 14px; color: var(--muted); }
+  .flavor strong { color: var(--ink); font-weight: 600; }
+
+  .stat-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 10px 0 2px;
+  }
+  .stat-row .name { font-size: 15px; font-weight: 700; }
+  .stars { font-size: 17px; letter-spacing: 3px; white-space: nowrap; }
+  .stars .on { color: var(--epic); text-shadow: 0 0 8px rgba(255,196,46,0.45); }
+  .stars .off { color: #453c58; }
+  .stat-comment { margin: 2px 0 10px; font-size: 13.5px; color: var(--muted); }
+
+  .pct {
+    font-size: 30px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  .pct small { font-size: 16px; color: var(--muted); font-weight: 700; }
+
+  .kv { display: grid; grid-template-columns: 92px 1fr; gap: 8px 14px; font-size: 14px; }
+  .kv dt { color: var(--muted); margin: 0; }
+  .kv dd { margin: 0; font-weight: 600; }
+  .kv dd.warn { color: #ff8f8f; }
+
+  .quote {
+    margin: 0;
+    padding: 14px 16px;
+    background: rgba(212,169,78,0.06);
+    border-left: 3px solid var(--gold-dim);
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .actions .btn { flex: 1; min-width: 140px; }
+  .share-nudge { text-align: center; font-size: 12.5px; color: var(--muted); margin: 14px 0 0; }
+  .share-nudge b { color: var(--taecho); font-weight: 700; }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%) translateY(8px);
+    background: #221c30;
+    border: 1px solid var(--gold-dim);
+    color: var(--ink);
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  footer {
+    margin-top: 44px;
+    text-align: center;
+    font-size: 12px;
+    color: #6a6180;
+    line-height: 1.7;
+  }
+  footer p { margin: 4px 0; }
+  [hidden] { display: none !important; }
+</style>
+
+<main>
+  <header class="masthead">
+    <span class="eyebrow">ARAD DAILY ORACLE</span>
+    <h1>오늘의 <span class="accent">던파운세</span></h1>
+    <p>모험단명을 넣으면, 오늘 하루 아라드의 기운을 감정해 드립니다.<br>같은 모험단은 하루 동안 같은 결과 — 자정(KST)에 리셋됩니다.</p>
+  </header>
+
+  <section class="gate" id="gate">
+    <label for="advName">모험단명 (또는 캐릭터명)</label>
+    <div class="gate-row">
+      <input id="advName" type="text" maxlength="20" placeholder="예) 잠수함패치" autocomplete="off" />
+      <button class="btn" id="drawBtn" type="button">운세 감정</button>
+    </div>
+    <p class="hint">회원가입 없음 · 입력한 이름은 어디에도 저장되지 않습니다. 순수 재미용 비공식 팬 콘텐츠입니다.</p>
+  </section>
+
+  <section id="resultWrap" hidden>
+    <div class="drop-beam" id="beam"></div>
+    <article class="card" id="card" aria-live="polite"></article>
+    <div class="actions">
+      <button class="btn" id="copyBtn" type="button">결과 복사하기</button>
+      <button class="btn ghost" id="shareBtn" type="button">링크 공유</button>
+      <button class="btn ghost" id="againBtn" type="button">다른 모험단 감정</button>
+    </div>
+    <p class="share-nudge" id="nudge"></p>
+  </section>
+
+  <footer>
+    <p>본 페이지는 유저가 만든 비공식 팬 콘텐츠이며, 던전앤파이터 및 네오플·넥슨과 무관합니다.</p>
+    <p>모든 결과는 실제 게임 확률과 아무 관련이 없는 랜덤 재미 요소입니다. 증폭은 언제나 본인 책임.</p>
+  </footer>
+</main>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ── 결정론적 시드: 모험단명 + KST 날짜 ── */
+  function hash32(str) {
+    var h = 2166136261;
+    for (var i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+  function mulberry32(seed) {
+    return function () {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function kstDateKey() {
+    return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+  }
+  function kstDateLabel() {
+    return new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: "short" }).format(new Date());
+  }
+
+  /* ── 콘텐츠 풀 ── */
+  var TIERS = [
+    { key: "rare",      name: "레어",     color: "#a06bff", p: 0.30, line: "무난하게 흘러가는 하루. 큰 욕심만 부리지 않으면 잃을 것도 없다." },
+    { key: "unique",    name: "유니크",   color: "#ff5fd2", p: 0.30, line: "은근히 풀리는 날. 작은 이득이 쌓여 저녁쯤엔 웃고 있을 것이다." },
+    { key: "legendary", name: "레전더리", color: "#ff8a2a", p: 0.22, line: "기운이 심상치 않다. 평소 안 하던 시도가 의외로 통하는 날." },
+    { key: "epic",      name: "에픽",     color: "#ffc42e", p: 0.15, line: "오늘 아라드의 주인공은 당신. 던전이 먼저 인사를 건넨다." },
+    { key: "taecho",    name: "태초",     color: "#7ff5d4", p: 0.03, line: "운명이 당신을 선택했다. 오늘 접속하지 않으면 두고두고 회자될 후회가 된다." }
+  ];
+  var AMP = [
+    "오늘은 아니다. 증폭기 근처에도 가지 마라. 밀린 마법부여나 정리하자.",
+    "7까지는 무난, 8부터는 심장과 골드가 동시에 아프다.",
+    "평범한 기운. 이벤트 보호권 있을 때를 노리는 것도 지혜다.",
+    "이계의 기운이 등을 밀어준다. 10증폭, 오늘은 도전해 볼 만하다.",
+    "역대급 기운. 오늘 지나면 이 손맛 다시 없다. (결과는 책임 안 짐)"
+  ];
+  var REINF = [
+    "키리도 오늘은 조용히 고개를 젓는다. 무기는 고이 모셔두자.",
+    "10강까지만. 11강 버튼에 손을 올리는 순간 운세는 무효가 된다.",
+    "반반. 성공하면 실력이고, 실패하면 운세 탓을 하면 된다.",
+    "키리의 약속과 믿음이 유난히 반짝인다. 12강 노려볼 만한 날.",
+    "두드려라, 열릴 것이다. 오늘 당신의 무기가 빛날 운명."
+  ];
+  var LOCK = [
+    "오늘 자물쇠 안에는 실망만 들어 있다. 열쇠를 아껴라.",
+    "흔한 소모품의 기운. 기대 없이 열면 덜 아프다.",
+    "틈새로 반짝이는 것이 살짝 보인다. 한두 개 정도는 열어볼 만.",
+    "자물쇠 너머에서 이달의 특별 아이템이 손짓하는 게 보인다.",
+    "오늘의 자물쇠는 사실상 장식. 특별 아이템이 나올 기세다."
+  ];
+  var CH_FLAVOR = [
+    "어젯밤 태초가 두 번 터졌다는 소문이 도는 자리",
+    "결정 드랍 이펙트가 유난히 자주 보이는 명당",
+    "사람이 없어 조용히, 그리고 꾸준히 먹는 자리",
+    "아라드의 기운이 소용돌이치는 채널",
+    "서버의 노른자 자리. 자리싸움 나기 전에 선점하라",
+    "겉보기엔 평범하지만 아는 사람만 아는 포인트",
+    "점검의 기운이 모두 빠져나간 청정 채널",
+    "입장하는 순간 BGM부터 다르게 들리는 자리"
+  ];
+  var TIMES = [
+    "오전 6시~9시 · 부지런한 모험가가 결정을 먹는다",
+    "점심시간 · 식후 한 판이 국룰",
+    "오후 3시~6시 · 나른할수록 드랍은 짜릿하다",
+    "저녁 8시~10시 · 오늘의 황금 시간대",
+    "밤 11시~새벽 1시 · 아라드의 기운이 절정",
+    "새벽 2시~4시 · 수면과 태초를 맞바꾸는 시간"
+  ];
+  var CLASSES = [
+    "검신", "마제스티", "인다라천", "다크로드", "시라누이", "그랜드 마스터",
+    "뱅가드", "세이비어", "옵티머스", "레퀴엠", "언터처블", "저스티스",
+    "이모탈", "세인트", "이단심판관", "태을선인", "어센션", "헤카테",
+    "트렌드세터", "패스파인더", "메이븐", "프레데터", "알키오네", "갓파더"
+  ];
+  var ITEMS = [
+    "무색 큐브 조각 한 줌", "황금빛 보석", "순수한 황금 고서", "이계의 결정",
+    "테라니움 조각", "세리아의 수제 쿠키", "모험가 명성 물약", "빛나는 우편함",
+    "경매장 알림창", "창고 정리 중 발견한 옛 유물"
+  ];
+  var TABOO = [
+    "새벽 감성 충동 증폭",
+    "지인팟 단톡에 딜미터기 캡처 전송",
+    "경매장에 0 하나 더 붙여 등록",
+    "“한 판만 더” (결국 새벽 4시)",
+    "패치노트 안 읽고 스킬트리 초기화",
+    "레이드 시작 5분 전 자리 비움",
+    "시세 확인 없이 지르기",
+    "강화 재료인 줄 모르고 장비 분해",
+    "오늘 나온 득템 자랑 3회 이상",
+    "이벤트 기간 착각 (어제 끝났음)",
+    "명당 채널에서 잠수",
+    "세리아 방에 로그인만 하고 밤새기"
+  ];
+  var QUOTES = [
+    "「어서 오세요, 모험가님. 오늘은 왠지 좋은 일이 생길 것 같아요.」 — 세리아",
+    "「강화는 마음의 준비가 되었을 때 누르는 겁니다.」 — 키리",
+    "「골드는 돌고 도는 것. 오늘은 당신 차례일지도.」 — 어느 상인",
+    "「빛이 그대의 파밍과 함께하기를.」 — 어느 성직자",
+    "「운명은 개척하는 자의 것. 일단 입장부터 해라.」 — 어느 귀검사",
+    "「오늘의 드랍은 어제의 꾸준함이 만든 것.」 — 아라드 격언",
+    "「무릇 모험가란, 실패한 증폭 앞에서도 웃는 법.」 — 아라드 격언",
+    "「던전 앞에서 고민하는 시간에 한 판을 더 돌 수 있다.」 — 어느 파밍 장인",
+    "「내일의 태초보다 오늘의 에픽.」 — 아라드 격언",
+    "「장비는 거들 뿐, 오늘의 주인공은 당신입니다.」 — 세리아"
+  ];
+  var PARTY_COMMENT = [
+    [30, "오늘 막공은 던전보다 사람이 무섭다. 믿을 건 고정팟뿐."],
+    [55, "한두 번 터져도 놀라지 말 것. 부활 코인은 넉넉히."],
+    [75, "무난한 클리어 각. 딜미터기 캡처는 넣어두는 게 평화롭다."],
+    [90, "트라이 없이 원트 각. 오늘은 당신이 버스 기사."],
+    [101, "성스러운 공대장의 기운. 공대원 일곱 명이 당신만 믿는다."]
+  ];
+
+  /* ── 운세 생성 ── */
+  function pick(rng, arr) { return arr[Math.floor(rng() * arr.length)]; }
+  function starsFor(rng, tierIdx) {
+    var raw = rng() * 4 + 0.5 + tierIdx * 0.4;
+    return Math.min(5, Math.max(1, Math.round(raw)));
+  }
+  function rollTier(rng) {
+    var r = rng(), acc = 0;
+    for (var i = TIERS.length - 1; i >= 0; i--) {
+      acc += TIERS[i].p;
+      if (r < acc) return i;
+    }
+    return 0;
+  }
+  function makeFortune(name) {
+    var rng = mulberry32(hash32(name.trim() + "|" + kstDateKey() + "|arad"));
+    var tierIdx = rollTier(rng);
+    var party = 17 + Math.floor(rng() * 83);
+    var partyComment = "";
+    for (var i = 0; i < PARTY_COMMENT.length; i++) {
+      if (party < PARTY_COMMENT[i][0]) { partyComment = PARTY_COMMENT[i][1]; break; }
+    }
+    return {
+      name: name.trim(),
+      tier: TIERS[tierIdx],
+      channel: 1 + Math.floor(rng() * 40),
+      chFlavor: pick(rng, CH_FLAVOR),
+      time: pick(rng, TIMES),
+      amp: starsFor(rng, tierIdx),
+      reinf: starsFor(rng, tierIdx),
+      lock: starsFor(rng, tierIdx),
+      party: party,
+      partyComment: partyComment,
+      job: pick(rng, CLASSES),
+      item: pick(rng, ITEMS),
+      taboo: pick(rng, TABOO),
+      quote: pick(rng, QUOTES)
+    };
+  }
+
+  /* ── 렌더링 ── */
+  function esc(s) {
+    return s.replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function starHtml(n) {
+    var out = "";
+    for (var i = 1; i <= 5; i++) out += '<span class="' + (i <= n ? "on" : "off") + '">' + (i <= n ? "★" : "☆") + "</span>";
+    return '<span class="stars">' + out + "</span>";
+  }
+  function starText(n) { return "★".repeat(n) + "☆".repeat(5 - n); }
+
+  var current = null;
+  var gate = document.getElementById("gate");
+  var wrap = document.getElementById("resultWrap");
+  var card = document.getElementById("card");
+  var nudge = document.getElementById("nudge");
+  var input = document.getElementById("advName");
+  var toast = document.getElementById("toast");
+  var toastTimer = null;
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 2200);
+  }
+
+  function render(f) {
+    current = f;
+    card.style.setProperty("--tier", f.tier.color);
+    card.classList.toggle("taecho", f.tier.key === "taecho");
+    card.innerHTML =
+      '<div class="card-meta"><span>' + kstDateLabel() + '</span><span>모험단 「' + esc(f.name) + '」</span></div>' +
+      '<h2 class="tier-name">[' + f.tier.name + '] 오늘의 아라드 운세</h2>' +
+      '<p class="tier-line">' + f.tier.line + '</p>' +
+      '<hr class="divider" />' +
+      '<p class="sec-label">최후의 조율자 · 오늘의 명당</p>' +
+      '<div class="channel-big">' + f.channel + '<small>채널</small></div>' +
+      '<p class="flavor"><strong>' + f.chFlavor + '.</strong><br>추천 시간 — ' + f.time + '</p>' +
+      '<hr class="divider" />' +
+      '<p class="sec-label">강화소 기상도</p>' +
+      '<div class="stat-row"><span class="name">장비 증폭운</span>' + starHtml(f.amp) + '</div>' +
+      '<p class="stat-comment">' + AMP[f.amp - 1] + '</p>' +
+      '<div class="stat-row"><span class="name">무기 강화운</span>' + starHtml(f.reinf) + '</div>' +
+      '<p class="stat-comment">' + REINF[f.reinf - 1] + '</p>' +
+      '<div class="stat-row"><span class="name">봉인된 자물쇠</span>' + starHtml(f.lock) + '</div>' +
+      '<p class="stat-comment">' + LOCK[f.lock - 1] + '</p>' +
+      '<hr class="divider" />' +
+      '<p class="sec-label">오늘의 막공운</p>' +
+      '<div class="pct">' + f.party + '<small>%</small></div>' +
+      '<p class="flavor">' + f.partyComment + '</p>' +
+      '<hr class="divider" />' +
+      '<dl class="kv">' +
+      '<dt>행운의 직업</dt><dd>' + f.job + '</dd>' +
+      '<dt>행운의 물건</dt><dd>' + f.item + '</dd>' +
+      '<dt>오늘의 금기</dt><dd class="warn">' + f.taboo + '</dd>' +
+      '</dl>' +
+      '<hr class="divider" />' +
+      '<blockquote class="quote">' + f.quote + '</blockquote>';
+
+    nudge.innerHTML = f.tier.key === "taecho"
+      ? "<b>태초 운세</b>가 나왔습니다. 스크린샷은 국룰입니다."
+      : "태초 운세가 나올 확률은 단 3%. 내일 다시 도전하세요.";
+
+    gate.hidden = true;
+    wrap.hidden = false;
+    wrap.classList.remove("reveal");
+    void wrap.offsetWidth;
+    wrap.classList.add("reveal");
+    document.getElementById("beam").style.setProperty("--tier", f.tier.color);
+    wrap.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function copyText() {
+    if (!current) return;
+    var f = current;
+    var lines = [
+      "🔮 오늘의 던파운세 — " + kstDateLabel(),
+      "🛡 모험단 「" + f.name + "」",
+      "━━━━━━━━━━━━━━",
+      "💎 운세 등급: [" + f.tier.name + "]",
+      "🗺 조율자 명당: " + f.channel + "채널 (" + f.time.split(" · ")[0] + ")",
+      "⚒ 증폭운 " + starText(f.amp) + " / 강화운 " + starText(f.reinf),
+      "🔒 봉인된 자물쇠 " + starText(f.lock),
+      "⚔ 막공운 " + f.party + "%",
+      "🍀 행운의 직업: " + f.job,
+      "🚫 오늘의 금기: " + f.taboo,
+      "━━━━━━━━━━━━━━",
+      "나도 감정받기 → " + location.origin + location.pathname
+    ];
+    navigator.clipboard.writeText(lines.join("\n")).then(
+      function () { showToast("운세가 복사되었습니다. 게시판에 붙여넣어 자랑하세요!"); },
+      function () { showToast("복사에 실패했습니다. 스크린샷을 이용해 주세요."); }
+    );
+  }
+
+  function shareLink() {
+    var url = location.origin + location.pathname + (current ? "?adv=" + encodeURIComponent(current.name) : "");
+    if (navigator.share) {
+      navigator.share({ title: "오늘의 던파운세", text: "오늘 아라드의 기운을 감정받아 보세요.", url: url }).catch(function () {});
+    } else {
+      navigator.clipboard.writeText(url).then(function () { showToast("링크가 복사되었습니다."); });
+    }
+  }
+
+  function draw() {
+    var name = input.value.trim();
+    if (!name) { input.focus(); showToast("모험단명을 입력해 주세요."); return; }
+    render(makeFortune(name));
+  }
+
+  document.getElementById("drawBtn").addEventListener("click", draw);
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter") draw(); });
+  document.getElementById("copyBtn").addEventListener("click", copyText);
+  document.getElementById("shareBtn").addEventListener("click", shareLink);
+  document.getElementById("againBtn").addEventListener("click", function () {
+    wrap.hidden = true;
+    gate.hidden = false;
+    input.value = "";
+    input.focus();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  var param = new URLSearchParams(location.search).get("adv");
+  if (param && param.trim()) {
+    input.value = param.trim();
+    render(makeFortune(param.trim()));
+  }
+})();
+</script>
+</body>
+</html>
