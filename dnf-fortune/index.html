@@ -218,7 +218,7 @@
   /* ── 항아리 개봉 연출 무대 ───────────────── */
   .stage {
     position: relative;
-    height: 360px;
+    height: 380px;
     margin-top: 26px;
     display: flex;
     align-items: center;
@@ -246,14 +246,14 @@
   .stage.on .stage-caption { opacity: 1; }
   .countdown {
     position: absolute;
-    top: 16px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     font-family: 'DNFForgedBlade', 'SUIT', sans-serif;
-    font-size: 64px;
+    font-size: 72px;
     font-weight: 700;
     color: var(--gold);
-    text-shadow: 0 0 24px rgba(232,189,99,0.65), 0 3px 6px rgba(0,0,0,0.5);
+    text-shadow: 0 0 26px rgba(232,189,99,0.75), 0 3px 10px rgba(0,0,0,0.7);
     opacity: 0;
     line-height: 1;
     z-index: 6;
@@ -261,10 +261,10 @@
   }
   .countdown.tick { animation: cdTick 0.82s ease-out; }
   @keyframes cdTick {
-    0% { opacity: 0; transform: translateX(-50%) scale(1.7); }
-    22% { opacity: 1; transform: translateX(-50%) scale(1); }
-    78% { opacity: 1; transform: translateX(-50%) scale(1); }
-    100% { opacity: 0; transform: translateX(-50%) scale(0.82); }
+    0% { opacity: 0; transform: translate(-50%,-50%) scale(1.7); }
+    22% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    78% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%,-50%) scale(0.82); }
   }
   .fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
   .flash {
@@ -276,48 +276,63 @@
     background: radial-gradient(circle, #fff 0%, #ffe9b0 22%, rgba(232,189,99,0.55) 45%, rgba(63,155,255,0.16) 65%, transparent 78%);
     pointer-events: none;
   }
-  .jar-wrap {
+  .flipcard { width: 210px; height: 290px; perspective: 1300px; }
+  .flip-inner {
     position: relative;
-    width: 190px; height: 210px;
-    display: flex; align-items: flex-end; justify-content: center;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.9s var(--spring);
+    will-change: transform;
   }
-  .jar-glow {
-    position: absolute;
-    left: 50%; bottom: 34px;
-    width: 150px; height: 150px;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(232,189,99,0.45), rgba(63,155,255,0.14) 55%, transparent 72%);
-    filter: blur(4px);
+  .stage.flip .flip-inner { transform: rotateY(180deg); }
+  .flip-face {
+    position: absolute; inset: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
   }
-  .jar-svg { position: relative; width: 178px; height: auto; }
-  .jar-lid { transform-origin: 50% 100%; }
+  .flip-back {
+    background: linear-gradient(160deg, #16213f 0%, #0b1122 55%, #070a14 100%);
+    box-shadow:
+      inset 0 0 0 2px #c99a3e,
+      inset 0 0 0 5px #0b1122,
+      inset 0 0 0 6px rgba(232,189,99,0.32),
+      inset 0 0 44px -12px rgba(63,155,255,0.5),
+      0 22px 46px -22px rgba(0,0,0,0.85);
+  }
+  .back-emblem { width: 96px; height: 96px; filter: drop-shadow(0 0 12px rgba(232,189,99,0.45)); }
+  .back-emblem svg { width: 100%; height: 100%; display: block; }
+  .back-word { position: absolute; bottom: 20px; font-size: 10px; letter-spacing: 0.34em; color: var(--gold); opacity: 0.85; font-weight: 700; }
+  .flip-front {
+    transform: rotateY(180deg);
+    background: linear-gradient(180deg, #14141f, #0b0b14);
+    box-shadow:
+      inset 0 0 0 2px var(--tier, var(--gold)),
+      inset 0 0 0 5px #0b0b14,
+      inset 0 0 0 6px color-mix(in srgb, var(--tier, var(--gold)) 40%, transparent),
+      inset 0 0 46px -8px color-mix(in srgb, var(--tier, var(--gold)) 55%, transparent),
+      0 22px 46px -22px rgba(0,0,0,0.85);
+  }
+  .fr-label { font-size: 12px; letter-spacing: 0.24em; color: var(--muted); margin-bottom: 12px; }
+  .fr-tier {
+    font-family: 'DNFForgedBlade', 'SUIT', sans-serif;
+    font-size: 40px; font-weight: 700;
+    color: var(--tier, var(--gold));
+    text-shadow: 0 0 26px color-mix(in srgb, var(--tier, var(--gold)) 55%, transparent);
+  }
 
   @media (prefers-reduced-motion: no-preference) {
-    .stage.charging .jar-svg { animation: jarTremor 0.45s ease-in-out infinite; }
-    .stage.charging .jar-glow { animation: glowBuild 2.5s ease-in forwards; }
-    .stage.pop .jar-wrap { animation: jarFade 0.5s ease-out 0.12s forwards; }
-    .stage.pop .jar-lid { animation: lidPop 0.5s var(--spring-bounce) forwards; }
+    .stage.charging .flipcard { animation: cardFloat 2.4s ease-in-out infinite; }
     .stage.pop .flash { animation: flashBurst 0.62s ease-out forwards; }
-    @keyframes jarShake {
-      0%,100% { transform: translateX(0) rotate(0); }
-      20% { transform: translateX(-4px) rotate(-2deg); }
-      45% { transform: translateX(5px) rotate(2deg); }
-      70% { transform: translateX(-3px) rotate(-1.4deg); }
-    }
-    @keyframes jarTremor { 0%, 100% { transform: translateX(0) rotate(0); } 25% { transform: translateX(-1.5px) rotate(-0.6deg); } 75% { transform: translateX(1.5px) rotate(0.6deg); } }
-    @keyframes glowBuild { 0% { opacity: 0.35; transform: translateX(-50%) scale(0.8); } 100% { opacity: 1; transform: translateX(-50%) scale(1.3); } }
-    @keyframes lidPop {
-      0% { transform: translateY(0) rotate(0); opacity: 1; }
-      100% { transform: translateY(-88px) rotate(-24deg); opacity: 0; }
-    }
+    @keyframes cardFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
     @keyframes flashBurst {
       0% { transform: translate(-50%,-50%) scale(0); opacity: 0; }
       30% { opacity: 1; }
       60% { transform: translate(-50%,-50%) scale(7.5); opacity: 0.85; }
       100% { transform: translate(-50%,-50%) scale(11); opacity: 0; }
     }
-    @keyframes jarFade { to { opacity: 0; transform: scale(0.94); } }
   }
 
   /* ── 결과: 아이템 툴팁 카드 ─────────────── */
@@ -577,43 +592,30 @@
     <div class="stage" id="stage">
       <div class="stage-amb" id="stageAmb"></div>
       <div class="countdown" id="countdown"></div>
-      <div class="stage-caption" id="stageCap">오늘의 보상을 개봉합니다</div>
-      <div class="jar-wrap" id="jarWrap">
-        <div class="jar-glow"></div>
-        <svg class="jar-svg" viewBox="0 0 200 220" aria-hidden="true">
-          <defs>
-            <linearGradient id="jarBody" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#2a2a3c"/>
-              <stop offset="0.5" stop-color="#181826"/>
-              <stop offset="1" stop-color="#0c0c16"/>
-            </linearGradient>
-            <linearGradient id="jarGold" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#f4d488"/>
-              <stop offset="1" stop-color="#b98f37"/>
-            </linearGradient>
-            <radialGradient id="jarCore" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0" stop-color="#fff3cf"/>
-              <stop offset="0.5" stop-color="#e8bd63"/>
-              <stop offset="1" stop-color="#3f9bff" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <!-- 본체 -->
-          <path d="M46 108 Q34 210 100 212 Q166 210 154 108 Q150 96 100 96 Q50 96 46 108 Z" fill="url(#jarBody)" stroke="url(#jarGold)" stroke-width="3"/>
-          <!-- 금테 밴드 -->
-          <path d="M50 132 Q100 148 150 132" fill="none" stroke="url(#jarGold)" stroke-width="3" opacity="0.85"/>
-          <path d="M56 170 Q100 184 144 170" fill="none" stroke="#b98f37" stroke-width="2" opacity="0.6"/>
-          <!-- 안쪽 빛 -->
-          <ellipse cx="100" cy="104" rx="42" ry="16" fill="url(#jarCore)"/>
-          <circle cx="100" cy="104" r="9" fill="#fff3cf" opacity="0.9"/>
-          <!-- 목/입구 -->
-          <path d="M62 100 Q100 78 138 100" fill="none" stroke="url(#jarGold)" stroke-width="3"/>
-          <!-- 뚜껑 -->
-          <g class="jar-lid">
-            <ellipse cx="100" cy="86" rx="46" ry="14" fill="#18233b" stroke="url(#jarGold)" stroke-width="3"/>
-            <path d="M74 84 Q100 66 126 84" fill="#101a2d" stroke="url(#jarGold)" stroke-width="3"/>
-            <circle cx="100" cy="70" r="6" fill="url(#jarGold)"/>
-          </g>
-        </svg>
+      <div class="stage-caption" id="stageCap">오늘의 운세를 개봉합니다</div>
+      <div class="flipcard">
+        <div class="flip-inner" id="flipInner">
+          <div class="flip-face flip-back">
+            <div class="back-emblem">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <defs>
+                  <linearGradient id="emGold" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#f7e4ad"/>
+                    <stop offset="1" stop-color="#b8892f"/>
+                  </linearGradient>
+                </defs>
+                <path d="M50 6 L94 50 L50 94 L6 50 Z" fill="none" stroke="url(#emGold)" stroke-width="3"/>
+                <path d="M50 26 L74 50 L50 74 L26 50 Z" fill="url(#emGold)" opacity="0.9"/>
+                <circle cx="50" cy="50" r="5.5" fill="#fff3cf"/>
+              </svg>
+            </div>
+            <span class="back-word">ARAD ORACLE</span>
+          </div>
+          <div class="flip-face flip-front" id="flipFront">
+            <span class="fr-label">오늘의 운세</span>
+            <span class="fr-tier" id="frTier">?</span>
+          </div>
+        </div>
       </div>
       <div class="flash" id="flash"></div>
       <canvas class="fx" id="fx"></canvas>
@@ -994,7 +996,7 @@
 
   function showResult() {
     stageWrap.hidden = true;
-    stage.classList.remove("charging", "pop", "on");
+    stage.classList.remove("charging", "pop", "on", "flip");
     wrap.hidden = false;
     wrap.classList.remove("reveal");
     void wrap.offsetWidth;
@@ -1005,13 +1007,17 @@
 
   function playAndReveal(f) {
     render(f);
+    // 뒤집힐 카드 앞면에 등급 세팅
+    var frTier = document.getElementById("frTier");
+    var flipFront = document.getElementById("flipFront");
+    frTier.textContent = "[" + f.tier.name + "]";
+    flipFront.style.setProperty("--tier", f.tier.color);
     if (reduceMotion) { gate.hidden = true; showResult(); return; }
     gate.hidden = true;
     wrap.hidden = true;
     stageWrap.hidden = false;
-    stage.classList.remove("pop");
-    stage.classList.add("on", "charging");
-    stageCap.textContent = "오늘의 보상을 개봉합니다";
+    stage.className = "stage on charging";
+    stageCap.textContent = "오늘의 운세를 개봉합니다";
     stage.scrollIntoView({ behavior: "smooth", block: "center" });
 
     var cd = document.getElementById("countdown");
@@ -1026,15 +1032,15 @@
     tick();                      // 3
     setTimeout(tick, 850);       // 2
     setTimeout(tick, 1700);      // 1
-    setTimeout(function () {     // 개봉
+    setTimeout(function () {     // 카드 뒤집기 + 빛 폭발
       stage.classList.remove("charging");
-      stage.classList.add("pop");
+      stage.classList.add("flip", "pop");
       stageCap.textContent = "";
       cd.textContent = "";
       cd.classList.remove("tick");
       particleBurst();
     }, 2550);
-    setTimeout(showResult, 3250);
+    setTimeout(showResult, 3700);
   }
 
   function copyText() {
