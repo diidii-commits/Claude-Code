@@ -1,0 +1,329 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>쿠팡이츠 마케팅 면접 준비</title>
+<style>
+:root{
+  --bg:#F6F8F8; --card:#FFFFFF; --ink:#152028; --sub:#5B6B72; --line:#E2E9E9;
+  --accent:#0B9E9E; --accent-soft:#E0F2F2; --signal:#E1573C; --signal-soft:#FCEDE9;
+  --ok:#1E8E5A;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0F1619; --card:#182228; --ink:#E8EEEF; --sub:#93A4AB; --line:#243239;
+    --accent:#2FB8B8; --accent-soft:#123638; --signal:#F07B62; --signal-soft:#3A211B; --ok:#4CC08A; }
+}
+:root[data-theme="dark"]{ --bg:#0F1619; --card:#182228; --ink:#E8EEEF; --sub:#93A4AB; --line:#243239;
+  --accent:#2FB8B8; --accent-soft:#123638; --signal:#F07B62; --signal-soft:#3A211B; --ok:#4CC08A; }
+:root[data-theme="light"]{ --bg:#F6F8F8; --card:#FFFFFF; --ink:#152028; --sub:#5B6B72; --line:#E2E9E9;
+  --accent:#0B9E9E; --accent-soft:#E0F2F2; --signal:#E1573C; --signal-soft:#FCEDE9; --ok:#1E8E5A; }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  line-height:1.65;font-size:15.5px;-webkit-font-smoothing:antialiased}
+main{max-width:640px;margin:0 auto;padding:20px 16px 96px}
+header.top{max-width:640px;margin:0 auto;padding:20px 16px 0}
+.eyebrow{font-size:11px;letter-spacing:.12em;font-weight:700;color:var(--accent);text-transform:uppercase}
+h1{font-size:22px;font-weight:800;margin:2px 0 0;text-wrap:balance}
+.sub{color:var(--sub);font-size:13px;margin-top:2px}
+
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);
+  display:flex;justify-content:center;gap:2px;padding:6px 8px calc(6px + env(safe-area-inset-bottom));z-index:10}
+nav button{flex:1;max-width:150px;border:0;background:none;color:var(--sub);font:inherit;font-size:12px;
+  font-weight:600;padding:8px 2px;border-radius:10px;cursor:pointer}
+nav button.on{color:var(--accent);background:var(--accent-soft)}
+nav button:focus-visible{outline:2px solid var(--accent)}
+
+section.tab{display:none}
+section.tab.on{display:block}
+h2{font-size:16px;font-weight:800;margin:26px 0 10px}
+h2:first-child{margin-top:8px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+details.card{padding:0}
+details.card>summary{list-style:none;cursor:pointer;padding:13px 16px;font-weight:700;font-size:14.5px;
+  display:flex;align-items:center;gap:10px}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary::after{content:"+";margin-left:auto;color:var(--sub);font-weight:400;font-size:18px}
+details[open].card>summary::after{content:"–"}
+details.card .body{padding:0 16px 14px;border-top:1px solid var(--line);padding-top:10px;font-size:14.5px}
+.tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:99px;flex-shrink:0}
+.tag.doc{background:var(--accent-soft);color:var(--accent)}
+.tag.mkt{background:var(--signal-soft);color:var(--signal)}
+
+.key{background:var(--signal-soft);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:14px}
+.key b{color:var(--signal);font-size:11px;letter-spacing:.08em;display:block;margin-bottom:2px}
+ul{margin:6px 0;padding-left:18px}
+li{margin:3px 0}
+.muted{color:var(--sub);font-size:13px}
+
+.day{display:flex;gap:12px;align-items:flex-start}
+.day input{width:20px;height:20px;margin-top:3px;accent-color:var(--accent);flex-shrink:0}
+.day .d{font-weight:800;color:var(--accent);font-size:13px;font-variant-numeric:tabular-nums}
+.day.done .t{text-decoration:line-through;color:var(--sub)}
+.progress{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0 16px}
+.progress i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+
+.fc{background:var(--card);border:1px solid var(--line);border-radius:16px;min-height:230px;padding:22px;
+  display:flex;flex-direction:column;justify-content:center;cursor:pointer;text-align:center}
+.fc .q{font-weight:800;font-size:16.5px;text-wrap:balance}
+.fc .a{margin-top:14px;font-size:14.5px;color:var(--sub);display:none;text-align:left}
+.fc.show .a{display:block}
+.fc .hint{margin-top:14px;font-size:12px;color:var(--accent);font-weight:600}
+.fcnav{display:flex;gap:8px;margin-top:12px}
+.fcnav button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;
+  font-weight:700;font-size:14px;padding:12px;border-radius:12px;cursor:pointer}
+.fcnav button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.fcnav button:focus-visible{outline:2px solid var(--accent)}
+.fccount{text-align:center;font-size:12px;color:var(--sub);margin-top:8px;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion: reduce){ .progress i{transition:none} }
+</style>
+
+<header class="top">
+  <div class="eyebrow">Coupang Eats · Marketing Interview</div>
+  <h1>쿠팡이츠 마케팅 면접 준비</h1>
+  <div class="sub">족보 기반 7일 학습 시스템 · 매일 20–30분</div>
+</header>
+
+<main>
+<!-- ─────────── 플랜 ─────────── -->
+<section class="tab on" id="tab-plan">
+  <h2>7일 학습 플랜</h2>
+  <div class="progress"><i id="pbar"></i></div>
+  <div class="card day" data-k="d1"><input type="checkbox"><div><span class="d">DAY 1</span><div class="t"><b>비즈니스 구조 + 수익 구조</b><br><span class="muted">개념 탭 1·2번. 수수료·광고비·배달비·점주 실질 마진 흐름을 말로 설명해보기</span></div></div></div>
+  <div class="card day" data-k="d2"><input type="checkbox"><div><span class="d">DAY 2</span><div class="t"><b>핵심 지표 = 마케팅 퍼널</b><br><span class="muted">노출→클릭→전환→재주문 퍼널로 지표 암기. 플래시카드 1회전</span></div></div></div>
+  <div class="card day" data-k="d3"><input type="checkbox"><div><span class="d">DAY 3</span><div class="t"><b>프로모션 &amp; 광고 (마케팅 핵심)</b><br><span class="muted">스플래시/배너/다운로드쿠폰/스토어쿠폰 — 목적별 사용처 구분이 단골 질문</span></div></div></div>
+  <div class="card day" data-k="d4"><input type="checkbox"><div><span class="d">DAY 4</span><div class="t"><b>월렛쉐어 + 점포 활성화</b><br><span class="muted">개념 탭 4·5번 + 케이스 답변 5단계 구조 암기</span></div></div></div>
+  <div class="card day" data-k="d5"><input type="checkbox"><div><span class="d">DAY 5</span><div class="t"><b>문서 케이스 문제 1–10</b><br><span class="muted">질문 탭 [족보] 문제. 답 보기 전에 소리내어 1분씩 답해보기</span></div></div></div>
+  <div class="card day" data-k="d6"><input type="checkbox"><div><span class="d">DAY 6</span><div class="t"><b>마케팅 확장 질문 10</b><br><span class="muted">질문 탭 [마케팅] 문제. ROI·리텐션·A/B테스트 용어 입에 붙이기</span></div></div></div>
+  <div class="card day" data-k="d7"><input type="checkbox"><div><span class="d">DAY 7</span><div class="t"><b>모의 면접 + 최종 요약</b><br><span class="muted">플래시카드 전체 + 아래 최종 문장 암기. 케이스 3개 랜덤으로 셀프 모의면접</span></div></div></div>
+  <div class="key"><b>최종 암기 문장</b>“쿠팡이츠는 단순 배달앱이 아니라 점포·고객·라이더·프로모션·수수료·광고·배달 품질이 연결된 플랫폼 비즈니스입니다. 문제를 시장·경쟁·점포·고객·배달·프로모션 관점으로 나누고, 임팩트가 큰 병목부터 우선순위대로 개선해야 합니다.”</div>
+</section>
+
+<!-- ─────────── 개념 ─────────── -->
+<section class="tab" id="tab-concept">
+  <h2>핵심 개념 (마케팅 연관 순)</h2>
+
+  <details class="card"><summary>1. 프로모션 &amp; 광고 체계 ★최중요</summary><div class="body">
+    <b>광고 = 노출·인지도 / 쿠폰 = 주문 전환.</b> 캠페인 목적이 인지도인지, 전환인지, 재주문인지에 따라 다르게 설계.
+    <ul>
+      <li><b>스플래시 광고</b> — 앱 실행 시 전면. 대형 브랜드 캠페인·신규 론칭·전국 단위. 노출 효과 최대</li>
+      <li><b>배너 광고</b> — 특정 구좌. 카테고리/지역 타깃, 비용 조절 가능, 효율 관리에 유리</li>
+      <li><b>다운로드 쿠폰</b> — 신규 유입·앱 방문 유도·첫 주문·재구매</li>
+      <li><b>스토어 쿠폰</b> — 특정 점포 매출 개선·전환율 낮은 점포·신규 입점 활성화</li>
+    </ul>
+    <div class="key"><b>면접용 문장</b>“광고는 노출과 인지도, 쿠폰은 주문 전환에 강점이 있어 캠페인 목적에 따라 다르게 설계해야 합니다.”</div>
+  </div></details>
+
+  <details class="card"><summary>2. 핵심 지표 — 마케팅 퍼널로 재구성</summary><div class="body">
+    <b>노출 → 클릭 → 장바구니 → 결제 → 첫주문 → 재주문</b> 퍼널로 외우면 마케팅 답변에 바로 쓸 수 있음.
+    <ul>
+      <li><b>고객</b>: 노출 수, 클릭률, 장바구니/결제 전환율, 쿠폰 사용률, 재방문·재주문율</li>
+      <li><b>주문</b>: 주문 수·금액, 객단가, 첫 주문율, 완료율, 취소율</li>
+      <li><b>점포</b>: 온라인율(피크타임), 수락률, 취소율, 평균 준비시간, 리뷰·평점</li>
+      <li><b>배달</b>: ETA vs 실제 시간, 배차 성공률, 픽업·배달 지연, 클레임</li>
+      <li><b>프로모션</b>: 쿠폰 다운로드·사용률, 전후 주문 증가율, 신규 유입, 광고 노출·클릭·전환</li>
+    </ul>
+  </div></details>
+
+  <details class="card"><summary>3. 수익 구조</summary><div class="body">
+    ① 플랫폼 이용 수수료 ② 광고비 ③ 배달비 구조(고객·점주·플랫폼·라이더 분담) ④ 결제 수수료·VAT.
+    수수료 숫자를 단정하지 말고 <b>점주의 실질 마진 구조</b>(원가·인건비·임대료·포장비·수수료·광고비)를 이해한다는 톤으로.
+    <div class="key"><b>면접용 문장</b>“수익성은 주문 수만이 아니라 수수료, 광고비, 배달비, 점주 실질 마진, 재주문율까지 함께 봐야 합니다.”</div>
+  </div></details>
+
+  <details class="card"><summary>4. 월렛쉐어</summary><div class="body">
+    한 점포의 전체 배달 매출 중 쿠팡이츠 비중. (예: 월 1,000만원 중 이츠 300만원 = 30%)
+    입점보다 <b>활성화</b>가 핵심 — 온라인율, 피크타임 수락, 취소율, 준비시간, 메뉴 페이지 경쟁력, 쿠폰/광고 활용.
+    <div class="key"><b>면접용 문장</b>“월렛쉐어는 단순 입점보다 활성화가 중요합니다. 온라인율·수락률·취소율·준비시간·리뷰·재주문율을 함께 관리해야 합니다.”</div>
+  </div></details>
+
+  <details class="card"><summary>5. 온보딩 &amp; 점포 활성화</summary><div class="body">
+    온보딩 = 계약이 아니라 <b>입점→첫 주문→운영 안정화→재주문→월렛쉐어 확대</b>까지의 여정.
+    <ul>
+      <li><b>대상 선정</b>: 시장성 / 점포 매력도 / 입점 가능성 / 영업 효율 기준으로 우선순위화</li>
+      <li><b>방식 3가지</b>: 본사(HQ) 영업 — 대량·전국 캠페인 가능하나 협상 김 / 브랜드 슈퍼바이저 — 현장 실행력 높으나 인센티브 설계 필요 / 에이전시 — 빠르나 활성화 품질 낮을 수 있음</li>
+      <li><b>비활성 원인</b>: 기기 꺼둠, 피크타임 미수락, 잦은 취소, 긴 준비시간, 약한 메뉴 페이지, 쿠폰/광고 미활용</li>
+    </ul>
+  </div></details>
+
+  <details class="card"><summary>6. 수수료 프로모션 배분 (0% vs 3%)</summary><div class="body">
+    <ul>
+      <li><b>0% 3개월</b> → 전략적 핵심 매장: 지역 인기 매장, 경쟁 플랫폼 주문 상위, 대형 프랜차이즈, 카테고리 대표 매장</li>
+      <li><b>3% 6개월</b> → 성장형 매장: 신규 오픈, 중소형, 동네 맛집, 장기 운영 의지 있는 매장</li>
+    </ul>
+    <div class="key"><b>면접용 문장</b>“0%는 시장 점유율 확대용 핵심 매장에, 3%는 장기 활성화 가능한 성장형 매장에 적용하는 것이 합리적입니다.”</div>
+  </div></details>
+
+  <details class="card"><summary>7. 점주 설득 포인트</summary><div class="body">
+    점주 관심사 = 매출 증가 / 운영 복잡도 / 실질 수익. 설득 순서:
+    ① 신규 고객 유입 ② 경쟁 플랫폼 의존도 완화 ③ 초기 프로모션 지원 ④ 비피크 매출 확대 ⑤ 인지도 상승 ⑥ 운영 개선 지원(메뉴·사진·리뷰)
+  </div></details>
+
+  <details class="card"><summary>8. 케이스 답변 5단계 (모든 문제에 적용)</summary><div class="body">
+    <b>① 문제 정의 → ② 원인 분해(시장·경쟁·점포·고객·배달·프로모션) → ③ 우선순위(고객경험 임팩트·주문 기여·실행 속도·비용 효율) → ④ 실행안 → ⑤ 효과 측정 지표</b><br>
+    <span class="muted">해결책부터 말하지 않기. 반드시 정의→분해→우선순위 순서.</span>
+  </div></details>
+
+  <details class="card"><summary>9. KAM 덕목 (마케팅 협업 관점)</summary><div class="body">
+    Net Revenue 중심 사고(비용 효율 성장), 브랜드 Pain Point→사업 기회 전환, 트렌드 센싱·기획(셰프 컬렉션·IP 협업 등 "이츠에서만"의 이유 만들기), Win-Win 구조 설계, 실행력, KPI 오너십(월렛쉐어·광고 매출·객단가), 차별화 제안(독점 메뉴·콘텐츠 커머스·스탬프형 반복 구매).
+  </div></details>
+</section>
+
+<!-- ─────────── 질문 ─────────── -->
+<section class="tab" id="tab-q">
+  <h2>족보 케이스 10</h2>
+
+  <details class="card"><summary><span class="tag doc">족보</span>영업 인력 50명, 어떤 변수로 전략을 짤까?</summary><div class="body">
+    무작정 방문 수 늘리기 X. <b>입점 가능성 × 입점 후 매출 가능성 × 동선 효율</b>로 우선순위화.
+    변수: 지역 배달 수요, 상권, 미입점 매장 수, 카테고리 수요, 경쟁 플랫폼 리뷰·평점, 객단가, 배달 적합성, 하루 방문 가능 수, 계약 전환율, 첫 주문 발생률.
+  </div></details>
+  <details class="card"><summary><span class="tag doc">족보</span>0% / 3% 수수료 프로모션, 어디에 배분?</summary><div class="body">
+    0% 3개월 → 핵심 매장(지역 인기·경쟁 플랫폼 상위·대형 브랜드·카테고리 대표). 3% 6개월 → 성장형(신규 오픈·중소형·동네 맛집). 목적: 0%는 점유율 확대, 3%는 장기 활성화와 수익 균형.
+  </div></details>
+  <details class="card"><summary><span class="tag doc">족보</span>신규 매장 온보딩을 늘리려면?</summary><div class="body">
+    우선 공략 지역 선정 → 카테고리별 미입점 핵심 매장 파악 → 인기/프랜차이즈/맛집 우선순위화 → 설득 포인트 정리 → 초기 프로모션 → 첫 주문 유도 → 온라인율·취소율·수락률 관리 → 월렛쉐어 확대. <b>입점 수가 아니라 주문이 발생·유지되는 구조.</b>
+  </div></details>
+  <details class="card"><summary><span class="tag doc">족보</span>한 점포의 월렛쉐어를 늘리려면?</summary><div class="body">
+    온라인율·피크타임 수락률 개선, 취소율·준비시간 감소, 메뉴 사진·대표메뉴 재구성, 스토어 쿠폰, 리뷰 관리, 경쟁 대비 혜택 강화, 재주문 고객 확보.
+  </div></details>
+  <details class="card"><summary><span class="tag doc">족보</span>매장을 방문해 점주를 어떻게 설득?</summary><div class="body">
+    점주는 플랫폼 성장성보다 <b>자기 매장의 매출·수익성</b>을 봄. 신규 고객 유입, 의존도 완화, 초기 쿠폰/광고 지원, 지역 노출 확대, 비피크 매출, 운영 부담 최소화. "채널 추가"가 아니라 "신규 고객과 추가 매출의 기회"로 프레이밍.
+  </div></details>
+  <details class="card"><summary><span class="tag doc">족보</span>주문율 낮고 취소율 높다 — 뭐부터?</summary><div class="body">
+    <b>취소율 먼저.</b> 취소가 많은 상태에서 주문율만 올리면 고객 불만이 커짐. 원인 파악(시간대·메뉴·품절·접수 지연·피크 대응·배달) → 품절 관리 → 피크 운영 개선 → 준비시간 조정 → 이후 사진·쿠폰·리뷰로 주문율 개선.
+  </div></details>
+  <details class="card"><summary><span class="tag doc">족보</span>특정 카테고리 지표 전반 열위 — 해결책?</summary><div class="body">
+    하나의 문제로 보지 말 것. <b>주문 전환 / 운영 품질 / 고객 경험</b>으로 분해. 순서: 운영 안정화 → 취소율 → 준비시간 → 메뉴 사진·가격·구성 → 쿠폰 → 리뷰 → 재주문 유도. "쿠폰부터"는 오답 신호.
+  </div></details>
+  <details class="card"><summary><span class="tag doc">족보</span>특정 브랜드의 이츠 점유율 확대?</summary><div class="body">
+    <b>본사 협업 + 점포 단위 활성화 동시에.</b> 본사 프로모션 협의, 브랜드 쿠폰, 배너 광고, 특정 메뉴 집중 노출 + 점포별 온라인율·취소율·리뷰 관리, 지역별 성과 비교, 우수 지점 사례 확산.
+  </div></details>
+  <details class="card"><summary><span class="tag doc">족보</span>신규 입점 매장에 주문이 없다면?</summary><div class="body">
+    <b>노출→클릭→전환 중 어디가 막혔는지</b> 먼저 확인. 개선: 대표 메뉴 사진·메뉴명 개선, 초기 스토어 쿠폰, 배너/노출 지원, 리뷰 확보, 피크타임 온라인 유지, 첫 주문 고객 재주문 쿠폰. 핵심은 첫 주문 경험을 빠르게 만드는 것.
+  </div></details>
+  <details class="card"><summary><span class="tag doc">족보</span>배민 대비 약한 지역, 어떻게 접근?</summary><div class="body">
+    고객 프로모션만으로 안 됨. ① 지역 핵심 매장 확보 ② 인기 카테고리 구색 강화 ③ 지역 타깃 쿠폰 ④ 배달 품질 개선 ⑤ 온라인율 관리 ⑥ 브랜드 단위 협업 ⑦ 차별화 메시지.
+  </div></details>
+
+  <h2>마케팅 직무 확장 질문 10</h2>
+  <p class="muted">족보 내용을 마케팅 관점으로 디벨롭한 예상 질문. 답변 포인트를 참고해 나만의 답을 만들어 보세요.</p>
+
+  <details class="card"><summary><span class="tag mkt">마케팅</span>쿠폰 캠페인 성과를 어떻게 측정할 건가요?</summary><div class="body">
+    단순 사용량이 아니라 <b>증분(incremental)</b>: 프로모션 전후 주문 증가율, 신규 고객 유입 수, 쿠폰 사용률, 재주문 전환율, 객단가 변화. 비용 대비로는 쿠폰 비용 대비 증분 매출(ROI). 미발급 유사 그룹과 비교해 순수 효과를 봐야 함.
+  </div></details>
+  <details class="card"><summary><span class="tag mkt">마케팅</span>광고와 쿠폰, 예산을 어떻게 배분?</summary><div class="body">
+    목적 기준. 인지도/신규 브랜드 론칭 → 광고(스플래시·배너) 비중↑. 전환·재주문 개선 → 쿠폰 비중↑. 퍼널로 진단: 노출·클릭이 약하면 광고, 클릭은 되는데 주문이 안 되면 쿠폰+메뉴 페이지 개선.
+  </div></details>
+  <details class="card"><summary><span class="tag mkt">마케팅</span>신규 고객 유입 캠페인을 설계한다면?</summary><div class="body">
+    타깃 정의(미설치/설치 후 미주문/휴면) → 첫주문 장벽 제거(다운로드 쿠폰, 첫 주문 혜택) → 인기 매장·카테고리 구색으로 랜딩 경험 보장 → 첫 주문 후 <b>재주문 쿠폰으로 2회차 연결</b>(리텐션까지가 캠페인). 지표: 신규 유입 수, 첫 주문율, 30일 재주문율, CAC 대비 초기 LTV.
+  </div></details>
+  <details class="card"><summary><span class="tag mkt">마케팅</span>재주문율(리텐션)을 올리는 CRM 캠페인은?</summary><div class="body">
+    이탈 원인 분해(첫 경험 불만? 가격? 경쟁앱?) → 세그먼트별 대응: 첫 주문 후 미복귀 → 재주문 쿠폰·푸시, 휴면 → 복귀 혜택, 충성 고객 → 스탬프형 반복 구매 구조. 배달 품질·취소율이 나쁘면 쿠폰보다 <b>경험 개선이 먼저</b>(족보 논리와 연결).
+  </div></details>
+  <details class="card"><summary><span class="tag mkt">마케팅</span>배민 대비 쿠팡이츠의 차별화 포지셔닝은?</summary><div class="body">
+    할인·쿠폰은 경쟁사도 함. 따라 하기 어려운 것: 독점 콘텐츠(셰프 컬렉션·IP 협업·해외 브랜드 시그니처), 배달 품질(한집배달 경험), 와우 멤버십 연계 록인. 메시지는 "싸다"보다 <b>"이츠에서만 가능한 경험"</b>.
+  </div></details>
+  <details class="card"><summary><span class="tag mkt">마케팅</span>스플래시 vs 배너, 효과를 어떻게 검증?</summary><div class="body">
+    A/B 또는 지역 분할 테스트: 동일 캠페인을 구좌만 다르게 집행 → 노출 수, 클릭률, 광고 후 주문 전환율, 신규 유입, 비용 대비 증분 주문 비교. 스플래시는 인지 지표(브랜드 검색·첫 방문), 배너는 전환 지표 중심으로 평가.
+  </div></details>
+  <details class="card"><summary><span class="tag mkt">마케팅</span>프로모션 의존도가 너무 높아지면?</summary><div class="body">
+    KAM 덕목의 Net Revenue 사고 적용: 쿠폰·수수료 인하 같은 고비용 수단만 반복하면 수익성 훼손 + 가격 민감 고객만 남음. 대안: 운영 품질·메뉴 페이지 개선으로 자연 전환율 상승, 독점 콘텐츠로 비가격 차별화, 프로모션은 신규 유입·활성화 트리거로만 제한적 사용.
+  </div></details>
+  <details class="card"><summary><span class="tag mkt">마케팅</span>비피크 시간대 수요를 만들려면?</summary><div class="body">
+    시간대 타깃 쿠폰(아침·심야·간식), 시간대 적합 카테고리 큐레이션(카페·디저트), 시간 한정 노출·기획전. 지표: 시간대별 주문 수 증가, 점주 추가 매출 — 점주 설득 포인트("비피크 매출 확대")와도 연결됨.
+  </div></details>
+  <details class="card"><summary><span class="tag mkt">마케팅</span>브랜드 제휴(IP 컬랩) 캠페인을 기획한다면?</summary><div class="body">
+    Win-Win 구조 설계: IP 홀더 = 노출+라이선스 수익 / 브랜드 = 신메뉴·화제성 / 이츠 = 독점 콘텐츠·광고 매출. 실행: 독점 메뉴 개발 → 스플래시+브랜드 쿠폰 동시 집행 → SNS 바이럴 → 판매량·광고 매출·신규 유입으로 성과 측정.
+  </div></details>
+  <details class="card"><summary><span class="tag mkt">마케팅</span>마케팅 예산이 절반으로 준다면 뭘 지킬까?</summary><div class="body">
+    우선순위 프레임 적용: 비용 대비 증분 효과가 검증된 것만 유지. 일반적으로 신규 유입 대량 광고부터 축소, <b>재주문·활성화(리텐션) 프로모션은 사수</b> — 기존 고객 유지가 신규 획득보다 비용 효율이 높음. 무료 레버(메뉴 페이지·리뷰·운영 품질 개선) 비중 확대.
+  </div></details>
+</section>
+
+<!-- ─────────── 카드 ─────────── -->
+<section class="tab" id="tab-fc">
+  <h2>플래시카드</h2>
+  <p class="muted">카드를 탭하면 답이 열립니다. 이동하며 틈틈이 반복하세요.</p>
+  <div class="fc" id="fc" role="button" tabindex="0" aria-label="플래시카드, 탭하여 답 보기">
+    <div class="q"></div><div class="a"></div><div class="hint">탭해서 답 보기</div>
+  </div>
+  <div class="fcnav">
+    <button id="fcPrev">이전</button>
+    <button id="fcShuffle">섞기</button>
+    <button id="fcNext" class="primary">다음</button>
+  </div>
+  <div class="fccount" id="fcCount"></div>
+</section>
+</main>
+
+<nav>
+  <button data-t="tab-plan" class="on">플랜</button>
+  <button data-t="tab-concept">개념</button>
+  <button data-t="tab-q">질문</button>
+  <button data-t="tab-fc">카드</button>
+</nav>
+
+<script>
+// 탭
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('section.tab').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); document.getElementById(b.dataset.t).classList.add('on');
+  window.scrollTo(0,0);
+}));
+
+// 플랜 진행률 (localStorage)
+const days=[...document.querySelectorAll('.day')];
+function paint(){
+  let n=0;
+  days.forEach(d=>{const on=localStorage.getItem('ce_'+d.dataset.k)==='1';
+    d.querySelector('input').checked=on; d.classList.toggle('done',on); if(on)n++;});
+  document.getElementById('pbar').style.width=(n/days.length*100)+'%';
+}
+days.forEach(d=>d.querySelector('input').addEventListener('change',e=>{
+  localStorage.setItem('ce_'+d.dataset.k,e.target.checked?'1':'0'); paint();}));
+paint();
+
+// 플래시카드
+const CARDS=[
+["월렛쉐어란?","한 점포의 전체 배달 매출 중 쿠팡이츠를 통해 발생하는 비중. 예: 월 1,000만원 중 이츠 300만원 = 30%. 핵심은 입점이 아니라 활성화."],
+["광고와 쿠폰의 역할 차이는?","광고 = 노출·인지도 개선. 쿠폰 = 실제 주문 전환. 캠페인 목적(인지도/전환/재주문)에 따라 다르게 설계."],
+["스플래시 광고가 적합한 상황 3가지","대형 브랜드 캠페인, 신규 브랜드 론칭, 전국 단위 프로모션. (강한 인지도 확보가 필요할 때)"],
+["스토어 쿠폰이 적합한 상황은?","특정 점포 매출 개선, 전환율 낮은 점포, 신규 입점 점포 활성화, 특정 메뉴 주문 유도."],
+["고객 퍼널 지표를 순서대로","노출 수 → 클릭률 → 장바구니 전환율 → 결제 전환율 → 첫 주문율 → 재주문율."],
+["케이스 답변 5단계","① 문제 정의 ② 원인 분해(시장·경쟁·점포·고객·배달·프로모션) ③ 우선순위 ④ 실행안 ⑤ 효과 측정."],
+["우선순위를 정하는 기준 5가지","고객 경험 영향, 주문 증가 기여, 점주 이탈 방지, 실행 속도, 비용 대비 효과."],
+["0% 수수료는 어떤 매장에?","전략적 핵심 매장 — 지역 인기 매장, 경쟁 플랫폼 주문 상위, 대형 프랜차이즈, 카테고리 대표 매장. 목적: 점유율 확대."],
+["3% 수수료 6개월은 어떤 매장에?","성장형 매장 — 신규 오픈, 중소형, 동네 맛집, 장기 운영 의지 있는 매장. 목적: 장기 활성화 + 수익 균형."],
+["주문율 낮고 취소율 높으면 뭐부터?","취소율 먼저. 취소가 많은 상태에서 주문율만 올리면 고객 불만 확대 → 재주문율 하락. 안정화 후 주문율 개선."],
+["점포가 활성화되지 않는 주요 이유","기기 꺼둠, 피크타임 미수락, 잦은 취소, 긴 준비시간, 약한 메뉴 사진/가격, 리뷰 부족, 쿠폰·광고 미활용."],
+["점주 설득 포인트 3가지 이상","신규 고객 유입, 경쟁 플랫폼 의존도 완화, 초기 프로모션 지원, 비피크 매출 확대, 운영 개선 지원."],
+["온보딩의 진짜 정의는?","단순 계약이 아니라 입점 → 첫 주문 → 운영 안정화 → 재주문 증가 → 월렛쉐어 확대까지 연결하는 것."],
+["온보딩 방식 3가지와 핵심 리스크","본사(HQ) 영업 — 협상 길고 실행력 낮을 수 있음 / 슈퍼바이저 — 인센티브 설계 필요 / 에이전시 — 입점만 늘고 활성화 낮을 위험."],
+["쿠폰 캠페인 ROI는 무엇으로 보나?","증분 주문(전후 증가율), 신규 유입 수, 쿠폰 사용률, 재주문 전환율, 쿠폰 비용 대비 증분 매출."],
+["신규 입점 매장에 주문이 없다면 어디를 보나?","노출→클릭→전환 중 병목 확인. 개선: 메뉴 사진, 초기 쿠폰, 노출 지원, 리뷰 확보, 첫 주문 후 재주문 쿠폰."],
+["쿠팡이츠 수익 구조 4요소","① 플랫폼 이용 수수료 ② 광고비 ③ 배달비 구조 ④ 결제 수수료·VAT. 점주 실질 마진 관점으로 말하기."],
+["경쟁사가 따라 하기 어려운 차별화 제안은?","독점 메뉴, 셰프 컬렉션, IP 협업, 콘텐츠 기반 커머스, 스탬프형 반복 구매 — '이츠에서만 가능한 경험'."],
+["KAM의 Net Revenue 중심 사고란?","매출만 키우는 게 아니라 비용은 최소화하며 성장. 쿠폰·수수료 인하 의존 대신 브랜드와 플랫폼 모두 이익인 구조 설계."],
+["최종 암기 문장은?","쿠팡이츠는 점포·고객·라이더·프로모션·수수료·광고·배달 품질이 연결된 플랫폼 비즈니스. 문제를 관점별로 나누고 임팩트 큰 병목부터 우선순위대로 개선."]
+];
+let idx=0, order=CARDS.map((_,i)=>i);
+const fc=document.getElementById('fc');
+function show(){
+  const c=CARDS[order[idx]];
+  fc.classList.remove('show');
+  fc.querySelector('.q').textContent=c[0];
+  fc.querySelector('.a').textContent=c[1];
+  fc.querySelector('.hint').textContent='탭해서 답 보기';
+  document.getElementById('fcCount').textContent=(idx+1)+' / '+CARDS.length;
+}
+fc.addEventListener('click',()=>{fc.classList.toggle('show');
+  fc.querySelector('.hint').textContent=fc.classList.contains('show')?'다시 탭하면 접힘':'탭해서 답 보기';});
+fc.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fc.click();}});
+document.getElementById('fcNext').addEventListener('click',()=>{idx=(idx+1)%CARDS.length;show();});
+document.getElementById('fcPrev').addEventListener('click',()=>{idx=(idx-1+CARDS.length)%CARDS.length;show();});
+document.getElementById('fcShuffle').addEventListener('click',()=>{
+  for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+  idx=0;show();});
+show();
+</script>
