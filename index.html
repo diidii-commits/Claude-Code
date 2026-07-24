@@ -5,16 +5,16 @@
 :root{
   --bg:#F6F8F8; --card:#FFFFFF; --ink:#152028; --sub:#5B6B72; --line:#E2E9E9;
   --accent:#0B9E9E; --accent-soft:#E0F2F2; --signal:#E1573C; --signal-soft:#FCEDE9;
-  --ok:#1E8E5A;
+  --ok:#1E8E5A; --ok-soft:#E6F3EC;
 }
 @media (prefers-color-scheme: dark){
   :root{ --bg:#0F1619; --card:#182228; --ink:#E8EEEF; --sub:#93A4AB; --line:#243239;
-    --accent:#2FB8B8; --accent-soft:#123638; --signal:#F07B62; --signal-soft:#3A211B; --ok:#4CC08A; }
+    --accent:#2FB8B8; --accent-soft:#123638; --signal:#F07B62; --signal-soft:#3A211B; --ok:#4CC08A; --ok-soft:#1B3227; }
 }
 :root[data-theme="dark"]{ --bg:#0F1619; --card:#182228; --ink:#E8EEEF; --sub:#93A4AB; --line:#243239;
-  --accent:#2FB8B8; --accent-soft:#123638; --signal:#F07B62; --signal-soft:#3A211B; --ok:#4CC08A; }
+  --accent:#2FB8B8; --accent-soft:#123638; --signal:#F07B62; --signal-soft:#3A211B; --ok:#4CC08A; --ok-soft:#1B3227; }
 :root[data-theme="light"]{ --bg:#F6F8F8; --card:#FFFFFF; --ink:#152028; --sub:#5B6B72; --line:#E2E9E9;
-  --accent:#0B9E9E; --accent-soft:#E0F2F2; --signal:#E1573C; --signal-soft:#FCEDE9; --ok:#1E8E5A; }
+  --accent:#0B9E9E; --accent-soft:#E0F2F2; --signal:#E1573C; --signal-soft:#FCEDE9; --ok:#1E8E5A; --ok-soft:#E6F3EC; }
 
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
@@ -49,6 +49,7 @@ details.card .body{padding:0 16px 14px;border-top:1px solid var(--line);padding-
 .tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:99px;flex-shrink:0}
 .tag.doc{background:var(--accent-soft);color:var(--accent)}
 .tag.mkt{background:var(--signal-soft);color:var(--signal)}
+.tag.comp{background:var(--ok-soft);color:var(--ok)}
 
 .key{background:var(--signal-soft);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:14px}
 .key b{color:var(--signal);font-size:11px;letter-spacing:.08em;display:block;margin-bottom:2px}
@@ -94,7 +95,7 @@ li{margin:3px 0}
   <div class="card day" data-k="d3"><input type="checkbox"><div><span class="d">DAY 3</span><div class="t"><b>프로모션 &amp; 광고 (마케팅 핵심)</b><br><span class="muted">스플래시/배너/다운로드쿠폰/스토어쿠폰 — 목적별 사용처 구분이 단골 질문</span></div></div></div>
   <div class="card day" data-k="d4"><input type="checkbox"><div><span class="d">DAY 4</span><div class="t"><b>월렛쉐어 + 점포 활성화</b><br><span class="muted">개념 탭 4·5번 + 케이스 답변 5단계 구조 암기</span></div></div></div>
   <div class="card day" data-k="d5"><input type="checkbox"><div><span class="d">DAY 5</span><div class="t"><b>문서 케이스 문제 1–10</b><br><span class="muted">질문 탭 [족보] 문제. 답 보기 전에 소리내어 1분씩 답해보기</span></div></div></div>
-  <div class="card day" data-k="d6"><input type="checkbox"><div><span class="d">DAY 6</span><div class="t"><b>마케팅 확장 질문 10</b><br><span class="muted">질문 탭 [마케팅] 문제. ROI·리텐션·A/B테스트 용어 입에 붙이기</span></div></div></div>
+  <div class="card day" data-k="d6"><input type="checkbox"><div><span class="d">DAY 6</span><div class="t"><b>마케팅 확장 질문 + 경쟁사 마케팅</b><br><span class="muted">질문 탭 [마케팅]·[경쟁] 문제 + 경쟁사 탭. 배민·요기요·땡겨요 전략을 한 줄씩 말해보기</span></div></div></div>
   <div class="card day" data-k="d7"><input type="checkbox"><div><span class="d">DAY 7</span><div class="t"><b>모의 면접 + 최종 요약</b><br><span class="muted">플래시카드 전체 + 아래 최종 문장 암기. 케이스 3개 랜덤으로 셀프 모의면접</span></div></div></div>
   <div class="key"><b>최종 암기 문장</b>“쿠팡이츠는 단순 배달앱이 아니라 점포·고객·라이더·프로모션·수수료·광고·배달 품질이 연결된 플랫폼 비즈니스입니다. 문제를 시장·경쟁·점포·고객·배달·프로모션 관점으로 나누고, 임팩트가 큰 병목부터 우선순위대로 개선해야 합니다.”</div>
 </section>
@@ -238,6 +239,77 @@ li{margin:3px 0}
   <details class="card"><summary><span class="tag mkt">마케팅</span>마케팅 예산이 절반으로 준다면 뭘 지킬까?</summary><div class="body">
     우선순위 프레임 적용: 비용 대비 증분 효과가 검증된 것만 유지. 일반적으로 신규 유입 대량 광고부터 축소, <b>재주문·활성화(리텐션) 프로모션은 사수</b> — 기존 고객 유지가 신규 획득보다 비용 효율이 높음. 무료 레버(메뉴 페이지·리뷰·운영 품질 개선) 비중 확대.
   </div></details>
+
+  <h2>경쟁사 관련 예상 질문 4</h2>
+
+  <details class="card"><summary><span class="tag comp">경쟁</span>배민의 브랜드 마케팅을 어떻게 평가하나요?</summary><div class="body">
+    배민신춘문예·치믈리에·굿즈·무료 폰트 등으로 <b>광고비를 팬덤 자산으로 전환</b>한 성공 사례. 다만 후발 주자가 같은 유머 브랜딩을 모방하면 아류가 됨. 쿠팡이츠는 품질(한집배달)·번들(와우)·독점 콘텐츠라는 다른 축으로 차별화해야 한다는 결론까지 연결.
+  </div></details>
+  <details class="card"><summary><span class="tag comp">경쟁</span>요기요 점유율 하락의 원인은 무엇이라고 보나요?</summary><div class="body">
+    무료배달·구독 경쟁에서 밀린 것이 직접 원인. 구조적으로는 <b>자체 록인 자산 부재</b> — 배민은 브랜드+가맹점 수, 쿠팡은 와우 생태계가 있는데 요기요는 가격 혜택과 외부 제휴(네이버플러스) 의존. 가격 중심 전략은 더 깊은 주머니를 가진 경쟁자에게 취약하다는 교훈.
+  </div></details>
+  <details class="card"><summary><span class="tag comp">경쟁</span>땡겨요 같은 공공성 앱은 위협인가요?</summary><div class="body">
+    점유율(공공앱 합산 ~7%)로는 제한적 위협. 그러나 <b>2% 수수료가 만드는 여론·규제 압박</b>이 진짜 변수 — 수수료 이슈가 커질수록 민간 앱의 점주 관계 관리가 중요해짐. 대응은 점주 실질 마진 개선(활성화 지원, 매출 성장)으로 "수수료 이상의 가치"를 증명하는 것.
+  </div></details>
+  <details class="card"><summary><span class="tag comp">경쟁</span>구독 멤버십 경쟁에서 쿠팡이츠의 포지션은?</summary><div class="body">
+    배민클럽(3,990원)·요기패스X(9,900원)는 배달 단독 구독, 와우는 <b>로켓배송+이츠+플레이 번들</b>. 단독 구독은 배달을 안 쓰면 해지되지만 번들은 이탈 비용이 큼. 마케팅 관점에서는 "배달비 절약" 소구가 아니라 <b>와우 생태계 안의 습관 형성</b>(장보기→식사→콘텐츠)으로 소구해야 함.
+  </div></details>
+</section>
+
+<!-- ─────────── 경쟁사 ─────────── -->
+<section class="tab" id="tab-comp">
+  <h2>시장 구도 한눈에 (2026 상반기)</h2>
+  <div class="card">
+    <b>배민 약 54% · 쿠팡이츠 약 29% · 요기요 약 10% · 공공앱 약 7%.</b>
+    전국은 배민 1위지만 수도권은 쿠팡이츠가 턱밑 추격 — 사실상 <b>배민 vs 쿠팡 양강 구도</b>로 재편.
+    2024년 시작된 <b>무료배달·구독 멤버십 경쟁</b>이 순위를 흔드는 최대 변수.
+    <ul>
+      <li>구독제: 배민클럽(월 3,990원) / 요기패스X(월 9,900원, 무제한 무료배달) / 쿠팡 와우(7,890원, 로켓배송·플레이 번들)</li>
+      <li>신규 변수: 두잇 — "라이더 구독" 월 9,900원, 반경 5km 배달비 무료</li>
+    </ul>
+  </div>
+
+  <h2>플랫폼별 마케팅 전략</h2>
+
+  <details class="card"><summary>배달의민족 — 브랜드가 곧 해자</summary><div class="body">
+    <ul>
+      <li><b>브랜드 마케팅의 교과서</b>: "우리가 어떤 민족입니까" 캠페인, 배민신춘문예, 치믈리에 자격시험, 배민문방구 굿즈, 무료 배포 폰트(한나체 등) — 광고를 넘어 <b>팬덤과 문화를 만든 사례</b></li>
+      <li><b>톤앤매너</b>: B급 유머·언어유희를 일관되게 유지해 "배민다움"이라는 자산 구축</li>
+      <li><b>구독 록인</b>: 배민클럽으로 무료배달 경쟁 방어, 압도적 가맹점 수가 기반</li>
+      <li><b>수익 다변화</b>: B마트(퀵커머스), 광고 상품(배민1플러스 등)</li>
+    </ul>
+    <div class="key"><b>면접 활용</b>배민의 강점은 "정서적 브랜드 자산 + 가맹점 커버리지". 쿠팡이츠가 같은 방식(유머 브랜딩)으로 싸우면 후발 열위 — 다른 축(품질·번들·독점 콘텐츠)으로 싸워야 함.</div>
+  </div></details>
+
+  <details class="card"><summary>요기요 — 제휴와 할인, 그리고 반면교사</summary><div class="body">
+    <ul>
+      <li><b>요기패스X</b>: 월 9,900원 무제한 무료배달 — 가격 혜택 중심 구독</li>
+      <li><b>제휴 마케팅</b>: 네이버플러스 멤버십 연계 등 외부 멤버십과 묶어 이용자 확보</li>
+      <li><b>할인·쿠폰 중심</b> 커뮤니케이션: 요일 할인, 프랜차이즈 제휴 쿠폰</li>
+      <li><b>현실</b>: 무료배달 경쟁에서 밀리며 이용자 이탈, 2위 → 3위(약 10%)로 하락</li>
+    </ul>
+    <div class="key"><b>면접 활용</b>"가격 혜택만으로는 자체 인프라(라이더망·멤버십 생태계)를 가진 경쟁자를 못 이긴다"는 반면교사 사례로 인용 가능. 프로모션 의존 전략의 한계를 보여줌.</div>
+  </div></details>
+
+  <details class="card"><summary>땡겨요 — 상생 포지셔닝 (신한은행)</summary><div class="body">
+    <ul>
+      <li><b>공공성 앱</b>: 신한은행 운영, 서울시 등 지자체 협력. 중개 수수료 약 2%로 민간 앱의 1/6 수준</li>
+      <li><b>"착한 소비" 마케팅</b>: 낮은 수수료 → 앱 가격 = 매장 가격 유지 가능, 지역화폐(지역사랑상품권) 결제 지원</li>
+      <li><b>금융 연계</b>: 배달 매출 데이터 기반 소상공인 대출 등 은행업과의 시너지 — 앱 자체보다 <b>고객 접점·데이터 확보</b>가 목적</li>
+      <li>배달특급(경기도) 등 공공배달앱과 함께 상생 프레임 형성 (합산 점유율 ~7%)</li>
+    </ul>
+    <div class="key"><b>면접 활용</b>수수료 이슈가 사회적 쟁점일 때 "점주 실질 마진" 논의에서 언급하기 좋음. 다만 마케팅 자원·라이더망 한계로 점유율은 제한적 — 위협보다는 여론·규제 환경 변수.</div>
+  </div></details>
+
+  <details class="card"><summary>쿠팡이츠 — 그래서 우리의 무기는?</summary><div class="body">
+    경쟁사 대비 차별화 축 3가지로 정리해두면 어떤 질문에도 연결 가능:
+    <ul>
+      <li><b>① 번들 록인</b>: 와우 멤버십 하나로 로켓배송+무료배달+쿠팡플레이 — 배달앱 단독 구독보다 이탈 비용이 큼</li>
+      <li><b>② 배달 품질</b>: 한집배달 중심의 빠르고 예측 가능한 경험 — "싸다"가 아니라 "확실하다"</li>
+      <li><b>③ 독점 콘텐츠</b>: 셰프 컬렉션·IP 협업 등 "이츠에서만" — 경쟁사가 쿠폰으로 따라올 수 없는 영역</li>
+    </ul>
+    <div class="key"><b>면접용 문장</b>"배민은 브랜드와 커버리지, 요기요는 가격 제휴로 싸웁니다. 쿠팡이츠는 와우 번들 록인, 배달 품질, 독점 콘텐츠라는 경쟁사가 복제하기 어려운 축으로 차별화해야 한다고 생각합니다."</div>
+  </div></details>
 </section>
 
 <!-- ─────────── 카드 ─────────── -->
@@ -260,6 +332,7 @@ li{margin:3px 0}
   <button data-t="tab-plan" class="on">플랜</button>
   <button data-t="tab-concept">개념</button>
   <button data-t="tab-q">질문</button>
+  <button data-t="tab-comp">경쟁사</button>
   <button data-t="tab-fc">카드</button>
 </nav>
 
@@ -305,7 +378,13 @@ const CARDS=[
 ["쿠팡이츠 수익 구조 4요소","① 플랫폼 이용 수수료 ② 광고비 ③ 배달비 구조 ④ 결제 수수료·VAT. 점주 실질 마진 관점으로 말하기."],
 ["경쟁사가 따라 하기 어려운 차별화 제안은?","독점 메뉴, 셰프 컬렉션, IP 협업, 콘텐츠 기반 커머스, 스탬프형 반복 구매 — '이츠에서만 가능한 경험'."],
 ["KAM의 Net Revenue 중심 사고란?","매출만 키우는 게 아니라 비용은 최소화하며 성장. 쿠폰·수수료 인하 의존 대신 브랜드와 플랫폼 모두 이익인 구조 설계."],
-["최종 암기 문장은?","쿠팡이츠는 점포·고객·라이더·프로모션·수수료·광고·배달 품질이 연결된 플랫폼 비즈니스. 문제를 관점별로 나누고 임팩트 큰 병목부터 우선순위대로 개선."]
+["최종 암기 문장은?","쿠팡이츠는 점포·고객·라이더·프로모션·수수료·광고·배달 품질이 연결된 플랫폼 비즈니스. 문제를 관점별로 나누고 임팩트 큰 병목부터 우선순위대로 개선."],
+["2026년 배달앱 시장 점유율 구도는?","배민 약 54%, 쿠팡이츠 약 29%, 요기요 약 10%, 공공앱 약 7%. 수도권은 배민 vs 쿠팡 양강 구도, 무료배달·구독 경쟁이 핵심 변수."],
+["배민 브랜드 마케팅의 대표 사례는?","배민신춘문예, 치믈리에 자격시험, 배민문방구 굿즈, 무료 폰트(한나체). B급 유머 톤을 일관되게 유지해 팬덤·문화 자산으로 전환."],
+["요기요 점유율 하락의 구조적 원인은?","자체 록인 자산 부재 — 가격 혜택과 외부 제휴(네이버플러스) 의존. 가격 중심 전략은 자금력 있는 경쟁자에게 취약."],
+["땡겨요의 포지셔닝과 진짜 의미는?","신한은행 운영 상생 앱, 수수료 약 2%, 지역화폐 결제. 점유율 위협보다 수수료 여론·규제 환경 변수로서 의미가 큼."],
+["구독 3사 비교 (배민클럽/요기패스X/와우)","배민클럽 3,990원·요기패스X 9,900원은 배달 단독 구독, 와우 7,890원은 로켓배송+이츠+플레이 번들 — 번들이라 이탈 비용이 가장 큼."],
+["경쟁사 대비 쿠팡이츠 차별화 3축","① 와우 번들 록인 ② 한집배달 품질(확실한 경험) ③ 독점 콘텐츠(셰프 컬렉션·IP 협업). 쿠폰으로 복제 불가한 영역."]
 ];
 let idx=0, order=CARDS.map((_,i)=>i);
 const fc=document.getElementById('fc');
