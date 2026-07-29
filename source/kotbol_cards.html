@@ -1,0 +1,268 @@
+<title>무이성형외과 · 콧볼축소 블로그 카드</title>
+<style>
+/* 콧볼축소 블로그 삽입용 카드 세트 — 무이성형외과 키컬러(옅은 초록)
+   화면/캡처 일관성을 위해 의도적으로 단일 라이트 룩으로 고정 */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ground:#E7EEDD;      /* 옅은 초록 페이지 바탕 */
+  --ground-2:#EFF4E8;
+  --card:#FFFFFF;
+  --forest:#245B12;      /* 무이 키 그린 */
+  --forest-2:#356A22;
+  --leaf:#6E9A46;        /* 보조 그린 */
+  --mist:#DCE8CB;        /* 소프트 그린 필 */
+  --mist-2:#EDF3E1;
+  --line:#D0DEBD;
+  --ink:#252A20;
+  --body:#3E463A;
+  --muted:#7C876E;
+  --caution:#B26A2B;     /* 아주 절제된 주의색(강조 아님) */
+  --sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  --serif:Georgia,"Nanum Myeongjo","Times New Roman",serif;
+}
+body{background:var(--ground);color:var(--body);font-family:var(--sans);line-height:1.7;
+  -webkit-font-smoothing:antialiased;padding:34px 16px 60px}
+.wrap{max-width:760px;margin:0 auto}
+
+/* 상단 안내(캡처 대상 아님) */
+.masthead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;justify-content:space-between;
+  padding:0 6px 18px;border-bottom:1px solid var(--line);margin-bottom:30px}
+.brand{font-family:var(--serif);font-size:19px;letter-spacing:.14em;color:var(--forest);font-weight:600}
+.brand small{font-size:11px;letter-spacing:.24em;color:var(--leaf);display:block;margin-top:2px;font-weight:600}
+.masthead .note{font-size:12.5px;color:var(--muted);text-align:right;max-width:340px}
+
+/* 슬롯 = 배치 안내 + 카드 */
+.slot{margin-bottom:34px}
+.guide{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--muted);margin:0 4px 10px}
+.gnum{flex:none;width:22px;height:22px;border-radius:50%;background:var(--forest);color:#fff;
+  font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;font-family:var(--serif)}
+
+/* 카드 = 캡처 단위 */
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:34px 36px;
+  box-shadow:0 10px 34px rgba(36,91,18,.08);position:relative;overflow:hidden}
+.kicker{font-size:11.5px;letter-spacing:.16em;font-weight:700;color:var(--leaf);text-transform:uppercase;margin-bottom:12px}
+.ctitle{font-size:23px;line-height:1.34;font-weight:800;color:var(--forest);letter-spacing:-.01em;text-wrap:balance}
+.card p.lead{margin-top:12px;color:var(--body);font-size:15.5px}
+
+/* 1. 대표 */
+.cover{padding:44px 40px 40px;background:
+  radial-gradient(120% 90% at 100% 0%, rgba(110,154,70,.16), transparent 60%),
+  linear-gradient(180deg,#FFFFFF 0%,#FBFDF7 100%)}
+.cover .brandrow{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+.cover .mark{font-family:var(--serif);font-size:22px;letter-spacing:.16em;color:var(--forest);font-weight:600}
+.cover .mark b{font-weight:400}
+.cover .clinic{font-size:12px;color:var(--muted);letter-spacing:.06em;border-left:1px solid var(--line);padding-left:10px}
+.cover .eyebrow{font-size:13px;font-weight:700;color:var(--leaf);letter-spacing:.04em;margin-bottom:14px}
+.cover h1{font-size:33px;line-height:1.28;font-weight:800;color:var(--forest);letter-spacing:-.015em;text-wrap:balance}
+.cover .sub{margin-top:14px;font-size:17px;color:var(--body);font-weight:600}
+.cover .rule{height:3px;width:52px;background:var(--forest);border-radius:2px;margin:22px 0 16px}
+.cover .slogan{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--leaf);letter-spacing:.02em}
+
+/* 2. 도식 */
+.ala-row{display:flex;gap:14px;justify-content:center;margin:22px 0 6px;flex-wrap:wrap}
+.ala{flex:1 1 200px;max-width:280px;background:var(--mist-2);border:1px solid var(--line);border-radius:16px;
+  padding:16px 10px 12px;text-align:center}
+.ala svg{width:100%;height:auto;max-width:170px;display:block;margin:0 auto}
+.ala .lab{margin-top:6px;font-size:14px;font-weight:800;color:var(--forest)}
+.ala .lab.wide{color:var(--caution)}
+.legend{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:14px;font-size:12.5px;color:var(--muted)}
+.legend .dash{width:26px;height:0;border-top:2px dashed var(--forest-2)}
+.caption{margin-top:14px;background:var(--mist);border-radius:12px;padding:12px 15px;font-size:14px;color:var(--forest);font-weight:600}
+.caption b{color:var(--forest-2)}
+
+/* 3. 이유 */
+.reasons{display:flex;flex-direction:column;gap:16px;margin-top:20px}
+.reason{display:flex;gap:15px;align-items:flex-start}
+.ricon{flex:none;width:44px;height:44px;border-radius:13px;background:var(--mist-2);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center}
+.ricon svg{width:24px;height:24px}
+.reason .rt{font-size:16.5px;font-weight:800;color:var(--forest);display:flex;align-items:center;gap:8px}
+.reason .rt .no{font-family:var(--serif);color:var(--leaf);font-size:15px}
+.reason .rd{font-size:14.5px;color:var(--body);margin-top:3px}
+
+/* 4. 핵심 3가지 */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.pillar{background:var(--mist-2);border:1px solid var(--line);border-radius:16px;padding:18px 14px;text-align:center}
+.pillar .picon{width:40px;height:40px;margin:0 auto 10px;border-radius:50%;background:var(--card);
+  border:1.5px solid var(--forest);display:flex;align-items:center;justify-content:center}
+.pillar .picon svg{width:22px;height:22px}
+.pillar .pt{font-size:15px;font-weight:800;color:var(--forest)}
+.pillar .pd{font-size:12.8px;color:var(--muted);margin-top:5px;line-height:1.55}
+
+/* 5. 체크리스트 */
+.checklist{list-style:none;margin-top:18px;display:flex;flex-direction:column;gap:12px}
+.checklist li{display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--body)}
+.checklist .ck{flex:none;width:24px;height:24px;border-radius:50%;background:var(--forest);
+  display:flex;align-items:center;justify-content:center;margin-top:1px}
+.checklist .ck svg{width:14px;height:14px}
+
+/* 6. FAQ */
+.faq{margin-top:18px;display:flex;flex-direction:column;gap:16px}
+.qa .q{font-size:15px;font-weight:800;color:var(--forest);display:flex;gap:8px}
+.qa .q .qm{font-family:var(--serif);color:var(--leaf)}
+.qa .a{font-size:14px;color:var(--body);margin-top:4px;padding-left:20px}
+
+.cardfoot{margin-top:24px;padding-top:16px;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.cardfoot .fm{font-family:var(--serif);letter-spacing:.14em;color:var(--forest);font-size:14px;font-weight:600}
+.cardfoot .fn{font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+
+.pagefoot{margin-top:12px;padding:18px 20px;background:var(--ground-2);border:1px dashed var(--line);
+  border-radius:16px;font-size:12.8px;color:var(--muted);line-height:1.8}
+.pagefoot b{color:var(--forest)}
+
+@media (max-width:560px){
+  .cover h1{font-size:27px}.ctitle{font-size:21px}
+  .pillars{grid-template-columns:1fr;gap:10px}
+  .card{padding:28px 22px}.cover{padding:34px 24px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .slot{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+  .slot:nth-child(2){animation-delay:.04s}.slot:nth-child(3){animation-delay:.08s}
+  .slot:nth-child(4){animation-delay:.12s}.slot:nth-child(5){animation-delay:.16s}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+}
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="brand">MOOi<small>무이성형외과 · 콧볼축소</small></div>
+    <div class="note">네이버 블로그 삽입용 카드입니다. <b style="color:var(--forest)">각 카드를 캡처</b>해 표시된 위치에 이미지로 넣으세요.</div>
+  </div>
+
+  <!-- 1. 대표 -->
+  <div class="slot">
+    <div class="guide"><span class="gnum">1</span> 대표 이미지 · 글 맨 위 썸네일</div>
+    <figure class="card cover">
+      <div class="brandrow"><span class="mark">MO<b>O</b>i</span><span class="clinic">무이성형외과 · 코성형</span></div>
+      <div class="eyebrow">콧볼축소 바로 알기</div>
+      <h1>콧볼축소, 하면 안 되는 수술일까?</h1>
+      <div class="sub">부자연스러워지는 진짜 이유</div>
+      <div class="rule"></div>
+      <div class="slogan">Beauty like No Other</div>
+    </figure>
+  </div>
+
+  <!-- 2. 도식 -->
+  <div class="slot">
+    <div class="guide"><span class="gnum">2</span> 본문 도식 · “왜 하면 안 된다는 말이 나올까요?” 섹션</div>
+    <figure class="card">
+      <div class="kicker">한눈에 보기</div>
+      <div class="ctitle">넓은 콧볼 vs 자연스러운 콧볼</div>
+      <div class="ala-row">
+        <div class="ala">
+          <svg viewBox="0 0 200 210" role="img" aria-label="넓은 콧볼 도식">
+            <path d="M100 28 C112 30 116 70 118 108 C120 134 146 140 151 156 C157 174 134 184 118 176 C110 172 106 180 100 180 C94 180 90 172 82 176 C66 184 43 174 49 156 C54 140 80 134 82 108 C84 70 88 30 100 28 Z"
+              fill="#EDF3E1" stroke="#6E9A46" stroke-width="2.2"/>
+            <ellipse cx="82" cy="156" rx="7" ry="10" transform="rotate(-16 82 156)" fill="#245B12" opacity=".85"/>
+            <ellipse cx="118" cy="156" rx="7" ry="10" transform="rotate(16 118 156)" fill="#245B12" opacity=".85"/>
+            <path d="M151 152 C158 160 158 172 150 178" fill="none" stroke="#356A22" stroke-width="2.4" stroke-dasharray="3 4" stroke-linecap="round"/>
+            <path d="M49 152 C42 160 42 172 50 178" fill="none" stroke="#356A22" stroke-width="2.4" stroke-dasharray="3 4" stroke-linecap="round"/>
+          </svg>
+          <div class="lab wide">넓은 콧볼</div>
+        </div>
+        <div class="ala">
+          <svg viewBox="0 0 200 210" role="img" aria-label="자연스러운 콧볼 도식">
+            <path d="M100 28 C112 30 116 70 118 108 C119 132 138 138 143 154 C148 170 132 180 118 174 C110 171 106 178 100 178 C94 178 90 171 82 174 C68 180 52 170 57 154 C62 138 81 132 82 108 C84 70 88 30 100 28 Z"
+              fill="#EDF3E1" stroke="#6E9A46" stroke-width="2.2"/>
+            <ellipse cx="86" cy="155" rx="6.5" ry="9.5" transform="rotate(-15 86 155)" fill="#245B12" opacity=".85"/>
+            <ellipse cx="114" cy="155" rx="6.5" ry="9.5" transform="rotate(15 114 155)" fill="#245B12" opacity=".85"/>
+            <path d="M143 151 C149 158 149 168 142 174" fill="none" stroke="#356A22" stroke-width="2.6" stroke-dasharray="3 4" stroke-linecap="round"/>
+            <path d="M57 151 C51 158 51 168 58 174" fill="none" stroke="#356A22" stroke-width="2.6" stroke-dasharray="3 4" stroke-linecap="round"/>
+          </svg>
+          <div class="lab">자연스러운 콧볼</div>
+        </div>
+      </div>
+      <div class="legend"><span class="dash"></span> 점선 = 콧볼–얼굴 경계면(지켜야 할 정상 구조)</div>
+      <div class="caption">넓게 벌어진 느낌을 줄이되, <b>콧볼–얼굴 경계면의 정상 구조와 각도</b>를 지키는 것이 자연스러움의 핵심이에요.</div>
+    </figure>
+  </div>
+
+  <!-- 3. 이유 ①② -->
+  <div class="slot">
+    <div class="guide"><span class="gnum">3</span> 본문 · “부자연스러워지는 진짜 이유” 섹션</div>
+    <figure class="card">
+      <div class="kicker">체크 포인트</div>
+      <div class="ctitle">부자연스러워지는 진짜 이유</div>
+      <div class="reasons">
+        <div class="reason">
+          <div class="ricon"><svg viewBox="0 0 24 24" fill="none" stroke="#245B12" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20 L20 20"/><path d="M4 20 L16 6"/><path d="M9 20 A9 9 0 0 1 16 6"/></svg></div>
+          <div><div class="rt"><span class="no">①</span> 흉터와 ‘각도’</div>
+          <div class="rd">경계선을 과하게 절제하고 봉합하는 과정에서, 원래의 자연스러운 콧볼 각도가 무너지기 쉬워요. 어색함은 대부분 여기서 옵니다.</div></div>
+        </div>
+        <div class="reason">
+          <div class="ricon"><svg viewBox="0 0 24 24" fill="none" stroke="#245B12" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11 A8 8 0 1 1 11 4"/><path d="M20 4 L20 11 L13 11"/><path d="M8 15 L16 15" stroke="#B26A2B"/></svg></div>
+          <div><div class="rt"><span class="no">②</span> 재수술이 어려운 구조</div>
+          <div class="rd">흉터가 콧볼–얼굴 경계에 자리 잡으면, 재수술 때 그 흉터를 깔끔하게 제거하기가 무척 어렵습니다.</div></div>
+        </div>
+      </div>
+    </figure>
+  </div>
+
+  <!-- 4. 핵심 3가지 -->
+  <div class="slot">
+    <div class="guide"><span class="gnum">4</span> 본문 · “자연스러운 콧볼축소의 핵심은?” 섹션</div>
+    <figure class="card">
+      <div class="kicker">자연스러움의 조건</div>
+      <div class="ctitle">자연스러운 콧볼축소, 핵심 3가지</div>
+      <div class="pillars">
+        <div class="pillar">
+          <div class="picon"><svg viewBox="0 0 24 24" fill="none" stroke="#245B12" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L19 6 V11 C19 15.5 16 19 12 21 C8 19 5 15.5 5 11 V6 Z"/><path d="M9 12 l2 2 4-4.5"/></svg></div>
+          <div class="pt">경계면 보존</div>
+          <div class="pd">타고난 정상 구조를 최대한 지킵니다</div>
+        </div>
+        <div class="pillar">
+          <div class="picon"><svg viewBox="0 0 24 24" fill="none" stroke="#245B12" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19 L19 19"/><path d="M5 19 L5 8"/><path d="M5 19 A11 11 0 0 1 16 19" stroke-dasharray="2.5 3"/></svg></div>
+          <div class="pt">각도 유지</div>
+          <div class="pd">자연스러운 콧볼 각도가 무너지지 않게 디자인</div>
+        </div>
+        <div class="pillar">
+          <div class="picon"><svg viewBox="0 0 24 24" fill="none" stroke="#245B12" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 A8 8 0 1 0 20 12"/><path d="M12 8 V12 L15 14"/><path d="M17 4 L21 4 L21 8"/></svg></div>
+          <div class="pt">보수적 접근</div>
+          <div class="pd">되돌리기 어려운 만큼 과하지 않게</div>
+        </div>
+      </div>
+    </figure>
+  </div>
+
+  <!-- 5. 체크리스트 -->
+  <div class="slot">
+    <div class="guide"><span class="gnum">5</span> 본문 · “이런 분들이라면 상담을 권해드려요” 섹션</div>
+    <figure class="card">
+      <div class="kicker">상담 체크리스트</div>
+      <div class="ctitle">이런 분들이라면 상담을 권해드려요</div>
+      <ul class="checklist">
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 l4.5 4.5 L19 7"/></svg></span>콧볼이 넓어 보여 정면·측면 인상이 답답하신 분</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 l4.5 4.5 L19 7"/></svg></span>콧볼축소 후 흉터가 걱정되시는 분</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 l4.5 4.5 L19 7"/></svg></span>예전 콧볼축소가 어색해져 재수술을 고민 중인 분</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 l4.5 4.5 L19 7"/></svg></span>티 안 나게, 자연스럽게 콧볼을 줄이고 싶으신 분</li>
+      </ul>
+    </figure>
+  </div>
+
+  <!-- 6. FAQ -->
+  <div class="slot">
+    <div class="guide"><span class="gnum">6</span> 본문 · FAQ 섹션(요약 카드)</div>
+    <figure class="card">
+      <div class="kicker">자주 묻는 질문</div>
+      <div class="ctitle">콧볼축소 Q &amp; A</div>
+      <div class="faq">
+        <div class="qa"><div class="q"><span class="qm">Q.</span> 콧볼축소는 하면 안 되는 수술인가요?</div>
+          <div class="a">아니에요. 경계면의 정상 구조를 보존하고 각도가 무너지지 않게 보수적으로 진행하면, 만족도 높은 수술이 될 수 있어요.</div></div>
+        <div class="qa"><div class="q"><span class="qm">Q.</span> 흉터, 많이 남나요?</div>
+          <div class="a">완전히 없앨 순 없지만 위치와 봉합 관리로 잘 안 띄게 할 수 있어요. 다만 과하게 절제하면 각도가 무너져 오히려 어색해질 수 있습니다.</div></div>
+        <div class="qa"><div class="q"><span class="qm">Q.</span> 얼마나 줄이는 게 좋을까요?</div>
+          <div class="a">되돌리기 어려운 수술이라 보수적으로요. 부족하면 나중에 더 줄일 수 있지만, 과하게 줄이면 복구가 어렵습니다.</div></div>
+      </div>
+      <div class="cardfoot"><span class="fm">MO<span style="font-weight:400">O</span>i</span><span class="fn">무이(無二) · 둘이 아닌 단 하나</span></div>
+    </figure>
+  </div>
+
+  <div class="pagefoot">
+    <b>사용법</b> — 각 카드를 화면에서 캡처(스크린샷)해 네이버 글의 표시된 위치에 이미지로 넣으세요.
+    이미지 <b>ALT(대체텍스트)</b>엔 <b>콧볼축소 · 콧볼축소 흉터 · 넓은 콧볼</b> 같은 키워드를 넣어주세요(상위노출 가점).
+    직접 만든 도식이라 <b>유사문서 회피</b>에도 도움이 됩니다. · 모든 시/수술은 개인마다 차이 및 부작용이 있을 수 있어요.
+  </div>
+
+</div>
