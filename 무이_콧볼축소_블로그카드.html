@@ -65,13 +65,14 @@ body{background:var(--ground);color:var(--body);font-family:var(--sans);line-hei
 
 /* 2. 도식 */
 .ala-row{display:flex;gap:14px;justify-content:center;margin:22px 0 6px;flex-wrap:wrap}
-.ala{flex:1 1 200px;max-width:280px;background:var(--mist-2);border:1px solid var(--line);border-radius:16px;
-  padding:16px 10px 12px;text-align:center}
+.ala{flex:1 1 200px;max-width:280px;
+  background:radial-gradient(125% 100% at 50% 34%,#FBF6F0 0%,#EFE4D7 100%);
+  border:1px solid #E7DAC9;border-radius:16px;padding:16px 10px 12px;text-align:center}
 .ala svg{width:100%;height:auto;max-width:170px;display:block;margin:0 auto}
 .ala .lab{margin-top:6px;font-size:14px;font-weight:800;color:var(--forest)}
 .ala .lab.wide{color:var(--caution)}
 .legend{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:14px;font-size:12.5px;color:var(--muted)}
-.legend .dash{width:26px;height:0;border-top:2px dashed var(--forest-2)}
+.legend .dash{width:26px;height:0;border-top:2px dashed #2E7D2E}
 .caption{margin-top:14px;background:var(--mist);border-radius:12px;padding:12px 15px;font-size:14px;color:var(--forest);font-weight:600}
 .caption b{color:var(--forest-2)}
 
@@ -161,23 +162,37 @@ body{background:var(--ground);color:var(--body);font-family:var(--sans);line-hei
       <div class="ala-row">
         <div class="ala">
           <svg viewBox="0 0 200 210" role="img" aria-label="넓은 콧볼 도식">
+            <defs><radialGradient id="skinW" cx="50%" cy="40%" r="66%">
+              <stop offset="0%" stop-color="#F6DAC5"/><stop offset="60%" stop-color="#EAC1A2"/><stop offset="100%" stop-color="#D5A17D"/>
+            </radialGradient></defs>
             <path d="M100 28 C112 30 116 70 118 108 C120 134 146 140 151 156 C157 174 134 184 118 176 C110 172 106 180 100 180 C94 180 90 172 82 176 C66 184 43 174 49 156 C54 140 80 134 82 108 C84 70 88 30 100 28 Z"
-              fill="#EDF3E1" stroke="#6E9A46" stroke-width="2.2"/>
-            <ellipse cx="82" cy="156" rx="7" ry="10" transform="rotate(-16 82 156)" fill="#245B12" opacity=".85"/>
-            <ellipse cx="118" cy="156" rx="7" ry="10" transform="rotate(16 118 156)" fill="#245B12" opacity=".85"/>
-            <path d="M151 152 C158 160 158 172 150 178" fill="none" stroke="#356A22" stroke-width="2.4" stroke-dasharray="3 4" stroke-linecap="round"/>
-            <path d="M49 152 C42 160 42 172 50 178" fill="none" stroke="#356A22" stroke-width="2.4" stroke-dasharray="3 4" stroke-linecap="round"/>
+              fill="url(#skinW)" stroke="#C99676" stroke-width="1.4"/>
+            <path d="M100 46 C96 76 96 114 100 140 C104 114 104 76 100 46 Z" fill="#F8E0CE" opacity=".55"/>
+            <ellipse cx="100" cy="150" rx="11" ry="8" fill="#F8E0CE" opacity=".5"/>
+            <path d="M151 156 C155 166 149 178 136 178 C145 172 149 164 151 156 Z" fill="#CD976F" opacity=".42"/>
+            <path d="M49 156 C45 166 51 178 64 178 C55 172 51 164 49 156 Z" fill="#CD976F" opacity=".42"/>
+            <ellipse cx="82" cy="158" rx="7" ry="10" transform="rotate(-16 82 158)" fill="#7C4E38" opacity=".8"/>
+            <ellipse cx="118" cy="158" rx="7" ry="10" transform="rotate(16 118 158)" fill="#7C4E38" opacity=".8"/>
+            <path d="M151 152 C158 160 158 172 150 178" fill="none" stroke="#2E7D2E" stroke-width="2.6" stroke-dasharray="3 4" stroke-linecap="round"/>
+            <path d="M49 152 C42 160 42 172 50 178" fill="none" stroke="#2E7D2E" stroke-width="2.6" stroke-dasharray="3 4" stroke-linecap="round"/>
           </svg>
           <div class="lab wide">넓은 콧볼</div>
         </div>
         <div class="ala">
           <svg viewBox="0 0 200 210" role="img" aria-label="자연스러운 콧볼 도식">
+            <defs><radialGradient id="skinN" cx="50%" cy="40%" r="64%">
+              <stop offset="0%" stop-color="#F6DAC5"/><stop offset="60%" stop-color="#EAC1A2"/><stop offset="100%" stop-color="#D5A17D"/>
+            </radialGradient></defs>
             <path d="M100 28 C112 30 116 70 118 108 C119 132 138 138 143 154 C148 170 132 180 118 174 C110 171 106 178 100 178 C94 178 90 171 82 174 C68 180 52 170 57 154 C62 138 81 132 82 108 C84 70 88 30 100 28 Z"
-              fill="#EDF3E1" stroke="#6E9A46" stroke-width="2.2"/>
-            <ellipse cx="86" cy="155" rx="6.5" ry="9.5" transform="rotate(-15 86 155)" fill="#245B12" opacity=".85"/>
-            <ellipse cx="114" cy="155" rx="6.5" ry="9.5" transform="rotate(15 114 155)" fill="#245B12" opacity=".85"/>
-            <path d="M143 151 C149 158 149 168 142 174" fill="none" stroke="#356A22" stroke-width="2.6" stroke-dasharray="3 4" stroke-linecap="round"/>
-            <path d="M57 151 C51 158 51 168 58 174" fill="none" stroke="#356A22" stroke-width="2.6" stroke-dasharray="3 4" stroke-linecap="round"/>
+              fill="url(#skinN)" stroke="#C99676" stroke-width="1.4"/>
+            <path d="M100 46 C96 76 96 114 100 140 C104 114 104 76 100 46 Z" fill="#F8E0CE" opacity=".55"/>
+            <ellipse cx="100" cy="149" rx="10" ry="8" fill="#F8E0CE" opacity=".5"/>
+            <path d="M143 154 C147 164 141 176 130 176 C138 170 142 162 143 154 Z" fill="#CD976F" opacity=".4"/>
+            <path d="M57 154 C53 164 59 176 70 176 C62 170 58 162 57 154 Z" fill="#CD976F" opacity=".4"/>
+            <ellipse cx="86" cy="156" rx="6.5" ry="9.5" transform="rotate(-15 86 156)" fill="#7C4E38" opacity=".8"/>
+            <ellipse cx="114" cy="156" rx="6.5" ry="9.5" transform="rotate(15 114 156)" fill="#7C4E38" opacity=".8"/>
+            <path d="M143 151 C149 158 149 168 142 174" fill="none" stroke="#2E7D2E" stroke-width="2.6" stroke-dasharray="3 4" stroke-linecap="round"/>
+            <path d="M57 151 C51 158 51 168 58 174" fill="none" stroke="#2E7D2E" stroke-width="2.6" stroke-dasharray="3 4" stroke-linecap="round"/>
           </svg>
           <div class="lab">자연스러운 콧볼</div>
         </div>
