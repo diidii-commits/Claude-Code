@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>머리하는 깍새 — 쇼츠 배경 템플릿</title>
+<title>머리하는 깍새 — 쇼츠 배경 템플릿 v2</title>
 <style>
   /* ─────────────────────────────────────────────
      폰트 : 지마켓 산스 (fonts/ 폴더에 동봉)
@@ -44,60 +44,60 @@
 
   svg{ display:block; }
 
-  /* ── 상단 앱바 ─────────────────────────────── */
+  /* ── 상단 앱바 ───────────────────────────────
+     유튜브 쇼츠 우상단에 실제 검색·카메라 아이콘이 뜨므로
+     가짜 검색/메뉴 아이콘은 두지 않는다 (중복 방지) */
   .appbar{
-    position:absolute; top:46px; left:52px; right:52px; height:96px;
-    display:flex; align-items:center; justify-content:space-between;
+    position:absolute; top:44px; left:52px; right:52px; height:92px;
+    display:flex; align-items:center;
   }
-  .appbar .side{ display:flex; align-items:center; gap:34px; }
-
   .brand-pill{
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-    display:flex; align-items:center; gap:16px;
+    display:flex; align-items:center; gap:14px;
     background:#fff; border:4px solid var(--ink); border-radius:80px;
-    padding:12px 36px 12px 20px;
+    padding:10px 32px 10px 18px;
     box-shadow:6px 8px 0 rgba(23,24,26,.92);
     white-space:nowrap;
   }
-  .brand-pill .name{ font-size:40px; font-weight:700; letter-spacing:-1px; padding-top:5px; }
+  .brand-pill .name{ font-size:37px; font-weight:700; letter-spacing:-1px; padding-top:5px; }
 
   /* ── 인기 배지 ─────────────────────────────── */
   .chip-hot{
-    position:absolute; top:196px; left:50%;
-    transform:translateX(-50%) rotate(-1.6deg);
-    display:flex; align-items:center; gap:12px;
+    position:absolute; top:172px; left:50%;
+    transform:translateX(-50%) rotate(-1.4deg);
+    display:flex; align-items:center; gap:10px;
     background:var(--red); color:#fff;
-    border:4px solid var(--ink); border-radius:18px;
-    padding:12px 30px 10px;
-    font-size:34px; font-weight:700; letter-spacing:-.5px;
-    box-shadow:5px 6px 0 rgba(23,24,26,.92);
+    border:3px solid var(--ink); border-radius:15px;
+    padding:9px 24px 7px;
+    font-size:28px; font-weight:700; letter-spacing:-.5px;
+    box-shadow:4px 5px 0 rgba(23,24,26,.92);
     white-space:nowrap;
   }
 
-  /* ── 제목 ─────────────────────────────────── */
+  /* ── 제목 : 2줄 고정, 길면 JS가 자동 축소 ───── */
   .title{
-    position:absolute; top:296px; left:40px; right:40px;
+    position:absolute; top:246px; left:40px; right:40px;
     text-align:center;
-    font-size:100px; font-weight:700; line-height:1.2;
-    letter-spacing:-3px;
+    font-size:72px; font-weight:700; line-height:1.22;
+    letter-spacing:-2.5px;
   }
   .title .hl{ position:relative; display:inline-block; z-index:0; }
   .title .hl::before{
     content:''; position:absolute; z-index:-1;
-    left:-12px; right:-12px; top:6%; bottom:-2%;
+    left:-10px; right:-10px; top:5%; bottom:-3%;
     background:var(--yellow);
-    border-radius:14px;
+    border-radius:12px;
     transform:skewX(-6deg) rotate(-1deg);
   }
 
-  /* ── 메타(작성자·조회수) ───────────────────── */
+  /* ── 메타(작성자·조회수·반응) ───────────────── */
   .meta{
-    position:absolute; top:702px; left:0; right:0;
-    display:flex; align-items:center; justify-content:center; gap:16px;
-    font-size:31px; font-weight:500; color:var(--gray);
+    position:absolute; top:444px; left:0; right:0;
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    font-size:29px; font-weight:500; color:var(--gray);
   }
   .meta .avatar{
-    width:52px; height:52px; border-radius:50%;
+    width:48px; height:48px; border-radius:50%;
     background:#fff; border:3px solid var(--ink);
     display:flex; align-items:center; justify-content:center;
     overflow:hidden;
@@ -108,86 +108,67 @@
 
   /* ── 절취선(가위 디바이더) ──────────────────── */
   .cutline{
-    position:absolute; top:806px; left:52px; right:52px; height:0;
+    position:absolute; top:528px; left:52px; right:52px; height:0;
     border-top:4px dashed var(--line);
   }
   .cutline .scissors{
-    position:absolute; left:96px; top:-24px;
+    position:absolute; left:88px; top:-24px;
     background:var(--cream);
     padding:0 10px;
   }
 
-  /* ── 영상 프레임 ───────────────────────────── */
+  /* ── 콘텐츠 프레임 : 정사각(880×880) ──────────
+     밈 이미지·실사 클립을 이 안에 꽉 채워 올린다 */
   .frame{
-    position:absolute; top:832px; left:44px; width:992px; height:772px;
+    position:absolute; top:566px; left:100px; width:880px; height:880px;
     background:#fff;
-    border:5px solid var(--ink); border-radius:40px;
+    border:5px solid var(--ink); border-radius:36px;
     box-shadow:10px 12px 0 rgba(23,24,26,.92);
     overflow:hidden;
   }
   .frame .ph{
-    position:absolute; inset:26px;
-    border:4px dashed #E3D8C2; border-radius:22px;
+    position:absolute; inset:24px;
+    border:4px dashed #E3D8C2; border-radius:20px;
     display:none;
-    flex-direction:column; align-items:center; justify-content:center; gap:26px;
-    color:#B9AD93; font-size:32px; font-weight:500;
+    flex-direction:column; align-items:center; justify-content:center; gap:24px;
+    color:#B9AD93; font-size:31px; font-weight:500;
   }
   body.preview .frame .ph{ display:flex; }
 
-  /* ── 반응 바 ───────────────────────────────── */
-  .engage{
-    position:absolute; top:1662px; left:0; right:0;
-    display:flex; justify-content:center; gap:22px;
+  /* ── 자막 영역 : y1486~1646 ──────────────────
+     클린 렌더에서는 완전히 비워 둔다 (편집기에서 자막 삽입).
+     preview 모드에서만 가이드와 권장 스타일 예시가 보인다 */
+  .subzone{
+    position:absolute; top:1486px; left:90px; right:90px; height:160px;
+    display:none;
+    align-items:center; justify-content:center;
+    border:4px dashed #E3D8C2; border-radius:20px;
   }
-  .engage .chip{
-    display:flex; align-items:center; gap:12px;
-    background:#fff; border:4px solid var(--ink); border-radius:999px;
-    padding:13px 30px 11px;
-    font-size:30px; font-weight:700; letter-spacing:-.5px;
-    box-shadow:5px 6px 0 rgba(23,24,26,.92);
+  body.preview .subzone{ display:flex; }
+  .subzone .sample{
+    text-align:center;
+    font-size:46px; font-weight:700; letter-spacing:-1.5px; line-height:1.45;
   }
-  .engage .chip .n{ font-weight:500; color:var(--gray); }
-  .engage .chip.like{ background:var(--yellow); }
+  .subzone .sample .hl{
+    background:var(--yellow); border-radius:8px; padding:0 8px;
+  }
 
-  /* ── 베스트 댓글 ───────────────────────────── */
-  .best{
-    position:absolute; top:1758px; left:44px; right:44px;
-    display:flex; align-items:center; gap:18px;
-    background:#fff; border:4px solid var(--ink); border-radius:24px;
-    padding:16px 28px;
-    box-shadow:5px 6px 0 rgba(23,24,26,.92);
-  }
-  .best .badge{
-    flex:none; background:var(--blue); color:#fff;
-    border:3px solid var(--ink); border-radius:12px;
-    padding:8px 14px 6px; font-size:24px; font-weight:700;
-  }
-  .best .txt{
-    flex:1; font-size:29px; font-weight:500; letter-spacing:-.5px; line-height:1.5;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    padding-top:4px;
-  }
-  .best .txt b{ font-weight:700; margin-right:10px; }
-  .best .cnt{
-    flex:none; display:flex; align-items:center; gap:8px;
-    color:var(--gray); font-size:27px; font-weight:500; padding-top:4px;
-  }
+  /* 하단 y1650 이하는 유튜브 쇼츠 UI(채널명·설명·음악바)가
+     덮는 구역이므로 아무것도 배치하지 않는다 */
 </style>
 </head>
 <body>
 
   <!-- 상단 앱바 -->
   <div class="appbar">
-    <div class="side">
-      <!-- 뒤로가기 -->
-      <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="#17181A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M28 8 L14 22 L28 36"/>
-      </svg>
-    </div>
+    <!-- 뒤로가기 -->
+    <svg width="42" height="42" viewBox="0 0 44 44" fill="none" stroke="#17181A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M28 8 L14 22 L28 36"/>
+    </svg>
 
     <div class="brand-pill">
       <!-- 깍새(파랑새+가위) 로고 -->
-      <svg width="62" height="62" viewBox="0 0 100 100">
+      <svg width="56" height="56" viewBox="0 0 100 100">
         <!-- 가위 -->
         <g transform="translate(64,6) rotate(30)" stroke="#17181A" stroke-width="3" fill="#C8CDD4">
           <line x1="8" y1="26" x2="26" y2="2" stroke-width="4"/>
@@ -214,41 +195,26 @@
       </svg>
       <span class="name">머리하는 깍새</span>
     </div>
-
-    <div class="side">
-      <!-- 검색 -->
-      <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="#17181A" stroke-width="6" stroke-linecap="round">
-        <circle cx="19" cy="19" r="11"/>
-        <line x1="28" y1="28" x2="38" y2="38"/>
-      </svg>
-      <!-- 메뉴 -->
-      <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="#17181A" stroke-width="6" stroke-linecap="round">
-        <line x1="6" y1="12" x2="38" y2="12"/>
-        <line x1="6" y1="22" x2="38" y2="22"/>
-        <line x1="6" y1="32" x2="38" y2="32"/>
-      </svg>
-    </div>
   </div>
 
   <!-- 인기 배지 -->
   <div class="chip-hot">
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
       <path d="M12 2c1 3-1 4.5-2 6C8.5 10.2 8 12 9 14a5.5 5.5 0 0 0 3 3c-.4-1.6.2-2.8 1.3-3.8 1.4-1.3 2.4-2.7 2.2-4.7 2.1 1.5 3.5 4 3.5 6.5A7 7 0 0 1 5 15c0-3.5 2-5.2 3.5-7C9.8 6.4 11.6 4.5 12 2z"/>
     </svg>
     실시간 인기 게시글
   </div>
 
-  <!-- 제목 : 영상마다 이 부분만 교체 -->
+  <!-- 제목 : 영상마다 이 부분만 교체 (2줄 권장, 길면 자동 축소) -->
   <h1 class="title" id="title">
     쓰리스타킬러 셰프가<br>
-    식단 대신 <span class="hl">헬스</span>에<br>
-    진심인 이유
+    식단 대신 <span class="hl">헬스</span>에 진심인 이유
   </h1>
 
   <!-- 메타 정보 -->
   <div class="meta">
     <span class="avatar">
-      <svg width="40" height="40" viewBox="0 0 100 100">
+      <svg width="37" height="37" viewBox="0 0 100 100">
         <ellipse cx="51" cy="56" rx="35" ry="33" fill="#2E7FE8" stroke="#17181A" stroke-width="4"/>
         <circle cx="40" cy="50" r="13" fill="#fff" stroke="#17181A" stroke-width="3.5"/>
         <circle cx="63" cy="50" r="13" fill="#fff" stroke="#17181A" stroke-width="3.5"/>
@@ -261,7 +227,9 @@
     <span class="dot">·</span>
     <span class="item">조회 24.8만</span>
     <span class="dot">·</span>
-    <span class="item">10분 전</span>
+    <span class="item">추천 3,482</span>
+    <span class="dot">·</span>
+    <span class="item">댓글 1,204</span>
   </div>
 
   <!-- 절취선 -->
@@ -276,7 +244,7 @@
     </span>
   </div>
 
-  <!-- 영상 프레임 : 이 영역 위에 영상 클립을 올리면 됨 -->
+  <!-- 콘텐츠 프레임 : 이 정사각 영역에 밈/실사 컷을 올리면 됨 -->
   <div class="frame">
     <div class="ph">
       <svg width="150" height="150" viewBox="0 0 100 100" opacity="0.5">
@@ -287,50 +255,30 @@
         <circle cx="61.5" cy="51" r="5" fill="#17181A"/>
         <path d="M46.5 63 L56.5 63 L51.5 71 Z" fill="#F5980B" stroke="#17181A" stroke-width="2.5"/>
       </svg>
-      <span>영상 영역 · 992 × 766</span>
+      <span>콘텐츠 영역 · 880 × 880</span>
     </div>
   </div>
 
-  <!-- 반응 바 -->
-  <div class="engage">
-    <div class="chip like">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#17181A" stroke-width="2.2" stroke-linejoin="round">
-        <path d="M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h3zm0 0l4.2-7.2A1.8 1.8 0 0 1 14.5 4l-.8 5H20a2 2 0 0 1 2 2.4l-1.4 7A2 2 0 0 1 18.6 20H7"/>
-      </svg>
-      추천 <span class="n">3,482</span>
-    </div>
-    <div class="chip">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#17181A" stroke-width="2.2" stroke-linejoin="round">
-        <path d="M21 12a8 8 0 0 1-8 8H4l2.5-3A8 8 0 1 1 21 12z"/>
-      </svg>
-      댓글 <span class="n">1,204</span>
-    </div>
-    <div class="chip">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#17181A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/>
-        <path d="M12 15V3m0 0L7 8m5-5l5 5"/>
-      </svg>
-      공유
-    </div>
-  </div>
-
-  <!-- 베스트 댓글 -->
-  <div class="best">
-    <span class="badge">BEST</span>
-    <span class="txt"><b>단골손님</b>식단이 아니라 어깨가 미슐랭 3스타네 ㅋㅋㅋ</span>
-    <span class="cnt">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8A8272" stroke-width="2.2" stroke-linejoin="round">
-        <path d="M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h3zm0 0l4.2-7.2A1.8 1.8 0 0 1 14.5 4l-.8 5H20a2 2 0 0 1 2 2.4l-1.4 7A2 2 0 0 1 18.6 20H7"/>
-      </svg>
-      1.2천
-    </span>
+  <!-- 자막 가이드 (preview 모드에서만 표시) -->
+  <div class="subzone">
+    <div class="sample">근데 요즘 <span class="hl">승모근</span>이랑<br>팔꿈치를 다쳐서</div>
   </div>
 
 <script>
-  // file://template.html?mode=preview 로 열면 영상 영역 가이드가 표시됩니다.
+  // file://template.html?mode=preview 로 열면 콘텐츠·자막 가이드가 표시됩니다.
   if (new URLSearchParams(location.search).get('mode') === 'preview') {
     document.body.classList.add('preview');
   }
+
+  // 제목 자동 축소: 좌우 여백을 넘치면 글자 크기를 줄인다 (최소 54px)
+  (function(){
+    const t = document.getElementById('title');
+    let size = 72;
+    while (size > 54 && t.scrollWidth > t.clientWidth) {
+      size -= 2;
+      t.style.fontSize = size + 'px';
+    }
+  })();
 </script>
 </body>
 </html>
