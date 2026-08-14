@@ -14,6 +14,9 @@
 | `output/background@2x.png` | 고해상도 배경 (2160×3840) |
 | `output/preview.png` | 콘텐츠·자막 위치 가이드가 표시된 미리보기 |
 | `fonts/` | 지마켓 산스 Light/Medium/Bold (SIL OFL, 상업적 사용 가능) |
+| `endcard.html` → `output/endcard.png` | 구독·좋아요 엔딩 컷 (870×870, 콘텐츠 프레임에 배치) |
+| `endcard-arrow.html` → `output/endcard-arrow.png` | 엔딩용 화살표 (투명 PNG, 자막 영역에 배치 → 실제 구독 버튼 지시) |
+| `output/mock_ending.png` | 엔딩 화면 조립 예시 |
 
 ## 레이아웃 좌표 (1080×1920 기준)
 
@@ -48,3 +51,11 @@
 cd shorts-bg
 ./render.sh   # Chromium 필요 (CHROME=경로 로 재지정 가능)
 ```
+
+## 엔딩 컷 사용법
+
+영상 마지막 3초에:
+1. `output/endcard.png`(870×870)를 콘텐츠 프레임 위치(x105, y571)에 배치
+2. `output/endcard-arrow.png`(투명)를 자막 영역(x90, y1476)에 배치 —
+   화살표가 유튜브 실제 구독 버튼(좌하단 채널명 옆)을 가리킨다
+3. 등장 애니메이션 권장: 카드 스케일 팝(95→100%) + 구독/좋아요 버튼 순차 팝업

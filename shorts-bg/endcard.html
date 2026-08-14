@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>머리하는 깍새 — 엔딩 컷 (콘텐츠 프레임용 870×870)</title>
+<style>
+  @font-face { font-family:'Gmarket Sans'; font-weight:300; src:url('./fonts/GmarketSansLight.ttf') format('truetype'); }
+  @font-face { font-family:'Gmarket Sans'; font-weight:500; src:url('./fonts/GmarketSansMedium.ttf') format('truetype'); }
+  @font-face { font-family:'Gmarket Sans'; font-weight:700; src:url('./fonts/GmarketSansBold.ttf') format('truetype'); }
+
+  :root{
+    --ink:#17181A; --cream:#F8EDD8; --yellow:#FFD338;
+    --blue:#2E7FE8; --orange:#F5980B; --red:#FF4B3E; --panel:#1D1F23;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ width:870px; height:870px; overflow:hidden; }
+  body{
+    font-family:'Gmarket Sans', sans-serif;
+    background:var(--panel);
+    position:relative;
+    -webkit-font-smoothing:antialiased;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  /* 다크 도트 텍스처 */
+  body::before{
+    content:''; position:absolute; inset:0;
+    background-image:radial-gradient(#2B2E33 2.4px, transparent 2.9px);
+    background-size:36px 36px;
+    pointer-events:none;
+  }
+  /* 코너 반짝이 */
+  .spark{ position:absolute; color:var(--cream); font-size:44px; font-weight:300; opacity:.85; }
+  svg{ display:block; }
+  body > *{ flex-shrink:0; }
+
+  /* 상단 예고 칩 */
+  .chip{
+    margin-top:54px;
+    transform:rotate(-1.6deg);
+    background:var(--yellow); color:var(--ink);
+    border:4px solid var(--ink); border-radius:16px;
+    padding:12px 30px 10px;
+    font-size:31px; font-weight:700; letter-spacing:-.5px;
+    box-shadow:5px 6px 0 rgba(0,0,0,.55);
+    position:relative; z-index:1;
+  }
+
+  /* 헤드라인 */
+  .head{
+    margin-top:42px;
+    text-align:center; color:#fff;
+    font-size:62px; font-weight:700; line-height:1.28; letter-spacing:-2px;
+    position:relative; z-index:1;
+  }
+  .head .hl{ position:relative; display:inline-block; z-index:0; color:var(--ink); }
+  .head .hl::before{
+    content:''; position:absolute; z-index:-1;
+    left:-10px; right:-10px; top:4%; bottom:-4%;
+    background:var(--yellow); border-radius:12px;
+    transform:skewX(-6deg) rotate(-1deg);
+  }
+
+  /* 마스코트 : 가위 든 깍새 */
+  .bird{ margin-top:34px; position:relative; z-index:1; }
+
+  /* 버튼 행 */
+  .btns{
+    margin-top:40px;
+    display:flex; align-items:center; gap:26px;
+    position:relative; z-index:1;
+  }
+  .btn{
+    display:flex; align-items:center; gap:14px;
+    font-size:42px; font-weight:700; letter-spacing:-1px;
+    border:4px solid var(--ink); border-radius:999px;
+    padding:20px 44px 16px;
+    box-shadow:6px 8px 0 rgba(0,0,0,.55);
+  }
+  .btn.sub{ background:var(--red); color:#fff; transform:rotate(-1.2deg); }
+  .btn.like{ background:var(--yellow); color:var(--ink); transform:rotate(1.2deg); }
+  .amp{ color:var(--cream); font-size:40px; font-weight:700; }
+
+  /* 하단 루프 유도 */
+  .loop{
+    margin-top:34px;
+    display:flex; align-items:center; gap:12px;
+    color:#A9A493; font-size:27px; font-weight:500;
+    position:relative; z-index:1;
+  }
+</style>
+</head>
+<body>
+  <span class="spark" style="top:34px;left:44px;">+</span>
+  <span class="spark" style="top:110px;right:52px;">+</span>
+  <span class="spark" style="bottom:120px;left:56px;">+</span>
+  <span class="spark" style="bottom:44px;right:44px;">+</span>
+
+  <div class="chip">매주 셰프 비하인드 업로드</div>
+
+  <div class="head">다음 셰프 <span class="hl">비하인드</span>가<br>궁금하다면?</div>
+
+  <!-- 깍새 마스코트 (가위 포함) -->
+  <div class="bird">
+    <svg width="200" height="200" viewBox="0 0 100 100">
+      <g stroke="#E58A1F" stroke-width="4" stroke-linecap="round">
+        <line x1="42" y1="82" x2="42" y2="94"/><line x1="37" y1="94" x2="47" y2="94"/>
+        <line x1="60" y1="82" x2="60" y2="94"/><line x1="55" y1="94" x2="65" y2="94"/>
+      </g>
+      <ellipse cx="51" cy="52" rx="33" ry="31" fill="#2E7FE8" stroke="#F8EDD8" stroke-width="3"/>
+      <circle cx="40" cy="46" r="12.5" fill="#fff" stroke="#17181A" stroke-width="3"/>
+      <circle cx="63" cy="46" r="12.5" fill="#fff" stroke="#17181A" stroke-width="3"/>
+      <circle cx="41.5" cy="47" r="4.6" fill="#17181A"/>
+      <circle cx="61.5" cy="47" r="4.6" fill="#17181A"/>
+      <path d="M46.5 59 L56.5 59 L51.5 67 Z" fill="#F5980B" stroke="#17181A" stroke-width="2.5"/>
+    </svg>
+  </div>
+
+  <!-- 구독 / 좋아요 버튼 -->
+  <div class="btns">
+    <div class="btn sub">
+      <svg width="38" height="38" viewBox="0 0 24 24" fill="#fff">
+        <path d="M12 22a2.2 2.2 0 0 0 2.2-2.2H9.8A2.2 2.2 0 0 0 12 22zm7-5v-1l-1.8-1.8V10a5.2 5.2 0 0 0-4-5.1V4a1.2 1.2 0 1 0-2.4 0v.9a5.2 5.2 0 0 0-4 5.1v4.2L5 16v1z"/>
+      </svg>
+      구독
+    </div>
+    <span class="amp">&amp;</span>
+    <div class="btn like">
+      <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#17181A" stroke-width="2.4" stroke-linejoin="round">
+        <path d="M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h3zm0 0l4.2-7.2A1.8 1.8 0 0 1 14.5 4l-.8 5H20a2 2 0 0 1 2 2.4l-1.4 7A2 2 0 0 1 18.6 20H7"/>
+      </svg>
+      좋아요
+    </div>
+  </div>
+
+  <!-- 루프 유도 -->
+  <div class="loop">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A9A493" stroke-width="2.2" stroke-linecap="round">
+      <path d="M3 12a9 9 0 1 0 3-6.7"/>
+      <path d="M6 1v5h5" stroke-linejoin="round"/>
+    </svg>
+    놓친 부분은 한 번 더!
+  </div>
+</body>
+</html>

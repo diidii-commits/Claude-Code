@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>엔딩 화살표 (자막 영역용 900×200, 투명 배경)</title>
+<style>
+  @font-face { font-family:'Gmarket Sans'; font-weight:700; src:url('./fonts/GmarketSansBold.ttf') format('truetype'); }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ width:900px; height:200px; overflow:hidden; background:transparent; }
+  body{
+    font-family:'Gmarket Sans', sans-serif;
+    position:relative;
+  }
+  .label{
+    position:absolute; top:34px; left:270px;
+    font-size:44px; font-weight:700; letter-spacing:-1.5px; color:#17181A;
+  }
+  .label .hl{ background:#FFD338; border-radius:8px; padding:2px 10px 0; }
+</style>
+</head>
+<body>
+  <!-- 실제 유튜브 구독 버튼(좌하단 채널명 옆)을 가리키는 손그림 화살표 -->
+  <svg width="240" height="200" viewBox="0 0 240 200" style="position:absolute;left:20px;top:0;">
+    <path d="M210 30 C 150 40, 90 60, 60 130"
+          fill="none" stroke="#17181A" stroke-width="14" stroke-linecap="round"/>
+    <path d="M210 30 C 150 40, 90 60, 60 130"
+          fill="none" stroke="#FFD338" stroke-width="8" stroke-linecap="round"/>
+    <path d="M84 118 L54 142 L46 104 Z" fill="#FFD338" stroke="#17181A" stroke-width="7" stroke-linejoin="round"/>
+  </svg>
+  <div class="label"><span class="hl">진짜 구독 버튼</span>은 여기 아래!</div>
+</body>
+</html>
