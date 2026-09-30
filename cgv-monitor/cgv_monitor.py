@@ -328,28 +328,28 @@ def loop():
 
 
 def test(ymd="20260930"):
-    """알림 경로 테스트: 해당 날짜에 치이카와 오전 회차가 있는 감시 극장 2곳의 실제 시간표로 [테스트] 알림."""
+    """알림 경로 테스트: 감시 극장마다 ymd 이후 가장 빠른 오전 회차가 있는 날짜를 찾아 [테스트] 알림.
+    오전 회차가 하나도 없어도 극장별 상영일 요약을 알림으로 보내므로 항상 1건 이상 도착한다."""
     mov_no, _ = find_movie()
     sites = all_sites()
     log(f"감시 극장 {len(sites)}곳: {', '.join(sites.values())}")
-    order = sorted(sites, key=lambda no: (not is_focus(sites[no]), no != "0056"))
-    probe_dates = sorted(schedule_dates("0056", mov_no))
-    use = ymd
-    if ymd not in probe_dates:
-        later = [d for d in probe_dates if d >= ymd]
-        use = later[0] if later else ymd
-        log(f"{fmt_ymd(ymd)}에는 치이카와 회차가 없음 (개봉 전) → {fmt_ymd(use)} 회차로 테스트")
-    sent = 0
-    for no in order[:15]:
-        times = morning_times(no, mov_no, use)
-        if not times:
-            continue
-        log(f"테스트 알림: {sites[no]} {times}")
-        notify_open(sites[no], use, times, test=True)
-        sent += 1
-        if sent == 2:
-            break
-    log(f"테스트 완료: 알림 {sent}건 전송 (ntfy 앱에서 확인)")
+    sent, summary = 0, []
+    for no, nm in sites.items():
+        dates = sorted(d for d in schedule_dates(no, mov_no) if d >= ymd)
+        found = None
+        for d in dates[:4]:
+            times = morning_times(no, mov_no, d)
+            if times:
+                found = (d, times)
+                break
+        log(f"  {nm}: 상영일 {[fmt_ymd(d) for d in dates]} / 오전회차 {found}")
+        summary.append(f"{nm}: " + (f"{fmt_ymd(found[0])} 오전 {len(found[1])}회" if found
+                                     else f"상영일 {len(dates)}일, 오전회차 없음"))
+        if found and sent < 2:
+            notify_open(nm, found[0], found[1], test=True)
+            sent += 1
+    notify("[테스트] 치이카와 감시 알림 확인", "\n".join(summary), tags="white_check_mark", priority=4)
+    log(f"테스트 완료: 오픈 알림 {sent}건 + 요약 알림 1건 전송 (ntfy 앱에서 확인)")
 
 
 if __name__ == "__main__":
