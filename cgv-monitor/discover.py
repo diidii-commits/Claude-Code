@@ -2,7 +2,7 @@
 출력 전체를 복사해서 Claude에게 붙여넣어 주세요."""
 import json, time, urllib.parse, urllib.request, urllib.error
 
-API = "https://api.cgv.co.kr"
+API = "https://cgv.co.kr/api/v1/booking"  # 사이트 BFF (api.cgv.co.kr 직접 호출은 401)
 H = {
     "User-Agent": "Mozilla/5.0 (Linux; Android 14; SM-S921N) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36",
@@ -58,27 +58,27 @@ def show(tag, code, j):
 
 
 print("== 1. 접속 확인")
-code, j = get("/cnm/atkt/searchAtktTopPostrList", coCd="A420", movNm="", div="", attrCd="")
+code, j = get("/searchAtktTopPostrList", coCd="A420", movNm="", div="", attrCd="")
 show("postr", code, j)
 if code != 200:
     raise SystemExit("CGV 접속 차단됨 (위 결과를 알려주세요)")
 
 movs = [m for l in lists(j) for m in l if "치이카와" in str(m.get("movNm", ""))]
-code, j2 = get("/cnm/atkt/searchOnlyCgvMovList", coCd="A420")
+code, j2 = get("/searchOnlyCgvMovList", coCd="A420")
 movs += [m for l in lists(j2) for m in l if "치이카와" in str(m.get("movNm", ""))]
 print("== 2. 치이카와 영화:", json.dumps([{k: m.get(k) for k in ("movNo", "movNm")} for m in movs],
                                    ensure_ascii=False))
 mov = movs[0]["movNo"] if movs else ""
 
 print("== 3. 극장 목록 후보")
-code, j = get("/cnm/atkt/searchRegnList", coCd="A420", lntd=LNG, lttd=LAT, regnGrpCd="", srchKwrd="")
+code, j = get("/searchRegnList", coCd="A420", lntd=LNG, lttd=LAT, regnGrpCd="", srchKwrd="")
 show("regn", code, j)
-code, j = get("/cnm/atkt/searchRegnList", coCd="A420", lntd=LNG, lttd=LAT, regnGrpCd="01", srchKwrd="")
+code, j = get("/searchRegnList", coCd="A420", lntd=LNG, lttd=LAT, regnGrpCd="01", srchKwrd="")
 show("regn01", code, j)
-code, j = get("/cnm/atkt/searchRcmSiteList", coCd="A420", custNo="", lntd=LNG, lttd=LAT,
+code, j = get("/searchRcmSiteList", coCd="A420", custNo="", lntd=LNG, lttd=LAT,
               srchKwrd="", div=" ", attrCd=" ", movNo="")
 show("rcm", code, j)
-code, j = get("/cnm/atkt/searchRcmSiteList", coCd="A420", custNo="", lntd=LNG, lttd=LAT,
+code, j = get("/searchRcmSiteList", coCd="A420", custNo="", lntd=LNG, lttd=LAT,
               srchKwrd="", div=" ", attrCd=" ", movNo=mov)
 show("rcm+mov", code, j)
 site = "0013"  # CGV 용산아이파크몰
@@ -90,10 +90,10 @@ print("   test site:", site)
 
 print("== 4. 시간표 후보 (영화", mov, ")")
 for ymd in ("20260930", "20261003"):
-    show(f"schByMov {ymd}", *get("/cnm/atkt/searchSchByMov", coCd="A420", siteNo=site, scnYmd=ymd, movNo=mov))
-    show(f"schByMov nosite {ymd}", *get("/cnm/atkt/searchSchByMov", coCd="A420", scnYmd=ymd, movNo=mov))
-show("ymdByMov", *get("/cnm/atkt/searchSiteScnscYmdListByMov", coCd="A420", siteNo=site, movNo=mov))
-show("ymdBySite", *get("/cnm/atkt/searchSiteScnscYmdListBySite", coCd="A420", siteNo=site))
-show("movScnInfo", *get("/cnm/atkt/searchMovScnInfo", coCd="A420", siteNo=site, scnYmd="20260930"))
-show("lastScnDay", *get("/cnm/atkt/searchLastScnDay", coCd="A420", siteNo=site, movNo=mov))
+    show(f"schByMov {ymd}", *get("/searchSchByMov", coCd="A420", siteNo=site, scnYmd=ymd, movNo=mov))
+    show(f"schByMov nosite {ymd}", *get("/searchSchByMov", coCd="A420", scnYmd=ymd, movNo=mov))
+show("ymdByMov", *get("/searchSiteScnscYmdListByMov", coCd="A420", siteNo=site, movNo=mov))
+show("ymdBySite", *get("/searchSiteScnscYmdListBySite", coCd="A420", siteNo=site))
+show("movScnInfo", *get("/searchMovScnInfo", coCd="A420", siteNo=site, scnYmd="20260930"))
+show("lastScnDay", *get("/searchLastScnDay", coCd="A420", siteNo=site, movNo=mov))
 print("== 끝")
