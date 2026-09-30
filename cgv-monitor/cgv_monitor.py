@@ -28,6 +28,10 @@ INTERVAL_SEC = 5 * 60
 # 중점 감시 극장: 1분마다 확인, 오픈 시 최고 우선순위 알림
 FOCUS_KEYWORDS = ["용산아이파크", "성신여대", "여의도", "연남", "대학로"]
 FOCUS_INTERVAL_SEC = 60
+# 서울 지역 극장만, 오전(12시 이전 시작) 회차만 '오픈'으로 판단
+SEOUL_ONLY = True
+MORNING_END = "1200"  # HHMM, 이 시각 이전에 시작하는 회차만
+FILTER_KEY = f"seoul={SEOUL_ONLY}|morning<{MORNING_END}"
 DELAY_SEC = 1.0  # CGV 서버 부담을 줄이기 위한 요청 간 간격
 
 API = "https://cgv.co.kr/api/v1/booking"
@@ -95,15 +99,35 @@ def find_movie():
     raise ApiError(f"영화 '{MOVIE_KEYWORD}'를 찾지 못함")
 
 
-def all_sites():
+def walk_sites(o, grp=("", "")):
+    """(siteNo, siteNm, regnGrpCd, regnGrpNm) — 상위 객체의 지역 정보를 물려받음."""
+    if isinstance(o, dict):
+        grp = (o.get("regnGrpCd") or grp[0], o.get("regnGrpNm") or grp[1])
+        if o.get("siteNo") and o.get("siteNm"):
+            yield o["siteNo"], o["siteNm"], grp[0], grp[1]
+        for v in o.values():
+            if isinstance(v, (dict, list)):
+                yield from walk_sites(v, grp)
+    elif isinstance(o, list):
+        for v in o:
+            yield from walk_sites(v, grp)
+
+
+def all_sites(seoul_only=SEOUL_ONLY):
     j = get("/searchRegnList", coCd=CO_CD, lntd="126.978", lttd="37.5665", regnGrpCd="", srchKwrd="")
-    sites = {}
-    for d in dicts(j.get("data")):
-        if d.get("siteNo") and d.get("siteNm"):
-            sites[d["siteNo"]] = d["siteNm"]
+    rows = list(walk_sites(j.get("data")))
+    sites = {no: nm for no, nm, _, _ in rows}
     if len(sites) < 50:
         raise ApiError(f"극장 목록이 비정상적으로 적음 ({len(sites)})")
-    return sites
+    if not seoul_only:
+        return sites
+    seoul = {no: nm for no, nm, cd, gnm in rows if "서울" in gnm}
+    if not seoul:  # 지역명이 없으면 서울 코드(01)로 직접 조회
+        j = get("/searchRegnList", coCd=CO_CD, lntd="126.978", lttd="37.5665", regnGrpCd="01", srchKwrd="")
+        seoul = {no: nm for no, nm, cd, _ in walk_sites(j.get("data")) if cd in ("01", "")}
+    if not 10 <= len(seoul) < len(sites):
+        raise ApiError(f"서울 극장 목록을 구분하지 못함 ({len(seoul)}/{len(sites)})")
+    return seoul
 
 
 def schedule_dates(site_no, mov_no):
@@ -120,8 +144,15 @@ def showtimes(site_no, mov_no, ymd):
         t = r["scnsrtTm"]
         kind = r.get("movkndDsplNm") or ""
         seats = f" 잔여{r['frSeatCnt']}" if r.get("frSeatCnt") not in (None, "") else ""
-        out.append(f"{t[:2]}:{t[2:4]} {r.get('scnsNm', '')} {kind}{seats}".replace("  ", " ").strip())
+        out.append((t, f"{t[:2]}:{t[2:4]} {r.get('scnsNm', '')} {kind}{seats}".replace("  ", " ").strip()))
     return out
+
+
+def morning_times(site_no, mov_no, ymd):
+    """오전 회차 목록(문자열). 해당 날짜 시간표가 아예 없으면 None, 오후만 있으면 []."""
+    if ymd not in schedule_dates(site_no, mov_no):
+        return None
+    return [txt for hhmm, txt in showtimes(site_no, mov_no, ymd) if hhmm < MORNING_END]
 
 
 def notify(title, message, tags="movie_camera", priority=4):
@@ -152,8 +183,8 @@ def is_focus(site_nm):
 def notify_open(site_nm, ymd, times, test=False):
     focus = is_focus(site_nm)
     title = (f"{'[테스트] ' if test else ''}{'★중점★ ' if focus else ''}"
-             f"{site_nm} {fmt_ymd(ymd)} 치이카와 예매 오픈!")
-    msg = "\n".join(times) if times else "(회차 시간 조회 실패 — 앱에서 확인)"
+             f"{site_nm} {fmt_ymd(ymd)} 치이카와 오전 회차 오픈!")
+    msg = "\n".join(times)
     return notify(title, msg, tags="rotating_light" if focus else "movie_camera", priority=5 if focus else 4)
 
 
@@ -167,14 +198,17 @@ def focus_report(st):
             lines.append(f"{kw}: 극장 목록에서 못 찾음")
             log(f"중점 극장 '{kw}'을 극장 목록에서 찾지 못함")
         for no, nm in hits:
-            if no in st["pending"]:
-                lines.append(f"{nm}: 미오픈 → 1분마다 감시")
+            try:
+                times = morning_times(no, st["movNo"], st["target"])
+            except ApiError:
+                lines.append(f"{nm}: 조회 실패")
+                continue
+            if times:
+                lines.append(f"{nm}: 오전 이미 오픈 {' / '.join(t.split(' ')[0] for t in times)}")
+            elif times == []:
+                lines.append(f"{nm}: 오후 회차만 있음 → 오전 1분마다 감시")
             else:
-                try:
-                    times = showtimes(no, st["movNo"], st["target"])
-                except ApiError:
-                    times = []
-                lines.append(f"{nm}: 이미 오픈 {' / '.join(t.split(' ')[0] for t in times)}")
+                lines.append(f"{nm}: 미오픈 → 1분마다 감시")
     log("중점 극장:\n  " + "\n  ".join(lines))
     notify(f"중점 극장 {fmt_ymd(st['target'])} 현황", "\n".join(lines), tags="star", priority=4)
 
@@ -201,7 +235,7 @@ def init_scan(ymd=TARGET_YMD):
     pending, opened, errors = {}, {}, 0
     for i, (no, nm) in enumerate(sites.items(), 1):
         try:
-            has = ymd in schedule_dates(no, mov_no)
+            has = bool(morning_times(no, mov_no, ymd))
         except ApiError as e:
             log("  오류", nm, e)
             errors += 1
@@ -209,12 +243,12 @@ def init_scan(ymd=TARGET_YMD):
         (opened if has else pending)[no] = nm
         if i % 25 == 0:
             log(f"  {i}/{len(sites)} (오픈 {len(opened)}, 미오픈 {len(pending)})")
-    st = {"movNo": mov_no, "movNm": mov_nm, "target": ymd, "created": now().isoformat(),
+    st = {"movNo": mov_no, "movNm": mov_nm, "target": ymd, "filter": FILTER_KEY, "created": now().isoformat(),
           "pending": pending, "opened_at_init": opened, "opened_later": {}}
     save_state(st)
-    log(f"스캔 완료: 이미 오픈 {len(opened)}곳, 미오픈 {len(pending)}곳 (오류 {errors}) → state.json 저장")
-    notify(f"치이카와 {fmt_ymd(ymd)} 감시 시작",
-           f"이미 오픈 {len(opened)}곳 / 미오픈 {len(pending)}곳 감시 중 (중점 5곳 1분 / 나머지 5분 간격)", tags="eyes", priority=3)
+    log(f"스캔 완료 (서울, 오전 {MORNING_END[:2]}시 이전 회차 기준): 이미 오픈 {len(opened)}곳, 미오픈 {len(pending)}곳 (오류 {errors}) → state.json 저장")
+    notify(f"치이카와 {fmt_ymd(ymd)} 오전 회차 감시 시작",
+           f"서울 {len(sites)}곳 중 오전 회차 이미 오픈 {len(opened)}곳 / 미오픈 {len(pending)}곳 감시 중 (중점 5곳 1분 / 나머지 5분 간격)", tags="eyes", priority=3)
     return st
 
 
@@ -227,13 +261,9 @@ def check_round(st, focus_only=False):
         targets = [kv for kv in targets if is_focus(kv[1])]
     for no, nm in targets:
         try:
-            if ymd not in schedule_dates(no, mov_no):
+            times = morning_times(no, mov_no, ymd)
+            if not times:
                 continue
-            try:
-                times = showtimes(no, mov_no, ymd)
-            except ApiError as e:
-                log("  회차 조회 실패", nm, e)
-                times = []
         except ApiError as e:
             errors += 1
             log("  오류", nm, e)
@@ -258,7 +288,7 @@ def expired(ymd=TARGET_YMD):
 
 def loop():
     st = load_state()
-    if st is None or st.get("target") != TARGET_YMD:
+    if st is None or st.get("target") != TARGET_YMD or st.get("filter") != FILTER_KEY:
         st = init_scan()
     focus_report(st)
     blocked = 0
@@ -270,7 +300,7 @@ def loop():
             return
         if not st["pending"]:
             log("모든 극장이 오픈되어 종료합니다.")
-            notify("치이카와 감시 종료", "감시하던 극장이 모두 오픈됐습니다.", tags="tada", priority=3)
+            notify("치이카와 감시 종료", "감시하던 서울 극장의 오전 회차가 모두 오픈됐습니다.", tags="tada", priority=3)
             return
         started = time.time()
         full = started - last_full >= INTERVAL_SEC - 5
@@ -288,23 +318,22 @@ def loop():
 
 
 def test(ymd="20260930"):
-    """알림 경로 테스트: 해당 날짜에 치이카와 회차가 있는 극장 2곳의 실제 시간표로 [테스트] 알림 전송."""
-    mov_no, mov_nm = find_movie()
+    """알림 경로 테스트: 해당 날짜에 치이카와 오전 회차가 있는 서울 극장 2곳의 실제 시간표로 [테스트] 알림."""
+    mov_no, _ = find_movie()
     sites = all_sites()
-    order = ["0056", "0013", "0074"] + [s for s in sites if s not in ("0056", "0013", "0074")]
-    probe_dates = sorted(schedule_dates(order[0], mov_no))
+    log(f"서울 극장 {len(sites)}곳: {', '.join(sites.values())}")
+    order = sorted(sites, key=lambda no: (not is_focus(sites[no]), no != "0056"))
+    probe_dates = sorted(schedule_dates("0056", mov_no))
     use = ymd
     if ymd not in probe_dates:
         later = [d for d in probe_dates if d >= ymd]
         use = later[0] if later else ymd
         log(f"{fmt_ymd(ymd)}에는 치이카와 회차가 없음 (개봉 전) → {fmt_ymd(use)} 회차로 테스트")
     sent = 0
-    for no in order[:40]:
-        if no not in sites:
+    for no in order[:15]:
+        times = morning_times(no, mov_no, use)
+        if not times:
             continue
-        if use not in schedule_dates(no, mov_no):
-            continue
-        times = showtimes(no, mov_no, use)
         log(f"테스트 알림: {sites[no]} {times}")
         notify_open(sites[no], use, times, test=True)
         sent += 1
@@ -318,7 +347,9 @@ if __name__ == "__main__":
     if cmd == "init":
         init_scan()
     elif cmd == "check":
-        s = load_state() or init_scan()
+        s = load_state()
+        if not s or s.get("filter") != FILTER_KEY:
+            s = init_scan()
         check_round(s)
     elif cmd == "test":
         test(sys.argv[2] if len(sys.argv) > 2 else "20260930")
