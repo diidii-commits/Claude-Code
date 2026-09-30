@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Download CGV Next.js bundles from the static CDN and grep API endpoints.
 set -u
-OUT=cgv-monitor/probe/out2; mkdir -p $OUT/js
+OUT=cgv-monitor/probe/out3; mkdir -p $OUT/js
 BASE=https://cdn.cgv.co.kr/cgvpomscontent/static/script/e3bf2d63/_next/
 UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/130 Safari/537.36"
 get(){ curl -sS -m 20 -A "$UA" -o "$OUT/js/$(echo $1 | tr '/()' '___')" -w "%{http_code} $1\n" "$BASE$1"; sleep 0.3; }
@@ -26,4 +26,4 @@ grep -c '^200' $OUT/status.txt
 grep -ohE '"/?(api/v1|cnm|com|met|atkt|ssn|mbr)/[A-Za-z0-9/_]{4,}"|https://[a-z]+\.cgv\.co\.kr[A-Za-z0-9/_]*' $OUT/js/* | sort | uniq -c | sort -rn > $OUT/endpoints.txt
 # context around schedule-ish identifiers
 grep -ohE '.{300}(searchSchd|Schd|ScnSchd|scnYmd|searchMovScn|siteNo)[^;]{0,300}' $OUT/js/* | head -300 > $OUT/context.txt
-rm -rf $OUT/js/*.js 2>/dev/null; ls $OUT
+ls -la $OUT/js
