@@ -1,7 +1,7 @@
 """CGV 예매 오픈 감시기 — '극장판 치이카와: 인어 섬의 비밀' 2026-10-03 회차.
 
 사용법 (Termux):
-  python cgv_monitor.py loop    # 첫 실행 시 전체 스캔 → 5분마다 미오픈 극장만 재확인 (10/3 지나면 종료)
+  python cgv_monitor.py loop    # 첫 실행 시 감시 극장 스캔 → 1분마다 오전 회차 미오픈 극장만 재확인 (10/3 지나면 종료)
   python cgv_monitor.py init    # 전체 극장 스캔해서 state.json 새로 만들기
   python cgv_monitor.py check   # 1회만 재확인
   python cgv_monitor.py test    # 알림 테스트 (9/30 → 회차 없으면 가장 가까운 상영일로 실제 시간표 알림)
@@ -24,14 +24,15 @@ from datetime import datetime, timedelta, timezone
 MOVIE_KEYWORD = "치이카와"
 TARGET_YMD = "20261003"
 NTFY_TOPIC = "hyunji-cgv-chiikawa-7391"
-INTERVAL_SEC = 5 * 60
-# 중점 감시 극장: 1분마다 확인, 오픈 시 최고 우선순위 알림
+INTERVAL_SEC = 60
+# 감시 대상: 이 5곳만 (극장명 부분 일치), 1분마다 확인, 오픈 시 최고 우선순위 알림
 FOCUS_KEYWORDS = ["용산아이파크", "성신여대", "여의도", "연남", "대학로"]
+ONLY_FOCUS = True
 FOCUS_INTERVAL_SEC = 60
-# 서울 지역 극장만, 오전(12시 이전 시작) 회차만 '오픈'으로 판단
-SEOUL_ONLY = True
+# 오전(12시 이전 시작) 회차만 '오픈'으로 판단
+SEOUL_ONLY = False  # ONLY_FOCUS가 켜져 있으면 무시
 MORNING_END = "1200"  # HHMM, 이 시각 이전에 시작하는 회차만
-FILTER_KEY = f"seoul={SEOUL_ONLY}|morning<{MORNING_END}"
+FILTER_KEY = (f"focus={','.join(FOCUS_KEYWORDS)}" if ONLY_FOCUS else f"seoul={SEOUL_ONLY}") + f"|morning<{MORNING_END}"
 DELAY_SEC = 1.0  # CGV 서버 부담을 줄이기 위한 요청 간 간격
 
 API = "https://cgv.co.kr/api/v1/booking"
@@ -119,6 +120,15 @@ def all_sites(seoul_only=SEOUL_ONLY):
     sites = {no: nm for no, nm, _, _ in rows}
     if len(sites) < 50:
         raise ApiError(f"극장 목록이 비정상적으로 적음 ({len(sites)})")
+    if ONLY_FOCUS:
+        focus = {no: nm for no, nm in sites.items() if is_focus(nm)}
+        missing = [k for k in FOCUS_KEYWORDS if not any(k in nm for nm in focus.values())]
+        if missing:
+            log("극장 목록에서 못 찾은 극장:", ", ".join(missing))
+            notify("치이카와 감시 경고", f"극장 목록에서 못 찾음: {', '.join(missing)}", tags="warning", priority=4)
+        if not focus:
+            raise ApiError("감시할 극장을 하나도 찾지 못함")
+        return focus
     if not seoul_only:
         return sites
     seoul = {no: nm for no, nm, cd, gnm in rows if "서울" in gnm}
@@ -182,14 +192,14 @@ def is_focus(site_nm):
 
 def notify_open(site_nm, ymd, times, test=False):
     focus = is_focus(site_nm)
-    title = (f"{'[테스트] ' if test else ''}{'★중점★ ' if focus else ''}"
+    title = (f"{'[테스트] ' if test else ''}{'★중점★ ' if focus and not ONLY_FOCUS else ''}"
              f"{site_nm} {fmt_ymd(ymd)} 치이카와 오전 회차 오픈!")
     msg = "\n".join(times)
     return notify(title, msg, tags="rotating_light" if focus else "movie_camera", priority=5 if focus else 4)
 
 
 def focus_report(st):
-    """중점 극장 5곳의 현재 상태를 한 번에 알림."""
+    """감시 극장 5곳의 현재 상태를 한 번에 알림."""
     every = {**st["opened_at_init"], **{k: v["name"] for k, v in st["opened_later"].items()}, **st["pending"]}
     lines = []
     for kw in FOCUS_KEYWORDS:
@@ -206,11 +216,11 @@ def focus_report(st):
             if times:
                 lines.append(f"{nm}: 오전 이미 오픈 {' / '.join(t.split(' ')[0] for t in times)}")
             elif times == []:
-                lines.append(f"{nm}: 오후 회차만 있음 → 오전 1분마다 감시")
+                lines.append(f"{nm}: 오후 회차만 있음 → 1분마다 감시")
             else:
                 lines.append(f"{nm}: 미오픈 → 1분마다 감시")
-    log("중점 극장:\n  " + "\n  ".join(lines))
-    notify(f"중점 극장 {fmt_ymd(st['target'])} 현황", "\n".join(lines), tags="star", priority=4)
+    log("감시 극장:\n  " + "\n  ".join(lines))
+    notify(f"감시 극장 {fmt_ymd(st['target'])} 오전 회차 현황", "\n".join(lines), tags="star", priority=4)
 
 
 def load_state():
@@ -246,9 +256,9 @@ def init_scan(ymd=TARGET_YMD):
     st = {"movNo": mov_no, "movNm": mov_nm, "target": ymd, "filter": FILTER_KEY, "created": now().isoformat(),
           "pending": pending, "opened_at_init": opened, "opened_later": {}}
     save_state(st)
-    log(f"스캔 완료 (서울, 오전 {MORNING_END[:2]}시 이전 회차 기준): 이미 오픈 {len(opened)}곳, 미오픈 {len(pending)}곳 (오류 {errors}) → state.json 저장")
+    log(f"스캔 완료 (오전 {MORNING_END[:2]}시 이전 회차 기준): 이미 오픈 {len(opened)}곳, 미오픈 {len(pending)}곳 (오류 {errors}) → state.json 저장")
     notify(f"치이카와 {fmt_ymd(ymd)} 오전 회차 감시 시작",
-           f"서울 {len(sites)}곳 중 오전 회차 이미 오픈 {len(opened)}곳 / 미오픈 {len(pending)}곳 감시 중 (중점 5곳 1분 / 나머지 5분 간격)", tags="eyes", priority=3)
+           f"{len(sites)}곳 중 오전 회차 이미 오픈 {len(opened)}곳 / 미오픈 {len(pending)}곳 감시 중 (1분 간격)", tags="eyes", priority=3)
     return st
 
 
@@ -300,7 +310,7 @@ def loop():
             return
         if not st["pending"]:
             log("모든 극장이 오픈되어 종료합니다.")
-            notify("치이카와 감시 종료", "감시하던 서울 극장의 오전 회차가 모두 오픈됐습니다.", tags="tada", priority=3)
+            notify("치이카와 감시 종료", "감시하던 극장의 오전 회차가 모두 오픈됐습니다.", tags="tada", priority=3)
             return
         started = time.time()
         full = started - last_full >= INTERVAL_SEC - 5
@@ -318,10 +328,10 @@ def loop():
 
 
 def test(ymd="20260930"):
-    """알림 경로 테스트: 해당 날짜에 치이카와 오전 회차가 있는 서울 극장 2곳의 실제 시간표로 [테스트] 알림."""
+    """알림 경로 테스트: 해당 날짜에 치이카와 오전 회차가 있는 감시 극장 2곳의 실제 시간표로 [테스트] 알림."""
     mov_no, _ = find_movie()
     sites = all_sites()
-    log(f"서울 극장 {len(sites)}곳: {', '.join(sites.values())}")
+    log(f"감시 극장 {len(sites)}곳: {', '.join(sites.values())}")
     order = sorted(sites, key=lambda no: (not is_focus(sites[no]), no != "0056"))
     probe_dates = sorted(schedule_dates("0056", mov_no))
     use = ymd
