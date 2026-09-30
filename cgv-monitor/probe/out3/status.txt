@@ -1,6 +1,0 @@
-200 static/chunks/webpack-fc17d5ea6464a758.js
-200 static/chunks/app/(home)/cnm/movieBook/page-4360e60f1d7597e2.js
-200 static/chunks/app/(home)/layout-88bb368989f43b1c.js
-200 static/chunks/app/layout-0f6bcf42250f47a3.js
-200 static/chunks/8346-e8014a133d0e467a.js
-200 static/chunks/main-app-dc7ae2e06adc0f2d.js
