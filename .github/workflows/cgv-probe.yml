@@ -1,0 +1,27 @@
+name: CGV probe (one-off analysis)
+on:
+  push:
+    branches: [claude/cgv-ticket-monitor-tgnoas]
+    paths: [cgv-monitor/probe/**, .github/workflows/cgv-probe.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install playwright && python -m playwright install --with-deps chromium
+      - run: curl -s https://ipinfo.io/json || true
+      - run: python cgv-monitor/probe/probe.py cgv-monitor/probe/out
+      - name: Commit probe output
+        if: always()
+        run: |
+          git config user.name "cgv-probe-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -f cgv-monitor/probe/out
+          git commit -m "probe output [skip ci]" || exit 0
+          git pull --rebase && git push
