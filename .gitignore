@@ -1,2 +1,5 @@
 node_modules/
 cgv-monitor/probe/out/
+cgv-monitor/state.json
+cgv-monitor/state.json.tmp
+cgv-monitor/*.log
