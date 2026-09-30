@@ -25,6 +25,9 @@ MOVIE_KEYWORD = "치이카와"
 TARGET_YMD = "20261003"
 NTFY_TOPIC = "hyunji-cgv-chiikawa-7391"
 INTERVAL_SEC = 5 * 60
+# 중점 감시 극장: 1분마다 확인, 오픈 시 최고 우선순위 알림
+FOCUS_KEYWORDS = ["용산아이파크", "성신여대", "여의도", "연남", "대학로"]
+FOCUS_INTERVAL_SEC = 60
 DELAY_SEC = 1.0  # CGV 서버 부담을 줄이기 위한 요청 간 간격
 
 API = "https://cgv.co.kr/api/v1/booking"
@@ -142,10 +145,38 @@ def fmt_ymd(ymd):
     return f"{d.month}/{d.day}({'월화수목금토일'[d.weekday()]})"
 
 
+def is_focus(site_nm):
+    return any(k in site_nm for k in FOCUS_KEYWORDS)
+
+
 def notify_open(site_nm, ymd, times, test=False):
-    title = f"{'[테스트] ' if test else ''}{site_nm} {fmt_ymd(ymd)} 치이카와 예매 오픈!"
+    focus = is_focus(site_nm)
+    title = (f"{'[테스트] ' if test else ''}{'★중점★ ' if focus else ''}"
+             f"{site_nm} {fmt_ymd(ymd)} 치이카와 예매 오픈!")
     msg = "\n".join(times) if times else "(회차 시간 조회 실패 — 앱에서 확인)"
-    return notify(title, msg)
+    return notify(title, msg, tags="rotating_light" if focus else "movie_camera", priority=5 if focus else 4)
+
+
+def focus_report(st):
+    """중점 극장 5곳의 현재 상태를 한 번에 알림."""
+    every = {**st["opened_at_init"], **{k: v["name"] for k, v in st["opened_later"].items()}, **st["pending"]}
+    lines = []
+    for kw in FOCUS_KEYWORDS:
+        hits = [(no, nm) for no, nm in every.items() if kw in nm]
+        if not hits:
+            lines.append(f"{kw}: 극장 목록에서 못 찾음")
+            log(f"중점 극장 '{kw}'을 극장 목록에서 찾지 못함")
+        for no, nm in hits:
+            if no in st["pending"]:
+                lines.append(f"{nm}: 미오픈 → 1분마다 감시")
+            else:
+                try:
+                    times = showtimes(no, st["movNo"], st["target"])
+                except ApiError:
+                    times = []
+                lines.append(f"{nm}: 이미 오픈 {' / '.join(t.split(' ')[0] for t in times)}")
+    log("중점 극장:\n  " + "\n  ".join(lines))
+    notify(f"중점 극장 {fmt_ymd(st['target'])} 현황", "\n".join(lines), tags="star", priority=4)
 
 
 def load_state():
@@ -183,15 +214,18 @@ def init_scan(ymd=TARGET_YMD):
     save_state(st)
     log(f"스캔 완료: 이미 오픈 {len(opened)}곳, 미오픈 {len(pending)}곳 (오류 {errors}) → state.json 저장")
     notify(f"치이카와 {fmt_ymd(ymd)} 감시 시작",
-           f"이미 오픈 {len(opened)}곳 / 미오픈 {len(pending)}곳 감시 중 (5분 간격)", tags="eyes", priority=3)
+           f"이미 오픈 {len(opened)}곳 / 미오픈 {len(pending)}곳 감시 중 (중점 5곳 1분 / 나머지 5분 간격)", tags="eyes", priority=3)
     return st
 
 
-def check_round(st):
+def check_round(st, focus_only=False):
     mov_no, ymd = st["movNo"], st["target"]
     pending = st["pending"]
     newly, errors = [], 0
-    for no, nm in list(pending.items()):
+    targets = sorted(pending.items(), key=lambda kv: not is_focus(kv[1]))  # 중점 극장 먼저
+    if focus_only:
+        targets = [kv for kv in targets if is_focus(kv[1])]
+    for no, nm in targets:
         try:
             if ymd not in schedule_dates(no, mov_no):
                 continue
@@ -212,7 +246,9 @@ def check_round(st):
             del pending[no]
             save_state(st)
             newly.append(nm)
-    log(f"확인 완료: 새로 오픈 {len(newly)}곳, 남은 미오픈 {len(pending)}곳, 오류 {errors}")
+    if not focus_only or newly or errors:
+        log(f"{'중점 ' if focus_only else ''}확인 완료: 새로 오픈 {len(newly)}곳, "
+            f"남은 미오픈 {len(pending)}곳, 오류 {errors}")
     return newly
 
 
@@ -224,7 +260,9 @@ def loop():
     st = load_state()
     if st is None or st.get("target") != TARGET_YMD:
         st = init_scan()
+    focus_report(st)
     blocked = 0
+    last_full = 0.0
     while True:
         if expired(st["target"]):
             log("대상 날짜가 지나서 종료합니다.")
@@ -235,15 +273,18 @@ def loop():
             notify("치이카와 감시 종료", "감시하던 극장이 모두 오픈됐습니다.", tags="tada", priority=3)
             return
         started = time.time()
+        full = started - last_full >= INTERVAL_SEC - 5
         try:
-            check_round(st)
+            check_round(st, focus_only=not full)
+            if full:
+                last_full = started
             blocked = 0
         except ApiError as e:
             blocked += 1
             log("CGV 접속 차단/오류:", e)
             if blocked == 3:
                 notify("치이카와 감시 오류", f"CGV 접속이 연속 실패 중입니다: {e}", tags="warning", priority=4)
-        time.sleep(max(30, INTERVAL_SEC - (time.time() - started)))
+        time.sleep(max(10, FOCUS_INTERVAL_SEC - (time.time() - started)))
 
 
 def test(ymd="20260930"):
